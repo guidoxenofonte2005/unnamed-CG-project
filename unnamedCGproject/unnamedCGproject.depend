@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1758217698 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/glut.h>
+

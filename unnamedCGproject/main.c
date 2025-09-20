@@ -4,10 +4,16 @@
 #include <windows.h>
 #include <GL/freeglut.h>
 
+#include <math.h>
+
 int verticalMovement;
 int horizontalMovement;
 
 int lastMousex, lastMousey;
+
+float thetaAngle = 0.0f;  // ângulo horizontal
+float phiAngle = 0.0f;  // ângulo vertical
+float camRadius = 2.0f; // distância da câmera ao alvo
 
 
 int init() {
@@ -16,9 +22,6 @@ int init() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0.8, 0.5, 0.5,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
 
     glMatrixMode(GL_PROJECTION);
     glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
@@ -28,6 +31,14 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
+
+    float camX = 0.0 + camRadius * cosf(phiAngle) * sinf(thetaAngle);
+    float camY = 0.0 + camRadius * sinf(phiAngle);
+    float camZ = 0.0 + camRadius * cosf(phiAngle) * cosf(thetaAngle);
+
+    gluLookAt(camX, camY, camZ,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0);
 
     glColor3f(1.0f, 0.0f, 0.0f);
     glutWireCube(1.0f);
@@ -45,8 +56,16 @@ void handleMouseMovement(int x, int y) {
 
     float mouseSensitivity = 0.005f;
 
-    float thetaAngle = dx * mouseSensitivity;
+    thetaAngle += dx * mouseSensitivity;
+    phiAngle += dy * mouseSensitivity;
 
+    if (phiAngle > 1.5f) phiAngle = 1.5f;
+    if (phiAngle < -1.5f) phiAngle = -1.5f;
+
+    lastMousex = x;
+    lastMousey = y;
+
+    glutPostRedisplay();
 }
 
 int main(int argc, char** argv)

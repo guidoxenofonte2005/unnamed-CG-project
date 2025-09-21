@@ -24,17 +24,19 @@ int init() {
     glLoadIdentity();
 
     glMatrixMode(GL_PROJECTION);
-    glOrtho(-2.0, 2.0, -2.0, 2.0, -2.0, 2.0);
+    glLoadIdentity();
+    gluPerspective(60.0, 1.0, 0.1, 100.0); // fov 60°, aspecto 1:1, near=0.1, far=100
 }
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-    float camX = 0.0 + camRadius * cosf(phiAngle) * sinf(thetaAngle);
-    float camY = 0.0 + camRadius * sinf(phiAngle);
-    float camZ = 0.0 + camRadius * cosf(phiAngle) * cosf(thetaAngle);
+    float camX = camRadius * cosf(phiAngle) * cosf(thetaAngle);
+    float camY = camRadius * sinf(phiAngle);
+    float camZ = camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
     gluLookAt(camX, camY, camZ,
               0.0, 0.0, 0.0,
@@ -57,10 +59,10 @@ void handleMouseMovement(int x, int y) {
     float mouseSensitivity = 0.005f;
 
     thetaAngle += dx * mouseSensitivity;
-    phiAngle += dy * mouseSensitivity;
+    phiAngle -= dy * mouseSensitivity;
 
-    if (phiAngle > 1.5f) phiAngle = 1.5f;
-    if (phiAngle < -1.5f) phiAngle = -1.5f;
+    if (phiAngle > 1.55f)  phiAngle = 1.55f;   // ~89°
+    if (phiAngle < -1.55f) phiAngle = -1.55f;  // ~-89°
 
     lastMousex = x;
     lastMousey = y;

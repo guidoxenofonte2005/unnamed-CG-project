@@ -5,6 +5,7 @@
 #include <GL/freeglut.h>
 
 #include <math.h>
+#include <stdbool.h>
 
 int verticalMovement;
 int horizontalMovement;
@@ -13,7 +14,10 @@ int lastMousex, lastMousey;
 
 float thetaAngle = 0.0f;  // ângulo horizontal
 float phiAngle = 0.0f;  // ângulo vertical
-float camRadius = 2.0f; // distância da câmera ao alvo
+float camRadius = 5.0f; // distância da câmera ao alvo
+
+bool isCameraActive = false;
+int winWidth = 500, winHeight = 500;
 
 
 int init() {
@@ -48,24 +52,38 @@ void display() {
     glutSwapBuffers();
 }
 
-void handleKeyboardInput() {
+void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
+    if (pressedKey == 27) { // ESC
+        isCameraActive = !isCameraActive;
+
+        if (isCameraActive) {
+            glutSetCursor(GLUT_CURSOR_NONE); // esconde cursor
+            glutWarpPointer(500 / 2, 500 / 2);
+        } else {
+            glutSetCursor(GLUT_CURSOR_INHERIT); // mostra cursor
+        }
+    }
 
 }
 
 void handleMouseMovement(int x, int y) {
-    int dx = x - lastMousex;
-    int dy = y - lastMousey;
+    if (!isCameraActive) return;
 
-    float mouseSensitivity = 0.005f;
+    int centerX = winWidth / 2;
+    int centerY = winHeight / 2;
+
+    int dx = x - centerX;
+    int dy = y - centerY;
+
+    float mouseSensitivity = 0.005f; // sensibilidade do mouse
 
     thetaAngle += dx * mouseSensitivity;
-    phiAngle -= dy * mouseSensitivity;
+    phiAngle   -= dy * mouseSensitivity;
 
-    if (phiAngle > 1.55f)  phiAngle = 1.55f;   // ~89°
-    if (phiAngle < -1.55f) phiAngle = -1.55f;  // ~-89°
+    if (phiAngle > 1.55f)  phiAngle = 1.55f;  // limite vertical = 89°
+    if (phiAngle < -1.55f) phiAngle = -1.55f; // limite vertical = -89°
 
-    lastMousex = x;
-    lastMousey = y;
+    glutWarpPointer(centerX, centerY); // não permite que o mouse saia da tela enquanto a detecção de câmera estiver ativa (basicamente só volta pro centro)
 
     glutPostRedisplay();
 }

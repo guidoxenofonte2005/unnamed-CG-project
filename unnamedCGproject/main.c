@@ -7,6 +7,8 @@
 #include <math.h>
 #include <stdbool.h>
 
+#include "player.h"
+
 int verticalMovement;
 int horizontalMovement;
 
@@ -24,9 +26,6 @@ int init() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(60.0, 1.0, 0.1, 100.0); // fov 60°, aspecto 1:1, near=0.1, far=100
@@ -38,13 +37,14 @@ void display() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    // cálculo das novas posições da câmera
     float camX = camRadius * cosf(phiAngle) * cosf(thetaAngle);
     float camY = camRadius * sinf(phiAngle);
     float camZ = camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
-    gluLookAt(camX, camY, camZ,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
+    gluLookAt(camX, camY, camZ, // posição da câmera (x,y,z)
+              0.0, 0.0, 0.0,    // ponto que a câmera está olhando (0, 0, 0) (mudar para posição do player depois)
+              0.0, 1.0, 0.0);   // vetor upwards (0, 1, 0)
 
     glColor3f(1.0f, 0.0f, 0.0f);
     glutWireCube(1.0f);
@@ -55,6 +55,7 @@ void display() {
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     if (pressedKey == 27) { // ESC
         isCameraActive = !isCameraActive;
+        coisa();
 
         if (isCameraActive) {
             glutSetCursor(GLUT_CURSOR_NONE); // esconde cursor
@@ -78,7 +79,7 @@ void handleMouseMovement(int x, int y) {
     float mouseSensitivity = 0.005f; // sensibilidade do mouse
 
     thetaAngle += dx * mouseSensitivity;
-    phiAngle   -= dy * mouseSensitivity;
+    phiAngle += dy * mouseSensitivity;
 
     if (phiAngle > 1.55f)  phiAngle = 1.55f;  // limite vertical = 89°
     if (phiAngle < -1.55f) phiAngle = -1.55f; // limite vertical = -89°

@@ -49,8 +49,11 @@ void display() {
               0.0, 0.0, 0.0,    // ponto que a câmera está olhando (0, 0, 0) (mudar para posição do player depois)
               0.0, 1.0, 0.0);   // vetor upwards (0, 1, 0)
 
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glutWireCube(1.0f);
+    glPushMatrix();
+        glTranslatef(player.x, player.y, player.z);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glutWireCube(1.0f);
+    glPopMatrix();
 
     glutSwapBuffers();
 }
@@ -66,22 +69,23 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT); // mostra cursor
         }
     }
-//11997115100
+
     switch (pressedKey) {
         case 119: // w
+            player.x -= 1;
             break;
         case 97:  // a
+            player.z += 1;
             break;
         case 115: // s
+            player.x += 1;
             break;
         case 100: // d
+            player.z -= 1;
             break;
         default:
             break;
     }
-
-
-    printf("%d", pressedKey);
 }
 
 void handleMouseMovement(int x, int y) {

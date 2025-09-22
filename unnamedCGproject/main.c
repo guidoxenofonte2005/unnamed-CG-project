@@ -22,8 +22,10 @@ float camRadius = 5.0f; // distância da câmera ao alvo
 bool isCameraActive = false;
 int winWidth = 500, winHeight = 500;
 
-Player player = {0.0, 0.0, 0.0, true, true, IDLE};
+Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE};
+PlayerMoveKeys moveKeys = {false, false, false, false};
 
+float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
 int init() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -69,24 +71,43 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT); // mostra cursor
         }
     }
-
-    switch (pressedKey) {
-        case 119: // w
-            player.x -= 1;
-            break;
-        case 97:  // a
-            player.z += 1;
-            break;
-        case 115: // s
-            player.x += 1;
-            break;
-        case 100: // d
-            player.z -= 1;
-            break;
-        default:
-            break;
+    else {
+        if (pressedKey == 119) { // w
+            moveKeys.w = true;
+        }
+        if (pressedKey == 97) { // a
+            moveKeys.a = true;
+        }
+        if (pressedKey == 115) { // s
+            moveKeys.s = true;
+        }
+        if (pressedKey == 100) { // d
+            moveKeys.d = true;
+        }
     }
 }
+
+void keyboardKeyUp(unsigned char key, int x, int y) {
+    if (key == 119) { // w
+        moveKeys.w = false;
+    }
+    if (key == 97) { // a
+        moveKeys.a = false;
+    }
+    if (key == 115) { // s
+        moveKeys.s = false;
+    }
+    if (key == 100) { // d
+        moveKeys.d = false;
+    }
+}
+
+void idleUpdates() {
+    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle);
+    printf("%f, %f, %f\n", playerVelocity[0], playerVelocity[1], playerVelocity[2]);
+    movePlayer(playerVelocity, &player);
+}
+
 
 void handleMouseMovement(int x, int y) {
     if (!isCameraActive) return;
@@ -122,7 +143,9 @@ int main(int argc, char** argv)
 
     init();
 
+    glutIdleFunc(idleUpdates);
     glutKeyboardFunc(handleKeyboardInput);
+    glutKeyboardUpFunc(keyboardKeyUp);
     glutPassiveMotionFunc(handleMouseMovement); // função que detecta movimento do mouse de forma passiva (sem nenhum botão pressionado)
 
     glutDisplayFunc(display);

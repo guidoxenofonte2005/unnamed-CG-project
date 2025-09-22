@@ -15,12 +15,13 @@ typedef enum {
 } PlayerState;
 
 typedef struct {
-    int x;
-    int y;
-    int z;
+    float x;
+    float y;
+    float z;
     bool moveable;
     bool canJump;
     PlayerState state;
 } Player;
 
-void coisa();
+void movePlayer(float *speed, Player *playerObject);
+void drawPlayer(Player playerObject);

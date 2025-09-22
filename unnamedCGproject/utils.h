@@ -1,14 +1,17 @@
-#ifndef UTILS_H_INCLUDED
-#define UTILS_H_INCLUDED
+#include <stdbool.h>
 
+#define PLAYER_FRICTION 0.9f
+#define PLAYER_ACCELERATION 0.0002f
+#define MAX_PLAYER_HORIZONTAL_SPEED 0.005f
 
+#define GRAVITY 0.9f
+#define PLAYER_JUMP_FORCE 1.2f
 
-#endif // UTILS_H_INCLUDED
+typedef struct {
+    bool w;
+    bool a;
+    bool s;
+    bool d;
+} PlayerMoveKeys;
 
-
-#define PLAYER_FRICTION = 0.9f
-#define PLAYER_ACCELERATION = 0.02f
-#define MAX_PLAYER_HORIZONTAL_SPEED = 0.3f
-
-#define GRAVITY = 0.9f
-#define PLAYER_JUMP_FORCE = 1.2f
+void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle);

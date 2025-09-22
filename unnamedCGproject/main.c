@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include "player.h"
+#include "utils.h"
 
 int verticalMovement;
 int horizontalMovement;
@@ -20,6 +21,8 @@ float camRadius = 5.0f; // distância da câmera ao alvo
 
 bool isCameraActive = false;
 int winWidth = 500, winHeight = 500;
+
+Player player = {0.0, 0.0, 0.0, true, true, IDLE};
 
 
 int init() {
@@ -55,7 +58,6 @@ void display() {
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     if (pressedKey == 27) { // ESC
         isCameraActive = !isCameraActive;
-        coisa();
 
         if (isCameraActive) {
             glutSetCursor(GLUT_CURSOR_NONE); // esconde cursor
@@ -64,7 +66,22 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT); // mostra cursor
         }
     }
+//11997115100
+    switch (pressedKey) {
+        case 119: // w
+            break;
+        case 97:  // a
+            break;
+        case 115: // s
+            break;
+        case 100: // d
+            break;
+        default:
+            break;
+    }
 
+
+    printf("%d", pressedKey);
 }
 
 void handleMouseMovement(int x, int y) {
@@ -78,8 +95,8 @@ void handleMouseMovement(int x, int y) {
 
     float mouseSensitivity = 0.005f; // sensibilidade do mouse
 
-    thetaAngle += dx * mouseSensitivity;
-    phiAngle += dy * mouseSensitivity;
+    thetaAngle += dx * mouseSensitivity; // ângulo horizontal
+    phiAngle += dy * mouseSensitivity;   // ângulo vertical
 
     if (phiAngle > 1.55f)  phiAngle = 1.55f;  // limite vertical = 89°
     if (phiAngle < -1.55f) phiAngle = -1.55f; // limite vertical = -89°
@@ -95,8 +112,8 @@ int main(int argc, char** argv)
 
     // mudar diretivas de inicialização depois pra algo melhor
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowPosition(200, 0);
-    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(200, 50);
+    glutInitWindowSize(winWidth, winHeight);
     glutCreateWindow("HALLO");
 
     init();

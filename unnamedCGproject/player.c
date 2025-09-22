@@ -5,9 +5,11 @@
 
 #include "player.h"
 
-void movePlayer() {
+void movePlayer(float xSpeed, float ySpeed, float zSpeed, Player playerObject) {
     /**
     Função responsável pelo movimento do player
 
     **/
+
+
 }

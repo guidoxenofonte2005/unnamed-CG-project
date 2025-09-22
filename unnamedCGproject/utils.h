@@ -1,0 +1,14 @@
+#ifndef UTILS_H_INCLUDED
+#define UTILS_H_INCLUDED
+
+
+
+#endif // UTILS_H_INCLUDED
+
+
+#define PLAYER_FRICTION = 0.9f
+#define PLAYER_ACCELERATION = 0.02f
+#define MAX_PLAYER_HORIZONTAL_SPEED = 0.3f
+
+#define GRAVITY = 0.9f
+#define PLAYER_JUMP_FORCE = 1.2f

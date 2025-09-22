@@ -17,9 +17,10 @@ typedef enum {
 typedef struct {
     int x;
     int y;
-    bool moveable = false;
-    bool canJump = true;
-    PlayerState state = IDLE;
+    int z;
+    bool moveable;
+    bool canJump;
+    PlayerState state;
 } Player;
 
 void coisa();

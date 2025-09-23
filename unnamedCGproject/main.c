@@ -17,10 +17,10 @@ int lastMousex, lastMousey;
 
 float thetaAngle = 0.0f;  // ângulo horizontal
 float phiAngle = 0.0f;  // ângulo vertical
-float camRadius = 5.0f; // distância da câmera ao alvo
+float camRadius = 25.0f; // distância da câmera ao alvo
 
 bool isCameraActive = false;
-int winWidth = 500, winHeight = 500;
+int winWidth = 1000, winHeight = 750;
 
 Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE};
 PlayerMoveKeys moveKeys = {false, false, false, false};
@@ -33,7 +33,7 @@ int init() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60.0, 1.0, 0.1, 100.0); // fov 60°, aspecto 1:1, near=0.1, far=100
+    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0); // fov 60°, aspecto 4:3, near=0.1, far=100
 }
 
 void display() {

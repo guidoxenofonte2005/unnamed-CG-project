@@ -13,6 +13,8 @@
 				<Option compiler="gcc-mingw32" />
 			</Target>
 		</Build>
+		<Unit filename="libs/cgltf/cgltf.h" />
+		<Unit filename="libs/cgltf/cgltf_write.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

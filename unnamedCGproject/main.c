@@ -10,6 +10,8 @@
 #include "player.h"
 #include "utils.h"
 
+#include "libs/cgltf/cgltf.h" // tem que fazer assim pra dar certo
+
 int verticalMovement;
 int horizontalMovement;
 

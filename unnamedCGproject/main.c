@@ -10,7 +10,8 @@
 #include "player.h"
 #include "utils.h"
 
-#include "libs/cgltf/cgltf.h" // tem que fazer assim pra dar certo
+#define CGLTF_IMPLEMENTATION
+#include "libs/cgltf/cgltf.h"
 
 int verticalMovement;
 int horizontalMovement;
@@ -86,6 +87,23 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
         if (pressedKey == 100) { // d
             moveKeys.d = true;
         }
+        if (pressedKey == 99) { // c - used for debug/testing purposes
+            testGLTFLoad();
+        }
+    }
+    // printf("%d", pressedKey);
+}
+
+void testGLTFLoad() {
+    cgltf_data* data = NULL;
+    cgltf_options opts = {0};
+
+    cgltf_result result = cgltf_parse_file(&opts, "3dfiles/scene.gltf", &data);
+    if (result == cgltf_result_success) {
+        printf("Arquivo carregado!\n");
+        cgltf_free(data);
+    } else {
+        printf("Erro ao carregar o GLTF\n");
     }
 }
 
@@ -106,7 +124,7 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
 
 void idleUpdates() {
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle);
-    printf("%f, %f, %f\n", playerVelocity[0], playerVelocity[1], playerVelocity[2]);
+    //printf("%f, %f, %f\n", playerVelocity[0], playerVelocity[1], playerVelocity[2]);
     movePlayer(playerVelocity, &player);
 }
 

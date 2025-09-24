@@ -8,15 +8,15 @@ void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specul
     glEnable(GL_LIGHT0);
 
     // Configura a luz
-    glLightfv(GL_LIGHT0, GL_AMBIENT,  luzAmb);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE,  luzDif);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, luzEsp);
-    glLightfv(GL_LIGHT0, GL_POSITION, posLuz);
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  ambientLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuseLight);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight);
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
     // Configura o material
-    glMaterialfv(GL_FRONT, GL_AMBIENT,  matAmb);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,  matDif);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, matEsp);
-    glMaterialf(GL_FRONT, GL_SHININESS, brilho);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,  ambientMaterial);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,  diffuseMaterial);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, specularMaterial);
+    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 }
 

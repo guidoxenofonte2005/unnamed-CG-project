@@ -98,10 +98,17 @@ void testGLTFLoad() {
     cgltf_data* data = NULL;
     cgltf_options opts = {0};
 
-    cgltf_result result = cgltf_parse_file(&opts, "3dfiles/scene.gltf", &data);
+    cgltf_result result = cgltf_parse_file(&opts, "3dfiles/player.glb", &data);
     if (result == cgltf_result_success) {
         printf("Arquivo carregado!\n");
-        cgltf_free(data);
+        result = cgltf_load_buffers(&opts, data, "3dfiles/player.glb");
+        if (result == cgltf_result_success) {
+            player.entityData = data;
+        }
+        else {
+            // adicionar alguma coisa aqui
+        }
+        // cgltf_free(data);
     } else {
         printf("Erro ao carregar o GLTF\n");
     }
@@ -151,6 +158,11 @@ void handleMouseMovement(int x, int y) {
     glutPostRedisplay();
 }
 
+void handleCloseProgram() {
+    cgltf_free(player.entityData);
+    player.entityData = NULL;
+}
+
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
@@ -167,6 +179,7 @@ int main(int argc, char** argv)
     glutKeyboardFunc(handleKeyboardInput);
     glutKeyboardUpFunc(keyboardKeyUp);
     glutPassiveMotionFunc(handleMouseMovement); // função que detecta movimento do mouse de forma passiva (sem nenhum botão pressionado)
+    glutCloseFunc(handleCloseProgram);
 
     glutDisplayFunc(display);
     glutMainLoop();

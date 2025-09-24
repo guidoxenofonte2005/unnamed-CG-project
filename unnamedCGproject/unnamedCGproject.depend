@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1758563887 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1758730937 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -8,6 +8,7 @@
 	<stdbool.h>
 	"player.h"
 	"utils.h"
+	"libs/cgltf/cgltf.h"
 
 1758723310 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
@@ -39,14 +40,15 @@
 	<GL/freeglut.h>
 	"player.h"
 
-1758563876 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
+1758735596 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
+	"libs/cgltf/cgltf.h"
 
-1758563972 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
+1758629838 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 
-1758563686 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1758564026 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -59,6 +61,16 @@
 	"utils.h"
 
 1758683089 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
+	<stddef.h>
+	<stdint.h>
+	<assert.h>
+	<string.h>
+	<stdio.h>
+	<limits.h>
+	<float.h>
+	<stdlib.h>
+
+1758730937 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
 	<stdint.h>
 	<assert.h>

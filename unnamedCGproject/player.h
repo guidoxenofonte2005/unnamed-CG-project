@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "libs/cgltf/cgltf.h"
+
 typedef enum {
     IDLE,
     MOVING,
@@ -20,6 +22,7 @@ typedef struct {
     float z;
     bool moveable;
     bool canJump;
+    cgltf_data* entityData;
     PlayerState state;
 } Player;
 

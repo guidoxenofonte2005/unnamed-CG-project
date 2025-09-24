@@ -10,17 +10,23 @@
 #include "player.h"
 #include "utils.h"
 
-#define CGLTF_IMPLEMENTATION
-#include "libs/cgltf/cgltf.h"
+/// Linhas removidas (comentadas) para evitar erros de "definição múltipla".
+/// A macro de implementação e a inclusão do cabeçalho da cgltf
+/// estão agora no player.c, como boa prática para bibliotecas de um único cabeçalho.
+// #define CGLTF_IMPLEMENTATION
+// #include "libs/cgltf/cgltf.h""
 
 int verticalMovement;
 int horizontalMovement;
 
 int lastMousex, lastMousey;
 
-float thetaAngle = 0.0f;  // ângulo horizontal
-float phiAngle = 0.0f;  // ângulo vertical
-float camRadius = 25.0f; // distância da câmera ao alvo
+// ângulo horizonta
+float thetaAngle = 0.0f;
+// ângulo vertical
+float phiAngle = 0.0f;
+// distância da câmera
+float camRadius = 25.0f;
 
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
@@ -30,32 +36,51 @@ PlayerMoveKeys moveKeys = {false, false, false, false};
 
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
+float deltaTime = 0.0f;
+
 int init() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    // Habilita o teste de profundidade para a remoção de superfícies ocultas,
+    // garantindo que objetos mais próximos da câmera sejam desenhados por cima de objetos mais distantes.
     glEnable(GL_DEPTH_TEST);
+    // Habilita o sistema de iluminação global do OpenGL.
+    // Sem isso, os modelos apareceriam sem sombreamento.
+    glEnable(GL_LIGHTING);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0); // fov 60°, aspecto 4:3, near=0.1, far=100
+    // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
+    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0);
+
+    // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
+    loadPlayerModel("3dfiles/player.glb");
+    return 1;
 }
 
 void display() {
+    // Limpa o buffer de cor e o de profundidade em cada frame.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // cálculo das novas posições da câmera
     float camX = camRadius * cosf(phiAngle) * cosf(thetaAngle);
     float camY = camRadius * sinf(phiAngle);
     float camZ = camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
-    gluLookAt(camX, camY, camZ, // posição da câmera (x,y,z)
-              0.0, 0.0, 0.0,    // ponto que a câmera está olhando (0, 0, 0) (mudar para posição do player depois)
-              0.0, 1.0, 0.0);   // vetor upwards (0, 1, 0)
+    // Define a orientação da câmera
+    gluLookAt(camX, camY, camZ,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0);
 
-    drawPlayer()
+    // glPushMatrix();
+    //     glTranslatef(player.x, player.y, player.z);
+    //     glColor3f(1.0f, 0.0f, 0.0f);
+    //     glutWireCube(1.0f);
+    // glPopMatrix();
 
+    // chama função para desenhar o modelo 3D na tela a cada frane
+    drawPlayerModel(player);
+    // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
 }
 
@@ -64,74 +89,48 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
         isCameraActive = !isCameraActive;
 
         if (isCameraActive) {
-            glutSetCursor(GLUT_CURSOR_NONE); // esconde cursor
-            glutWarpPointer(500 / 2, 500 / 2);
+            glutSetCursor(GLUT_CURSOR_NONE);
+            glutWarpPointer(winWidth / 2, winHeight / 2);
         } else {
-            glutSetCursor(GLUT_CURSOR_INHERIT); // mostra cursor
+            glutSetCursor(GLUT_CURSOR_INHERIT);
         }
     }
     else {
-        if (pressedKey == 119) { // w
+        if (pressedKey == 119) {
             moveKeys.w = true;
         }
-        if (pressedKey == 97) { // a
+        if (pressedKey == 97) {
             moveKeys.a = true;
         }
-        if (pressedKey == 115) { // s
+        if (pressedKey == 115) {
             moveKeys.s = true;
         }
-        if (pressedKey == 100) { // d
+        if (pressedKey == 100) {
             moveKeys.d = true;
         }
-        if (pressedKey == 99) { // c - used for debug/testing purposes
-            testGLTFLoad();
-        }
-    }
-    // printf("%d", pressedKey);
-}
-
-void testGLTFLoad() {
-    cgltf_data* data = NULL;
-    cgltf_options opts = {0};
-
-    cgltf_result result = cgltf_parse_file(&opts, "3dfiles/player.glb", &data);
-    if (result == cgltf_result_success) {
-        printf("Arquivo carregado!\n");
-        result = cgltf_load_buffers(&opts, data, "3dfiles/player.glb");
-        if (result == cgltf_result_success) {
-            player.entityData = data;
-            loadPlayerEntityData(&player);
-        }
-        else {
-            // adicionar alguma coisa aqui
-        }
-        // cgltf_free(data);
-    } else {
-        printf("Erro ao carregar o GLTF\n");
     }
 }
 
 void keyboardKeyUp(unsigned char key, int x, int y) {
-    if (key == 119) { // w
+    if (key == 119) {
         moveKeys.w = false;
     }
-    if (key == 97) { // a
+    if (key == 97) {
         moveKeys.a = false;
     }
-    if (key == 115) { // s
+    if (key == 115) {
         moveKeys.s = false;
     }
-    if (key == 100) { // d
+    if (key == 100) {
         moveKeys.d = false;
     }
 }
 
 void idleUpdates() {
-    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle);
-    //printf("%f, %f, %f\n", playerVelocity[0], playerVelocity[1], playerVelocity[2]);
+    deltaTime = getDeltaTime();
+    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
     movePlayer(playerVelocity, &player);
 }
-
 
 void handleMouseMovement(int x, int y) {
     if (!isCameraActive) return;
@@ -142,30 +141,27 @@ void handleMouseMovement(int x, int y) {
     int dx = x - centerX;
     int dy = y - centerY;
 
-    float mouseSensitivity = 0.005f; // sensibilidade do mouse
+    float mouseSensitivity = 0.005f;
 
-    thetaAngle += dx * mouseSensitivity; // ângulo horizontal
-    phiAngle += dy * mouseSensitivity;   // ângulo vertical
+    thetaAngle += dx * mouseSensitivity;
+    phiAngle += dy * mouseSensitivity;
 
-    if (phiAngle > 1.55f)  phiAngle = 1.55f;  // limite vertical = 89°
-    if (phiAngle < -1.55f) phiAngle = -1.55f; // limite vertical = -89°
+    if (phiAngle > 1.55f)  phiAngle = 1.55f;
+    if (phiAngle < -1.55f) phiAngle = -1.55f;
 
-    glutWarpPointer(centerX, centerY); // não permite que o mouse saia da tela enquanto a detecção de câmera estiver ativa (basicamente só volta pro centro)
-
+    glutWarpPointer(centerX, centerY);
     glutPostRedisplay();
 }
 
 void handleCloseProgram() {
-    cgltf_free(player.entityData);
-    player.entityData = NULL;
+    // A função agora chama a função de limpeza do modelo
+    cleanupPlayerModel();
 }
 
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-
-    // mudar diretivas de inicialização depois pra algo melhor
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(200, 50);
     glutInitWindowSize(winWidth, winHeight);
     glutCreateWindow("HALLO");
@@ -175,7 +171,7 @@ int main(int argc, char** argv)
     glutIdleFunc(idleUpdates);
     glutKeyboardFunc(handleKeyboardInput);
     glutKeyboardUpFunc(keyboardKeyUp);
-    glutPassiveMotionFunc(handleMouseMovement); // função que detecta movimento do mouse de forma passiva (sem nenhum botão pressionado)
+    glutPassiveMotionFunc(handleMouseMovement);
     glutCloseFunc(handleCloseProgram);
 
     glutDisplayFunc(display);

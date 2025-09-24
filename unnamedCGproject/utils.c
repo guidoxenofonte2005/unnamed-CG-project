@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "utils.h"
 
-void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle) {
+void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime) {
     float dirX = cos(phiAngle) * sin(thetaAngle);
     float dirZ = -cos(phiAngle) * cos(thetaAngle);
 
@@ -29,8 +30,8 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
     }
 
     // Aplica fricção
-    velocity[0] *= PLAYER_FRICTION;
-    velocity[2] *= PLAYER_FRICTION;
+    velocity[0] *= PLAYER_FRICTION * deltaTime;
+    velocity[2] *= PLAYER_FRICTION * deltaTime;
 
     // Limita a velocidade máxima
     float speed = sqrt(velocity[0]*velocity[0] + velocity[2]*velocity[2]);
@@ -40,10 +41,11 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
     }
 }
 
-//void loadScenarioObjectEntityData(ScenarioObject *sceneObj) {
-//
-//}
-//
-//void loadCollectibleEntityData(Collectible *collectibleObj) {
-//
-//}
+float getDeltaTime() {
+    static clock_t lastTime = 0; // inicializa uma única vez
+    clock_t currentTime = clock(); // pega o tempo atual
+    float delta = (float)(currentTime - lastTime) / CLOCKS_PER_SEC; // calcula o delta, já dividindo por 1000 para resultado em segundos
+    lastTime = currentTime; // transforma o atual em último
+
+    return delta;
+}

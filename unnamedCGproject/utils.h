@@ -1,8 +1,8 @@
 #include <stdbool.h>
 
 #define PLAYER_FRICTION 0.9f
-#define PLAYER_ACCELERATION 0.0002f
-#define MAX_PLAYER_HORIZONTAL_SPEED 0.005f
+#define PLAYER_ACCELERATION 0.1f
+#define MAX_PLAYER_HORIZONTAL_SPEED 0.5f
 
 #define GRAVITY 0.9f
 #define PLAYER_JUMP_FORCE 1.2f
@@ -14,4 +14,5 @@ typedef struct {
     bool d;
 } PlayerMoveKeys;
 
-void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle);
+void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime);
+float getDeltaTime();

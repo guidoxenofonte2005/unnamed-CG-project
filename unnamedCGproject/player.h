@@ -24,6 +24,12 @@ typedef struct {
     bool canJump;
     cgltf_data* entityData;
     PlayerState state;
+
+    // OpenGL buffers
+    unsigned int vao;
+    unsigned int vbo;
+    unsigned int ebo;
+    int indexCounter;
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);

@@ -54,11 +54,7 @@ void display() {
               0.0, 0.0, 0.0,    // ponto que a câmera está olhando (0, 0, 0) (mudar para posição do player depois)
               0.0, 1.0, 0.0);   // vetor upwards (0, 1, 0)
 
-    glPushMatrix();
-        glTranslatef(player.x, player.y, player.z);
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glutWireCube(1.0f);
-    glPopMatrix();
+    drawPlayer()
 
     glutSwapBuffers();
 }
@@ -104,6 +100,7 @@ void testGLTFLoad() {
         result = cgltf_load_buffers(&opts, data, "3dfiles/player.glb");
         if (result == cgltf_result_success) {
             player.entityData = data;
+            loadPlayerEntityData(&player);
         }
         else {
             // adicionar alguma coisa aqui

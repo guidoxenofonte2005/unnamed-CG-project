@@ -39,3 +39,11 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
         velocity[2] = (velocity[2] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
     }
 }
+
+//void loadScenarioObjectEntityData(ScenarioObject *sceneObj) {
+//
+//}
+//
+//void loadCollectibleEntityData(Collectible *collectibleObj) {
+//
+//}

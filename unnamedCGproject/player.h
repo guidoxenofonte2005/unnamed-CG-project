@@ -28,8 +28,7 @@ typedef struct {
     cgltf_data* data;
 } PlayerModel;
 
-// Declara a variável global para o modelo do jogador
-// player_model;
+// Declara a variável global para o modelo do jogador player_model;
 // Note: o 'extern' aqui informa que a variável está definida em outro lugar.
 // Isso é uma boa prática para evitar definições globais em arquivos de cabeçalho.
 extern PlayerModel player_model;

@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 
 // Função para configurar iluminação e material
-void setupLighting(GLfloat *luzAmb, GLfloat *luzDif, GLfloat *luzEsp, GLfloat *posLuz,
-                   GLfloat *matAmb, GLfloat *matDif, GLfloat *matEsp, GLfloat brilho);
+void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specularLight, GLfloat *lightPosition,
+                   GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess);
 
 #endif

@@ -1,7 +1,8 @@
+#include <GL/freeglut.h>
 #include "iluminacao.h"
 
-void setupLighting(GLfloat *luzAmb, GLfloat *luzDif, GLfloat *luzEsp, GLfloat *posLuz,
-                   GLfloat *matAmb, GLfloat *matDif, GLfloat *matEsp, GLfloat brilho) {
+void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specularLight, GLfloat *lightPosition,
+                   GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess) {
     // Ativa iluminação e luz 0
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);

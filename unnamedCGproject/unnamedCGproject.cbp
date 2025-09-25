@@ -23,12 +23,19 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="iluminacao.c">
+		<Unit filename="collision.c">
 			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="iluminacao.h" />
+		<Unit filename="collision.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="libs/cgltf/cgltf.h" />
 		<Unit filename="libs/cgltf/cgltf_write.h" />
+		<Unit filename="lighting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lighting.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

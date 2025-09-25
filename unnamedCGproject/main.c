@@ -37,17 +37,14 @@ float deltaTime = 0.0f;
 
 int init() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    // Habilita o teste de profundidade para a remoção de superfícies ocultas,
-    // garantindo que objetos mais próximos da câmera sejam desenhados por cima de objetos mais distantes.
-    glEnable(GL_DEPTH_TEST);
-    // Habilita o sistema de iluminação global do OpenGL.
-    // Sem isso, os modelos apareceriam sem sombreamento.
-    glEnable(GL_LIGHTING);
+
+    glEnable(GL_DEPTH_TEST); // Habilita o teste de profundidade para a remoção de superfícies ocultas
+    glEnable(GL_LIGHTING); // Habilita o sistema de iluminação global do OpenGL.
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
-    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0);
+
+    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0); // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
 
     // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
     loadPlayerModel("3dfiles/player.glb");

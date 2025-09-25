@@ -36,7 +36,7 @@ void loadPlayerModel(const char* filename) {
     }
 }
 
-void drawPlayerModel(Player playerObj) {
+void drawPlayerModel(Player playerObj, float thetaAngle) {
     if (!player_model.data) {
         return;
     }
@@ -45,6 +45,7 @@ void drawPlayerModel(Player playerObj) {
     // Itera sobre todas as malhas e primitivas do modelo 3D
 
     glTranslatef(playerObj.x, playerObj.y, playerObj.z);
+    glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
     for (int i = 0; i < player_model.data->meshes_count; ++i) {
         cgltf_mesh* mesh = &player_model.data->meshes[i];
 

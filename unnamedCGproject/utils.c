@@ -49,3 +49,12 @@ float getDeltaTime() {
 
     return delta;
 }
+
+void getPlayerMovingAngle(float *playerVelocity, float *playerRotation) {
+    float speedX = playerVelocity[0];
+    float speedZ = playerVelocity[2];
+
+    if (fabs(speedX) > 0.001f || fabs(speedZ) > 0.001f) {
+        *playerRotation = atan2f(speedX, speedZ) * (180.0f / M_PI); // retorna a rotação do player
+    }
+}

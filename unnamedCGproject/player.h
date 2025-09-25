@@ -29,13 +29,11 @@ typedef struct {
 } PlayerModel;
 
 // Declara a variável global para o modelo do jogador player_model;
-// Note: o 'extern' aqui informa que a variável está definida em outro lugar.
-// Isso é uma boa prática para evitar definições globais em arquivos de cabeçalho.
 extern PlayerModel player_model;
 
 // Declarações das funções de importação e desenho
 void loadPlayerModel(const char* filename);
-void drawPlayerModel();
+void drawPlayerModel(Player playerObj, float thetaAngle);
 void cleanupPlayerModel();
 
 #endif // PLAYER_H_INCLUDED

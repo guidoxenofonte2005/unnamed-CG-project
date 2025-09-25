@@ -10,23 +10,20 @@
 #include "player.h"
 #include "utils.h"
 
-/// Linhas removidas (comentadas) para evitar erros de "definição múltipla".
-/// A macro de implementação e a inclusão do cabeçalho da cgltf
-/// estão agora no player.c, como boa prática para bibliotecas de um único cabeçalho.
-// #define CGLTF_IMPLEMENTATION
-// #include "libs/cgltf/cgltf.h""
-
 int verticalMovement;
 int horizontalMovement;
 
 int lastMousex, lastMousey;
 
-// ângulo horizonta
+// ângulo horizontal
 float thetaAngle = 0.0f;
 // ângulo vertical
 float phiAngle = 0.0f;
 // distância da câmera
 float camRadius = 25.0f;
+
+// ângulo de rotação do player
+float playerRotation = 0.0f;
 
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
@@ -79,7 +76,7 @@ void display() {
     // glPopMatrix();
 
     // chama função para desenhar o modelo 3D na tela a cada frane
-    drawPlayerModel(player);
+    drawPlayerModel(player, playerRotation);
     // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
 }
@@ -130,6 +127,7 @@ void idleUpdates() {
     deltaTime = getDeltaTime();
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
     movePlayer(playerVelocity, &player);
+    getPlayerMovingAngle(playerVelocity, &playerRotation);
 }
 
 void handleMouseMovement(int x, int y) {

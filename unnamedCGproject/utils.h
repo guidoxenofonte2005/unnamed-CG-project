@@ -16,3 +16,4 @@ typedef struct {
 
 void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime);
 float getDeltaTime();
+void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);

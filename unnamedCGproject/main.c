@@ -92,7 +92,7 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT);
         }
     }
-    else {
+    if (isCameraActive) {
         if (pressedKey == 119) {
             moveKeys.w = true;
         }

@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "libs/cgltf/cgltf.h"
+#include "collision.h"
 
 typedef enum {
     IDLE,
@@ -19,6 +20,7 @@ typedef struct {
     bool moveable;
     bool canJump;
     PlayerState state;
+    CollisionBox collision;
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);

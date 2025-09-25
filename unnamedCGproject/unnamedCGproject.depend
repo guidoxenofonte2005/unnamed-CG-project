@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1758806762 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1758809121 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -41,15 +41,16 @@
 	"player.h"
 	"libs/cgltf/cgltf.h"
 
-1758806230 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
+1758812558 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
+	"collision.h"
 
 1758806627 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 
-1758799326 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1758806797 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -447,4 +448,6 @@
 
 1758799326 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
+
+1758812607 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.h
 

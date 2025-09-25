@@ -6,8 +6,8 @@
 #include "utils.h"
 
 void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime) {
-    float dirX = cos(phiAngle) * sin(thetaAngle);
-    float dirZ = -cos(phiAngle) * cos(thetaAngle);
+    float dirX = sin(thetaAngle); // depende somente do eixo horizontal
+    float dirZ = -cos(thetaAngle); // depende somente do eixo horizontal
 
     float rightX = cos(thetaAngle);
     float rightZ = sin(thetaAngle);

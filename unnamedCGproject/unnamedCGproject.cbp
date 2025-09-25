@@ -23,6 +23,10 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="iluminacao.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="iluminacao.h" />
 		<Unit filename="libs/cgltf/cgltf.h" />
 		<Unit filename="libs/cgltf/cgltf_write.h" />
 		<Unit filename="main.c">

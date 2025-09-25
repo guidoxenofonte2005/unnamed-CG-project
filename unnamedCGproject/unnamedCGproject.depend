@@ -430,3 +430,13 @@
 1512590989 c:\mingw\include\float.h
 	<_mingw.h>
 
+1758757709 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\iluminacao.c
+	<GL/freeglut.h>
+	"iluminacao.h"
+
+1758757465 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\iluminacao.h
+	<GL/glut.h>
+
+1758339512 c:\mingw\include\gl\glut.h
+	"freeglut_std.h"
+

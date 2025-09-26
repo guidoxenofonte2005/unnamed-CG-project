@@ -4,10 +4,14 @@
 #include <GL/freeglut.h>
 
 #include "player.h"
+#include "utils.h"
 
 // Define a macro de implementação da biblioteca
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
+
+//                                             minX   minY   minZ  maxX, maxY, maxZ
+ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
 void movePlayer(float *speed, Player *playerObject) {
     playerObject->x += speed[0];
@@ -40,6 +44,8 @@ void loadPlayerModel(Player* playerObj, const char* filename) {
         printf("Erro ao carregar os buffers do arquivo GLTF: %d\n", result);
         cgltf_free(playerObj->modelData);
     }
+
+    getPlayerCollisionBox(playerObj);
 }
 
 //  A função agora recebe um ponteiro para a struct Player.
@@ -124,12 +130,13 @@ void getPlayerCollisionBox(Player *player) {
         }
     }
 
-    player->collision.minX = minX;
-    player->collision.maxX = maxX;
-    player->collision.minY = minY;
-    player->collision.maxY = maxY;
-    player->collision.minZ = minZ;
-    player->collision.maxZ = maxZ;
+    // os números float são um ajuste manual da colisão do player
+    player->collision.minX = minX + player->x + playerCollisionOffset.offsetMinX;
+    player->collision.maxX = maxX + player->x + playerCollisionOffset.offsetMaxX;
+    player->collision.minY = minY + player->y + playerCollisionOffset.offsetMinY;
+    player->collision.maxY = maxY + player->y + playerCollisionOffset.offsetMaxY;
+    player->collision.minZ = minZ + player->z + playerCollisionOffset.offsetMinZ;
+    player->collision.maxZ = maxZ + player->z + playerCollisionOffset.offsetMaxZ;
 
     printf("PLAYER: %f, %f, %f - %f, %f, %f\n", player->collision.minX, player->collision.minY, player->collision.minZ, player->collision.maxX, player->collision.maxY, player->collision.maxZ);
 }

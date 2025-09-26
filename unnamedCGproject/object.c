@@ -25,12 +25,7 @@ void loadObject(SceneObject* object, const char* filename, float x, float y, flo
     object->y = y;
     object->z = z;
 
-    object->collision.minX = 0.0f;
-    object->collision.minY = 0.0f;
-    object->collision.minZ = 0.0f;
-    object->collision.maxX = 0.0f;
-    object->collision.maxY = 0.0f;
-    object->collision.maxZ = 0.0f;
+    getCollisionBoxFromObject(object);
 }
 
 void drawObject(SceneObject* object) {

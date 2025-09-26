@@ -14,6 +14,8 @@
 int verticalMovement;
 int horizontalMovement;
 
+float fieldOfView = 60.0f;
+
 int lastMousex, lastMousey;
 
 // ângulo horizontal
@@ -30,7 +32,7 @@ bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
 
 Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, NULL};
-PlayerMoveKeys moveKeys = {false, false, false, false};
+PlayerMoveKeys moveKeys = {false, false, false, false, false, false};
 
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
@@ -54,7 +56,7 @@ int init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
-    gluPerspective(60.0, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
 
     //1. Define a posição inicial do jogador (à esquerda)
     player.x = -8.0f;
@@ -70,8 +72,6 @@ int init() {
     loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
     //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
 
-    getCollisionBoxFromObject(&sceneObjects[0]);
-    getPlayerCollisionBox(&player);
     return 1;
 }
 
@@ -111,14 +111,16 @@ void display() {
     // Desenha todos os objetos da cena
     for (int i = 0; i < objectCount; ++i) {
         drawObject(&sceneObjects[i]);
+        drawCollisionBoxWireframe(sceneObjects[i].collision);
     }
-
+    drawCollisionBoxWireframe(player.collision);
 
     // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
 }
 
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
+    printf("");
     if (pressedKey == 27) { // ESC
         isCameraActive = !isCameraActive;
 
@@ -129,19 +131,25 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT);
         }
     }
-    if (isCameraActive) {
-        if (pressedKey == 119) {
-            moveKeys.w = true;
-        }
-        if (pressedKey == 97) {
-            moveKeys.a = true;
-        }
-        if (pressedKey == 115) {
-            moveKeys.s = true;
-        }
-        if (pressedKey == 100) {
-            moveKeys.d = true;
-        }
+    if (pressedKey == 119) {
+        moveKeys.w = true;
+    }
+    if (pressedKey == 97) {
+        moveKeys.a = true;
+    }
+    if (pressedKey == 115) {
+        moveKeys.s = true;
+    }
+    if (pressedKey == 100) {
+        moveKeys.d = true;
+    }
+    if (pressedKey == 105) {
+        moveKeys.down = true;
+        printf("%f, %f, %f\n", player.x, player.y, player.z);
+    }
+    if (pressedKey == 107) {
+        moveKeys.up = true;
+        printf("%f, %f, %f\n", player.x, player.y, player.z);
     }
 }
 
@@ -158,12 +166,19 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
     if (key == 100) {
         moveKeys.d = false;
     }
+    if (key == 105) {
+        moveKeys.down = false;
+    }
+    if (key == 107) {
+        moveKeys.up = false;
+    }
 }
 
 void idleUpdates() {
     deltaTime = getDeltaTime();
 
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
+    handlePlayerJump(playerVelocity, &moveKeys, deltaTime);
     movePlayer(playerVelocity, &player);
 
     getPlayerMovingAngle(playerVelocity, &playerRotation);
@@ -194,6 +209,18 @@ void handleMouseMovement(int x, int y) {
     glutPostRedisplay();
 }
 
+void handleMouseWheel(int wheel, int direction, int x, int y) {
+    if (direction > 0) {
+        fieldOfView -= 2.0f;
+        fieldOfView = max(fieldOfView, 30);
+        updateFOV(fieldOfView, (float)winWidth, (float)winHeight);
+    } else {
+        fieldOfView += 2.0f;
+        fieldOfView = min(fieldOfView, 80);
+        updateFOV(fieldOfView, (float)winWidth, (float)winHeight);
+    }
+}
+
 void handleCloseProgram() {
     // A função agora chama a função de limpeza do modelo do jogador é chamada
     // passando a struct 'player' como parâmetro
@@ -214,9 +241,13 @@ int main(int argc, char** argv)
     init();
 
     glutIdleFunc(idleUpdates);
+
     glutKeyboardFunc(handleKeyboardInput);
     glutKeyboardUpFunc(keyboardKeyUp);
+
     glutPassiveMotionFunc(handleMouseMovement);
+    glutMouseWheelFunc(handleMouseWheel);
+
     glutCloseFunc(handleCloseProgram);
 
     glutDisplayFunc(display);

@@ -9,9 +9,6 @@
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
 
-// Defina a variável global para armazenar modelo do jogadr
-// PlayerModel player_model;
-
 void movePlayer(float *speed, Player *playerObject) {
     playerObject->x += speed[0];
     playerObject->y += speed[1];

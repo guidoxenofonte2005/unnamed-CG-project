@@ -47,8 +47,9 @@ int init() {
     glEnable(GL_DEPTH_TEST);
     // Habilita o sistema de iluminação global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
     glEnable(GL_LIGHTING);
-    // Habilita o backface culling
+    // Habilita o z-buffer
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -64,9 +65,9 @@ int init() {
     loadPlayerModel(&player, "3dfiles/player.glb");
 
     // Carregando outros objetos da cena e add em um array
-    loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
-    loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posição (9,0,0)
-    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posição (9,0,0)
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
     //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
     return 1;
 }

@@ -8,6 +8,11 @@
 #define GRAVITY 0.9f
 #define PLAYER_JUMP_FORCE 1.2f
 
+#define COLLISION_DETECTION_RADIUS 100.0f
+
+#include "object.h"
+#include "player.h"
+
 typedef struct {
     bool w;
     bool a;
@@ -32,3 +37,4 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
 float getDeltaTime();
 void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);
 void updateFOV(float newFOV, float windowWidth, float windowHeight);
+void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QTD_SCENEOBJECTS, SceneObject *sceneObjectsInRange, int *objCount);

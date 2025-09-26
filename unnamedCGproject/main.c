@@ -42,6 +42,9 @@ float deltaTime = 0.0f;
 SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
+SceneObject objectsInCollisionRange[MAX_OBJECTS];
+int objInColRangeCount = 0;
+
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
@@ -179,11 +182,18 @@ void idleUpdates() {
 
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
     handlePlayerJump(playerVelocity, &moveKeys, deltaTime);
-    movePlayer(playerVelocity, &player);
 
+    getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
+
+    collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+    //if (isObjectColliding(player.collision, sceneObjects[0].collision)) {
+    //    movePlayer(playerVelocity, &player);
+    //} else { // depois tem que mudar isso, quando tiver chão, pra só o collideAndSlide
+    //    collideAndSlide(playerVelocity, &player);
+    //}
 
-    if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+    // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 
     //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 }

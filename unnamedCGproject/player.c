@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 
 #include "player.h"
+#include "object.h"
 #include "utils.h"
 
 // Define a macro de implementação da biblioteca
@@ -139,4 +140,33 @@ void getPlayerCollisionBox(Player *player) {
     player->collision.maxZ = maxZ + player->z + playerCollisionOffset.offsetMaxZ;
 
     printf("PLAYER: %f, %f, %f - %f, %f, %f\n", player->collision.minX, player->collision.minY, player->collision.minZ, player->collision.maxX, player->collision.maxY, player->collision.maxZ);
+}
+
+void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
+    bool isColliding = false;
+
+    for (int i = 0; i < qtdObjInRange; i++) {
+        SceneObject currentObj = objectsInRange[i];
+
+        if (isObjectColliding(player->collision, currentObj.collision)) {
+            CollisionSide side = getCollidingObjectSide(player->collision, currentObj.collision); // pega o lado da colisão
+            float *normalCollisionVector = getCollisionNormalVec(side, player->collision, currentObj.collision); // retorna o vetor normal da face que colidiu
+
+            float prodEscalar = speed[X_AXIS] * normalCollisionVector[X_AXIS] +
+                                speed[Y_AXIS] * normalCollisionVector[Y_AXIS] +
+                                speed[Z_AXIS] * normalCollisionVector[Z_AXIS];
+
+            float normalSpeedVector[] = {normalCollisionVector[X_AXIS] * prodEscalar,
+                                         normalCollisionVector[Y_AXIS] * prodEscalar,
+                                         normalCollisionVector[Z_AXIS] * prodEscalar};
+
+            float slideSpeed[] = {speed[X_AXIS] - normalSpeedVector[X_AXIS],
+                                  speed[Y_AXIS] - normalSpeedVector[Y_AXIS],
+                                  speed[Z_AXIS] - normalSpeedVector[Z_AXIS]};
+
+            movePlayer(slideSpeed, player);
+        } else {
+            movePlayer(speed, player);
+        }
+    }
 }

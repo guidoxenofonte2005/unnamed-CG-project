@@ -33,6 +33,7 @@ void drawObject(SceneObject* object) {
 
     glPushMatrix();
         glTranslatef(object->x, object->y, object->z);
+        glScalef(0.5f, 0.5f, 0.5f); // lembrar de tirar depois, só botei pq o modelo de teste tava enorme
 
         for (int i = 0; i < object->data->meshes_count; ++i) {
             cgltf_mesh* mesh = &object->data->meshes[i];

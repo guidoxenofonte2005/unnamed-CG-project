@@ -24,6 +24,13 @@ void loadObject(SceneObject* object, const char* filename, float x, float y, flo
     object->x = x;
     object->y = y;
     object->z = z;
+
+    object->collision.minX = 0.0f;
+    object->collision.minY = 0.0f;
+    object->collision.minZ = 0.0f;
+    object->collision.maxX = 0.0f;
+    object->collision.maxY = 0.0f;
+    object->collision.maxZ = 0.0f;
 }
 
 void drawObject(SceneObject* object) {
@@ -33,7 +40,7 @@ void drawObject(SceneObject* object) {
 
     glPushMatrix();
         glTranslatef(object->x, object->y, object->z);
-        glScalef(0.5f, 0.5f, 0.5f); // lembrar de tirar depois, só botei pq o modelo de teste tava enorme
+        //glScalef(0.5f, 0.5f, 0.5f); // lembrar de tirar depois, só botei pq o modelo de teste tava enorme
 
         for (int i = 0; i < object->data->meshes_count; ++i) {
             cgltf_mesh* mesh = &object->data->meshes[i];
@@ -69,4 +76,40 @@ void cleanupObject(SceneObject* object) {
         cgltf_free(object->data);
         object->data = NULL;
     }
+}
+
+// pega a collisionBox de um determinado objeto
+void getCollisionBoxFromObject(SceneObject *object) {
+    cgltf_data *data = object->data;
+
+    float minX = 0.0f, minY = 0.0f, minZ = 0.0f, maxX = 0.0f, maxY = 0.0f, maxZ = 0.0f;
+
+    for (size_t meshIndex = 0; meshIndex < data->meshes_count; ++meshIndex) {
+        cgltf_mesh* mesh = &data->meshes[meshIndex];
+        for (size_t primIndex = 0; primIndex < mesh->primitives_count; ++primIndex) {
+            cgltf_primitive* primitive = &mesh->primitives[primIndex];
+            for (size_t attrIndex = 0; attrIndex < primitive->attributes_count; ++attrIndex) {
+                cgltf_attribute* attr = &primitive->attributes[attrIndex];
+                if (attr->type == cgltf_attribute_type_position) {
+                    cgltf_accessor* accessor = attr->data;
+
+                    minX = accessor->min[0];
+                    minY = accessor->min[1];
+                    minZ = accessor->min[2];
+                    maxX = accessor->max[0];
+                    maxY = accessor->max[1];
+                    maxZ = accessor->max[2];
+                }
+            }
+        }
+    }
+
+    object->collision.minX = minX + object->x;
+    object->collision.maxX = maxX + object->x;
+    object->collision.minY = minY + object->y;
+    object->collision.maxY = maxY + object->y;
+    object->collision.minZ = minZ + object->z;
+    object->collision.maxZ = maxZ + object->z;
+
+    printf("OBJ: %f, %f, %f - %f, %f, %f\n", object->collision.minX, object->collision.minY, object->collision.minZ, object->collision.maxX, object->collision.maxY, object->collision.maxZ);
 }

@@ -69,6 +69,9 @@ int init() {
     // loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posição (9,0,0)
     loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
     //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
+
+    getCollisionBoxFromObject(&sceneObjects[0]);
+    getPlayerCollisionBox(&player);
     return 1;
 }
 
@@ -159,9 +162,15 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
 
 void idleUpdates() {
     deltaTime = getDeltaTime();
+
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
     movePlayer(playerVelocity, &player);
+
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+
+    if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+
+    //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 }
 
 void handleMouseMovement(int x, int y) {

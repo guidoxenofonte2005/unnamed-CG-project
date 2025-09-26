@@ -31,4 +31,6 @@ void loadPlayerModel(Player* playerObj, const char* filename);
 void drawPlayerModel(Player* playerObj, float thetaAngle);
 void cleanupPlayerModel(Player* playerObj);
 
+//void getPlayerCollisionBox(Player *player);
+
 #endif // PLAYER_H_INCLUDED

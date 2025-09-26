@@ -1,9 +1,18 @@
 #include <stdlib.h>
 #include <math.h>
+#include <stdbool.h>
+
 #include <GL/freeglut.h>
 
 #include "utils.h"
+
 #include "collision.h"
+
+bool isObjectColliding(CollisionBox box1, CollisionBox box2) {
+    return (box1.minX <= box2.maxX && box1.maxX >= box2.minX) &&
+           (box1.minY <= box2.maxY && box1.maxY >= box2.minY) &&
+           (box1.minZ <= box2.maxZ && box1.maxZ >= box2.minZ);
+}
 
 CollisionSide getCollidingObjectSide(CollisionBox referenceObj, CollisionBox collidingObj) {
     if (referenceObj.maxX > collidingObj.minX && referenceObj.minX < collidingObj.maxX) return RIGHT;

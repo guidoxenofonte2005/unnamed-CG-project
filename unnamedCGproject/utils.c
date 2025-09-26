@@ -41,7 +41,8 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
         velocity[0] = (velocity[0] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
         velocity[2] = (velocity[2] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
     }
-    printf("%f, %f\n", velocity[0], velocity[2]);
+
+    //printf("%f, %f\n", velocity[0], velocity[2]);
 }
 
 float getDeltaTime() {

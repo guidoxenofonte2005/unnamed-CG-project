@@ -8,6 +8,7 @@
 #include <stdbool.h>
 
 #include "player.h"
+#include "object.h"
 #include "utils.h"
 
 int verticalMovement;
@@ -28,26 +29,45 @@ float playerRotation = 0.0f;
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
 
-Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE};
+Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, NULL};
 PlayerMoveKeys moveKeys = {false, false, false, false};
 
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
 float deltaTime = 0.0f;
 
-int init() {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+#define MAX_OBJECTS 10 // Define o máximo de objetos na cena
+SceneObject sceneObjects[MAX_OBJECTS];
+int objectCount = 0;
 
-    glEnable(GL_DEPTH_TEST); // Habilita o teste de profundidade para a remoção de superfícies ocultas
-    glEnable(GL_LIGHTING); // Habilita o sistema de iluminação global do OpenGL.
+int init() {
+    glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+
+    // Habilita o teste de profundidade para a remoção de superfícies ocultas, garantindo que objetos mais próximos da câmera sejam desenhados por cima de objetos mais distantes.
+    glEnable(GL_DEPTH_TEST);
+    // Habilita o sistema de iluminação global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
+    glEnable(GL_LIGHTING);
+    // Habilita o backface culling
+    glEnable(GL_CULL_FACE);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
+     gluPerspective(60.0, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
 
-    gluPerspective(60.0, 4.0f/3.0f, 0.1, 100.0); // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
+    //1. Define a posição inicial do jogador (à esquerda)
+    player.x = -8.0f;
+    player.y = 0.0f;
+    player.z = 0.0f;
 
     // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
-    loadPlayerModel("3dfiles/player.glb");
+    loadPlayerModel(&player, "3dfiles/player.glb");
+
+    // Carregando outros objetos da cena e add em um array
+    loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
+    loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posição (9,0,0)
+    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
+    //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
     return 1;
 }
 
@@ -57,23 +77,39 @@ void display() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    float camX = camRadius * cosf(phiAngle) * cosf(thetaAngle);
-    float camY = camRadius * sinf(phiAngle);
-    float camZ = camRadius * cosf(phiAngle) * sinf(thetaAngle);
+    float camX = player.x + camRadius * cosf(phiAngle) * cosf(thetaAngle);
+    float camY = player.y + camRadius * sinf(phiAngle);
+    float camZ = player.z + camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
     // Define a orientação da câmera
     gluLookAt(camX, camY, camZ,
-              0.0, 0.0, 0.0,
+              player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
 
-    // glPushMatrix();
-    //     glTranslatef(player.x, player.y, player.z);
-    //     glColor3f(1.0f, 0.0f, 0.0f);
-    //     glutWireCube(1.0f);
-    // glPopMatrix();
+    // Definindo as propriedades da fonte de luz
+    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
+    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
+    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
+    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posição da luz
+
+    // Define as propriedades do material (pode ser genérico para todos os objetos)
+    GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
+    GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f}; // Pouco brilho
+    GLfloat shininess = 20;
+
+    // chama a função para aplicar iluminação
+    setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
     // chama função para desenhar o modelo 3D na tela a cada frane
-    drawPlayerModel(player, playerRotation);
+    drawPlayerModel(&player, playerRotation);
+
+    // Desenha todos os objetos da cena
+    for (int i = 0; i < objectCount; ++i) {
+        drawObject(&sceneObjects[i]);
+    }
+
+
     // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
 }
@@ -149,8 +185,12 @@ void handleMouseMovement(int x, int y) {
 }
 
 void handleCloseProgram() {
-    // A função agora chama a função de limpeza do modelo
-    cleanupPlayerModel();
+    // A função agora chama a função de limpeza do modelo do jogador é chamada
+    // passando a struct 'player' como parâmetro
+    cleanupPlayerModel(&player);
+    for (int i = 0; i < objectCount; ++i) {
+        cleanupObject(&sceneObjects[i]);
+    }
 }
 
 int main(int argc, char** argv)

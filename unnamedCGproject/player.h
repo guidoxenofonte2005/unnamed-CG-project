@@ -21,21 +21,14 @@ typedef struct {
     bool canJump;
     PlayerState state;
     CollisionBox collision;
+    cgltf_data* modelData; // Adiciona o ponteiro para os dados do modelo 3D.
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);
 
-// Estrutura para armazenar os dados do modelo 3D
-typedef struct {
-    cgltf_data* data;
-} PlayerModel;
-
-// Declara a variável global para o modelo do jogador player_model;
-extern PlayerModel player_model;
-
 // Declarações das funções de importação e desenho
-void loadPlayerModel(const char* filename);
-void drawPlayerModel(Player playerObj, float thetaAngle);
-void cleanupPlayerModel();
+void loadPlayerModel(Player* playerObj, const char* filename);
+void drawPlayerModel(Player* playerObj, float thetaAngle);
+void cleanupPlayerModel(Player* playerObj);
 
 #endif // PLAYER_H_INCLUDED

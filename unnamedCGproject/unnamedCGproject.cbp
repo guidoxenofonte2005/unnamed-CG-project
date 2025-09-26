@@ -25,20 +25,21 @@
 		</Build>
 		<Unit filename="collision.c">
 			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="collision.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="libs/cgltf/cgltf.h" />
-		<Unit filename="libs/cgltf/cgltf_write.h" />
-		<Unit filename="lighting.c">
+		<Unit filename="collision.h" />
+		<Unit filename="iluminacao.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="lighting.h" />
+		<Unit filename="iluminacao.h" />
+		<Unit filename="libs/cgltf/cgltf.h" />
+		<Unit filename="libs/cgltf/cgltf_write.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="object.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="object.h" />
 		<Unit filename="player.c">
 			<Option compilerVar="CC" />
 		</Unit>

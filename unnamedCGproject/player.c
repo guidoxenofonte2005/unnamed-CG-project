@@ -10,7 +10,7 @@
 #include "libs/cgltf/cgltf.h"
 
 // Defina a variável global para armazenar modelo do jogadr
-PlayerModel player_model;
+// PlayerModel player_model;
 
 void movePlayer(float *speed, Player *playerObject) {
     playerObject->x += speed[0];
@@ -18,10 +18,12 @@ void movePlayer(float *speed, Player *playerObject) {
     playerObject->z += speed[2];
 }
 
-void loadPlayerModel(const char* filename) {
+// A função agora recebe um ponteiro para a struct Player.
+void loadPlayerModel(Player* playerObj, const char* filename) {
     // Inicializa as opções e tenta carregar o arquicvo GLTF
     cgltf_options options = {0};
-    cgltf_result result = cgltf_parse_file(&options, filename, &player_model.data);
+    // Tenta carregar o modelo e salva os dados no novo membro 'modelData'.
+    cgltf_result result = cgltf_parse_file(&options, filename, &playerObj->modelData);
 
     if (result != cgltf_result_success) {
         printf("Erro ao carregar o arquivo GLTF: %d\n", result);
@@ -29,25 +31,27 @@ void loadPlayerModel(const char* filename) {
     }
 
     // Carrega os dados binários do modelo na memória
-    result = cgltf_load_buffers(&options, player_model.data, filename);
+    result = cgltf_load_buffers(&options, playerObj->modelData, filename);
     if (result != cgltf_result_success) {
         printf("Erro ao carregar os buffers do arquivo GLTF: %d\n", result);
-        cgltf_free(player_model.data);
+        cgltf_free(playerObj->modelData);
     }
 }
 
-void drawPlayerModel(Player playerObj, float thetaAngle) {
-    if (!player_model.data) {
+//  A função agora recebe um ponteiro para a struct Player.
+void drawPlayerModel(Player* playerObj, float thetaAngle) {
+    if (!playerObj->modelData) {
         return;
     }
 
     // A lógica de desenho do modelo 3D
     // Itera sobre todas as malhas e primitivas do modelo 3D
 
-    glTranslatef(playerObj.x, playerObj.y, playerObj.z);
+    glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
+    glTranslatef(playerObj->x, playerObj->y, playerObj->z);
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
-    for (int i = 0; i < player_model.data->meshes_count; ++i) {
-        cgltf_mesh* mesh = &player_model.data->meshes[i];
+    for (int i = 0; i < playerObj->modelData->meshes_count; ++i) {
+        cgltf_mesh* mesh = &playerObj->modelData->meshes[i];
 
         for (int j = 0; j < mesh->primitives_count; ++j) {
             cgltf_primitive* primitive = &mesh->primitives[j];
@@ -79,12 +83,13 @@ void drawPlayerModel(Player playerObj, float thetaAngle) {
             }
         }
     }
+    glPopMatrix(); // Restaura o estado da matriz
 }
 
-void cleanupPlayerModel() {
+void cleanupPlayerModel(Player* playerObj) {
     // Libera a memória alocada para os dados do modelo 3d
-    if (player_model.data) {
-        cgltf_free(player_model.data);
-        player_model.data = NULL;
+    if (playerObj->modelData) {
+        cgltf_free(playerObj->modelData);
+        playerObj->modelData = NULL;
     }
 }

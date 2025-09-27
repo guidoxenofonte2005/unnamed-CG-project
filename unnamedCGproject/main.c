@@ -31,7 +31,7 @@ float playerRotation = 0.0f;
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
 
-Player player = {0.0f, 0.0f, 0.0f, true, true, IDLE, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, NULL};
+Player player = {0.0f, 0.0f, 0.0f, false, true, IDLE, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, NULL};
 PlayerMoveKeys moveKeys = {false, false, false, false, false, false};
 
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
@@ -171,6 +171,7 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     }
     if (pressedKey == 32) {
         moveKeys.jump = true;
+        printf("%d, %d\n", player.isOnGround, player.canJump);
     }
 }
 

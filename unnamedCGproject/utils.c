@@ -56,7 +56,7 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
     //printf("%f, %f\n", velocity[0], velocity[2]);
     // PARTE 2 - VELOCIDADE VERTICAL (Y)
     if ((*isOnGround) && moveKeys->jump) {
-        velocity[Y_AXIS] = -PLAYER_JUMP_FORCE;
+        velocity[Y_AXIS] = PLAYER_JUMP_FORCE;
         (*isOnGround) = false;
     }
 

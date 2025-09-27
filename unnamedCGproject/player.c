@@ -130,8 +130,7 @@ void getPlayerCollisionBox(Player *player) {
             }
         }
     }
-
-    // os números float são um ajuste manual da colisão do player
+    // posição de colisão  min/Max   posição     offset de colisão (torna maior ou menor)
     player->collision.minX = minX + player->x + playerCollisionOffset.offsetMinX;
     player->collision.maxX = maxX + player->x + playerCollisionOffset.offsetMaxX;
     player->collision.minY = minY + player->y + playerCollisionOffset.offsetMinY;
@@ -139,7 +138,7 @@ void getPlayerCollisionBox(Player *player) {
     player->collision.minZ = minZ + player->z + playerCollisionOffset.offsetMinZ;
     player->collision.maxZ = maxZ + player->z + playerCollisionOffset.offsetMaxZ;
 
-    printf("PLAYER: %f, %f, %f - %f, %f, %f\n", player->collision.minX, player->collision.minY, player->collision.minZ, player->collision.maxX, player->collision.maxY, player->collision.maxZ);
+    // printf("PLAYER: %f, %f, %f - %f, %f, %f\n", player->collision.minX, player->collision.minY, player->collision.minZ, player->collision.maxX, player->collision.maxY, player->collision.maxZ);
 }
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {

@@ -123,7 +123,6 @@ void display() {
 }
 
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
-    printf("");
     if (pressedKey == 27) { // ESC
         isCameraActive = !isCameraActive;
 
@@ -148,11 +147,9 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     }
     if (pressedKey == 105) {
         moveKeys.down = true;
-        printf("%f, %f, %f\n", player.x, player.y, player.z);
     }
     if (pressedKey == 107) {
         moveKeys.up = true;
-        printf("%f, %f, %f\n", player.x, player.y, player.z);
     }
 }
 
@@ -196,6 +193,9 @@ void idleUpdates() {
     // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 
     //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+
+    // "Redesenha" a tela
+    glutPostRedisplay();
 }
 
 void handleMouseMovement(int x, int y) {
@@ -216,7 +216,7 @@ void handleMouseMovement(int x, int y) {
     if (phiAngle < -1.55f) phiAngle = -1.55f;
 
     glutWarpPointer(centerX, centerY);
-    glutPostRedisplay();
+    // glutPostRedisplay();
 }
 
 void handleMouseWheel(int wheel, int direction, int x, int y) {
@@ -240,6 +240,21 @@ void handleCloseProgram() {
     }
 }
 
+void handleWindowResize(int newWidth, int newHeight) {
+    winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
+    winHeight = min(max(newHeight, 750), min(newHeight, 1080));
+
+    glViewport(0, 0, winWidth, winHeight);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glutPostRedisplay();
+}
+
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
@@ -259,6 +274,8 @@ int main(int argc, char** argv)
     glutMouseWheelFunc(handleMouseWheel);
 
     glutCloseFunc(handleCloseProgram);
+
+    glutReshapeFunc(handleWindowResize);
 
     glutDisplayFunc(display);
     glutMainLoop();

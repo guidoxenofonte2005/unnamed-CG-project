@@ -10,6 +10,11 @@
 
 #define COLLISION_DETECTION_RADIUS 30.0f
 
+#define MIN_SCREEN_WIDTH 1000
+#define MAX_SCREEN_WIDTH 1920
+#define MIN_SCREEN_HEIGHT 750
+#define MAX_SCREEN_HEIGHT 1080
+
 #include "object.h"
 #include "player.h"
 

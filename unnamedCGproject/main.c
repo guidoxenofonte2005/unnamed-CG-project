@@ -75,6 +75,27 @@ int init() {
     loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
     //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
 
+    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma função só que gere o cenário inteiro de uma vez
+    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informações do cenário
+    // fica pra ver depois ent
+
+    CollisionBox platCol;
+    float platformWidth = 2.0f;
+    float platformHeight = 1.0f;
+    float platformDepth = 4.0f;
+    float centerX = 1.0f;
+    float centerY = -1.0f;
+    float centerZ = 1.0f;
+
+    platCol.minX = centerX - platformWidth / 2;
+    platCol.maxX = centerX + platformWidth / 2;
+    platCol.minY = centerY - platformHeight / 2;
+    platCol.maxY = centerY + platformHeight / 2;
+    platCol.minZ = centerZ - platformDepth / 2;
+    platCol.maxZ = centerZ + platformDepth / 2;
+
+    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, platCol);
+
     return 1;
 }
 
@@ -117,6 +138,8 @@ void display() {
         drawCollisionBoxWireframe(sceneObjects[i].collision);
     }
     drawCollisionBoxWireframe(player.collision);
+
+    glutPostRedisplay();
 
     // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
@@ -184,11 +207,6 @@ void idleUpdates() {
 
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
-    //if (isObjectColliding(player.collision, sceneObjects[0].collision)) {
-    //    movePlayer(playerVelocity, &player);
-    //} else { // depois tem que mudar isso, quando tiver chão, pra só o collideAndSlide
-    //    collideAndSlide(playerVelocity, &player);
-    //}
 
     // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 
@@ -241,17 +259,32 @@ void handleCloseProgram() {
 }
 
 void handleWindowResize(int newWidth, int newHeight) {
+    // define os tamanhos máximo e mínimo da tela
+    if (newWidth < MIN_SCREEN_WIDTH) newWidth = MIN_SCREEN_WIDTH;
+    if (newHeight < MIN_SCREEN_HEIGHT) newHeight = MIN_SCREEN_HEIGHT;
+
+    if (newWidth > MAX_SCREEN_WIDTH) newWidth = MAX_SCREEN_WIDTH;
+    if (newHeight > MAX_SCREEN_HEIGHT) newHeight = MAX_SCREEN_HEIGHT;
+
+    // atualiza a variável global das dimensões da tela
     winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
     winHeight = min(max(newHeight, 750), min(newHeight, 1080));
 
+    // volta a tela para o padrão mínimo/máximo caso passe do limite, senão continua normal
+    glutReshapeWindow(winWidth, winHeight);
+
+    // atualiza o viewport
     glViewport(0, 0, winWidth, winHeight);
 
+    // muda a projeção de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
 
+    // volta para o modelview
     glMatrixMode(GL_MODELVIEW);
 
+    // dá redisplay na tela por segurança
     glutPostRedisplay();
 }
 

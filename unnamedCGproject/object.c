@@ -106,5 +106,23 @@ void getCollisionBoxFromObject(SceneObject *object) {
     object->collision.minZ = minZ + object->z;
     object->collision.maxZ = maxZ + object->z;
 
-    printf("OBJ: %f, %f, %f - %f, %f, %f\n", object->collision.minX, object->collision.minY, object->collision.minZ, object->collision.maxX, object->collision.maxY, object->collision.maxZ);
+    // printf("OBJ: %f, %f, %f - %f, %f, %f\n", object->collision.minX, object->collision.minY, object->collision.minZ, object->collision.maxX, object->collision.maxY, object->collision.maxZ);
+}
+
+
+// platform related thingys
+void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox platformCollision) {
+    SceneObject *newPlatform = &sceneObjects[(*qtdSceneObjects)++];
+
+    newPlatform->collision = platformCollision;
+    newPlatform->x = x;
+    newPlatform->y = y;
+    newPlatform->z = z;
+    newPlatform->data = NULL;
+}
+
+
+// load everything up
+void loadScenario(SceneObject *sceneObjects, int *qtdSceneObjects) {
+
 }

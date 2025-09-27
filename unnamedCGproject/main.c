@@ -62,8 +62,8 @@ int init() {
     gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
 
     //1. Define a posição inicial do jogador (à esquerda)
-    player.x = -8.0f;
-    player.y = 0.0f;
+    player.x = 0.0f;
+    player.y = 0.5f;
     player.z = 0.0f;
 
     // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
@@ -80,12 +80,12 @@ int init() {
     // fica pra ver depois ent
 
     CollisionBox platCol;
-    float platformWidth = 2.0f;
-    float platformHeight = 1.0f;
-    float platformDepth = 4.0f;
-    float centerX = 1.0f;
+    float platformWidth = 4.0f;
+    float platformHeight = 2.0f;
+    float platformDepth = 5.0f;
+    float centerX = 0.0f;
     float centerY = -1.0f;
-    float centerZ = 1.0f;
+    float centerZ = 0.0f;
 
     platCol.minX = centerX - platformWidth / 2;
     platCol.maxX = centerX + platformWidth / 2;
@@ -93,8 +93,9 @@ int init() {
     platCol.maxY = centerY + platformHeight / 2;
     platCol.minZ = centerZ - platformDepth / 2;
     platCol.maxZ = centerZ + platformDepth / 2;
+    printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
 
-    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, platCol);
+    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
 
     return 1;
 }
@@ -168,11 +169,8 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     if (pressedKey == 100) {
         moveKeys.d = true;
     }
-    if (pressedKey == 105) {
-        moveKeys.down = true;
-    }
-    if (pressedKey == 107) {
-        moveKeys.up = true;
+    if (pressedKey == 32) {
+        moveKeys.jump = true;
     }
 }
 
@@ -189,19 +187,15 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
     if (key == 100) {
         moveKeys.d = false;
     }
-    if (key == 105) {
-        moveKeys.down = false;
-    }
-    if (key == 107) {
-        moveKeys.up = false;
+    if (key == 32) {
+        moveKeys.jump = false;
     }
 }
 
 void idleUpdates() {
     deltaTime = getDeltaTime();
 
-    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime);
-    handlePlayerJump(playerVelocity, &moveKeys, deltaTime);
+    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
 
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
 

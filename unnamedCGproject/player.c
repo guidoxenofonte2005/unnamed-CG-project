@@ -173,6 +173,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                                    move[Y_AXIS] - normalSpeedVector[Y_AXIS],
                                    move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
 
+            if (side == TOP) player->isOnGround = true;
             // Move o player "deslizando" na superfície
             movePlayer(slideSpeed, player);
             collided = true;

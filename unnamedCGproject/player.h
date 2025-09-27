@@ -17,7 +17,7 @@ typedef struct {
     float x;
     float y;
     float z;
-    bool moveable;
+    bool isOnGround;
     bool canJump;
     PlayerState state;
     CollisionBox collision;
@@ -32,5 +32,6 @@ void drawPlayerModel(Player* playerObj, float thetaAngle);
 void cleanupPlayerModel(Player* playerObj);
 
 //void getPlayerCollisionBox(Player *player);
+void applyGravity(Player* playerObj, float *speed);
 
 #endif // PLAYER_H_INCLUDED

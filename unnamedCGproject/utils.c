@@ -9,7 +9,8 @@
 #include "player.h"
 #include "object.h"
 
-void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime) {
+void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime, bool *isOnGround) {
+    // PARTE 1 - VELOCIDADE HORIZONTAL (X e Z)
     float dirX = sin(thetaAngle); // depende somente do eixo horizontal
     float dirZ = -cos(thetaAngle); // depende somente do eixo horizontal
 
@@ -41,9 +42,7 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
         if (fabs(velocity[Z_AXIS]) < 0.01f) velocity[Z_AXIS] = 0;
     }
 
-    // Aplica fricção
-    // velocity[0] *= PLAYER_FRICTION * deltaTime;
-    // velocity[2] *= PLAYER_FRICTION * deltaTime;
+    // Aplica deltaTime
     velocity[X_AXIS] *= deltaTime;
     velocity[Z_AXIS] *= deltaTime;
 
@@ -55,6 +54,13 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
     }
 
     //printf("%f, %f\n", velocity[0], velocity[2]);
+    // PARTE 2 - VELOCIDADE VERTICAL (Y)
+    if ((*isOnGround) && moveKeys->jump) {
+        velocity[Y_AXIS] = -PLAYER_JUMP_FORCE;
+        (*isOnGround) = false;
+    }
+
+    if (!(*isOnGround)) velocity[Y_AXIS] -= GRAVITY * deltaTime; // v = v0 + at
 }
 
 float getDeltaTime() {
@@ -72,31 +78,6 @@ void getPlayerMovingAngle(float *playerVelocity, float *playerRotation) {
 
     if (fabs(speedX) > 0.001f || fabs(speedZ) > 0.001f) {
         *playerRotation = atan2f(speedX, speedZ) * (180.0f / M_PI); // retorna a rotação do player
-    }
-}
-
-void handlePlayerJump(float *velocity, PlayerMoveKeys* moveKeys, float deltaTime) { // depois pode trocar o movekeys por um booleano pra simplificar
-    if (moveKeys->up) {
-        velocity[Y_AXIS] += PLAYER_JUMP_FORCE;
-    }
-    else if (moveKeys->down) {
-        velocity[Y_AXIS] -= PLAYER_JUMP_FORCE;
-    } else {
-        velocity[Y_AXIS] *= 0.9f;
-        if (fabs(velocity[Y_AXIS]) < 0.01f) velocity[Y_AXIS] = 0;
-    }
-
-    velocity[Y_AXIS] *= deltaTime;
-
-    if (velocity[Y_AXIS] > 0) {
-        if (velocity[Y_AXIS] > MAX_PLAYER_VERTICAL_SPEED) {
-            velocity[Y_AXIS] = MAX_PLAYER_VERTICAL_SPEED;
-        }
-    }
-    if (velocity[Y_AXIS] < 0) {
-        if (velocity[Y_AXIS] < -MAX_PLAYER_VERTICAL_SPEED) {
-            velocity[Y_AXIS] = -MAX_PLAYER_VERTICAL_SPEED;
-        }
     }
 }
 

@@ -20,5 +20,6 @@ void drawObject(SceneObject* object);
 void cleanupObject(SceneObject* object);
 
 void getCollisionBoxFromObject(SceneObject *object);
+void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision);
 
 #endif // OBJECT_H_INCLUDED

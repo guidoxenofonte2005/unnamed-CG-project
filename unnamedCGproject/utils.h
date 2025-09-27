@@ -6,7 +6,7 @@
 #define MAX_PLAYER_VERTICAL_SPEED 1.0f
 
 #define GRAVITY 0.9f
-#define PLAYER_JUMP_FORCE 1.2f
+#define PLAYER_JUMP_FORCE 5.0f
 
 #define COLLISION_DETECTION_RADIUS 30.0f
 
@@ -23,8 +23,7 @@ typedef struct {
     bool a;
     bool s;
     bool d;
-    bool up;
-    bool down;
+    bool jump;
 } PlayerMoveKeys;
 
 typedef enum {
@@ -38,7 +37,7 @@ typedef struct {
     float offsetMaxX, offsetMaxY, offsetMaxZ;
 } ObjectCollisionOffset;
 
-void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime);
+void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime, bool *isOnGround);
 float getDeltaTime();
 void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);
 void updateFOV(float newFOV, float windowWidth, float windowHeight);

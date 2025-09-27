@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
@@ -19,8 +20,11 @@ CollisionSide getCollidingObjectSide(CollisionBox referenceObj, CollisionBox col
     float deltaY = fmin(referenceObj.maxY, collidingObj.maxY) - fmax(referenceObj.minY, collidingObj.minY);
     float deltaZ = fmin(referenceObj.maxZ, collidingObj.maxZ) - fmax(referenceObj.minZ, collidingObj.minZ);
 
+    float referenceCenterY = (referenceObj.minY + referenceObj.maxY) / 2.0f;
+    float collidingObjCenterY = (collidingObj.minY + collidingObj.maxY) / 2.0f;
+
     if (deltaX < deltaY && deltaX < deltaZ) return SIDE;
-    if (deltaY < deltaX && deltaY < deltaZ) return (referenceObj.maxY > collidingObj.minY) ? TOP : BOTTOM;
+    if (deltaY <= deltaX && deltaY <= deltaZ) return (referenceCenterY > collidingObjCenterY) ? TOP : BOTTOM;
     if (deltaZ < deltaY && deltaZ < deltaX) return SIDE;
     return NONE;
 }
@@ -44,4 +48,32 @@ void drawCollisionBoxWireframe(CollisionBox box) {
         glColor3f(1.0f, 0.0f, 0.0f);
         glutWireCube(1.0f);
     glPopMatrix();
+}
+
+void getCollisionNormalVec(CollisionSide side, CollisionBox referenceObj, CollisionBox collidingObj, float *returnVec) {
+    switch (side) {
+    case TOP:
+        returnVec[Y_AXIS] = 1.0f;
+        break;
+    case BOTTOM:
+        returnVec[Y_AXIS] = -1.0f;
+        break;
+    case SIDE:
+        // eixo X
+        if (referenceObj.maxX <= collidingObj.minX) {
+            returnVec[X_AXIS] = -1.0f;
+        } else if (referenceObj.minX >= collidingObj.maxX) {
+            returnVec[X_AXIS] = 1.0f;
+        }
+        // eixo Z
+        else if (referenceObj.maxZ <= collidingObj.minZ) {
+            returnVec[Z_AXIS] = -1.0f;
+        } else if (referenceObj.minZ >= collidingObj.maxZ) {
+            returnVec[Z_AXIS] = 1.0f;
+        }
+        break;
+    default:
+        printf("NÃO EXISTE COLISÃO\n");
+        break;
+    }
 }

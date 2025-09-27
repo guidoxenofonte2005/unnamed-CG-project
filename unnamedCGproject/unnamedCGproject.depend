@@ -9,7 +9,7 @@
 	"player.h"
 	"utils.h"
 
-1758904730 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
+1758919395 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -26,16 +26,19 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1758898302 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1758946208 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
 	"player.h"
+	"object.h"
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1758904258 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+1758946044 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
+	"object.h"
+	"player.h"
 
 1758804542 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
@@ -60,13 +63,15 @@
 	<time.h>
 	"utils.h"
 
-1758904802 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1758919370 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
 	<GL/freeglut.h>
 	"utils.h"
+	"player.h"
+	"object.h"
 
 1758850823 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
@@ -524,7 +529,7 @@
 	<GL/freeglut.h>
 	"object.h"
 
-1758900927 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.h
+1758944980 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.h
 	<stdbool.h>
 
 1758861928 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.h
@@ -537,7 +542,8 @@
 	<GL/freeglut.h>
 	"object.h"
 
-1758900926 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
+1758944843 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
+	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<stdbool.h>

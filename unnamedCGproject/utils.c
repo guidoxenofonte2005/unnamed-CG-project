@@ -6,6 +6,8 @@
 #include <GL/freeglut.h>
 
 #include "utils.h"
+#include "player.h"
+#include "object.h"
 
 void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle, float thetaAngle, float deltaTime) {
     float dirX = sin(thetaAngle); // depende somente do eixo horizontal
@@ -104,4 +106,39 @@ void updateFOV(float newFOV, float windowWidth, float windowHeight) {
         glLoadIdentity();
         gluPerspective(newFOV, windowWidth / windowHeight, 0.1, 100.0);
     glPopMatrix();
+}
+
+float get3DDistance(const float *obj1, const float *obj2) {
+    float deltaX = obj2[0] - obj1[0];
+    float deltaY = obj2[1] - obj1[1];
+    float deltaZ = obj2[2] - obj1[2];
+
+    return sqrtf(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
+}
+
+void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QTD_SCENEOBJECTS, SceneObject *sceneObjectsInRange, int *objCount) {
+    int qtd = 0;
+    float playerCenterX = (player.collision.minX + player.collision.maxX) / 2.0f;
+    float playerCenterY = (player.collision.minY + player.collision.maxY) / 2.0f;
+    float playerCenterZ = (player.collision.minZ + player.collision.maxZ) / 2.0f;
+
+    for (int i = 0; i < QTD_SCENEOBJECTS; i++) {
+        SceneObject obj = sceneObjects[i];
+
+        float objCenterX = (obj.collision.minX + obj.collision.maxX) / 2.0f;
+        float objCenterY = (obj.collision.minY + obj.collision.maxY) / 2.0f;
+        float objCenterZ = (obj.collision.minZ + obj.collision.maxZ) / 2.0f;
+
+        float vec1[] = {playerCenterX, playerCenterY, playerCenterZ};
+        float vec2[] = {objCenterX, objCenterY, objCenterZ};
+
+        float distance = get3DDistance(vec1, vec2);
+
+        if (distance <= COLLISION_DETECTION_RADIUS) {
+            sceneObjectsInRange[qtd++] = obj;
+        }
+    }
+
+    (*objCount) = qtd;
+    return sceneObjectsInRange;
 }

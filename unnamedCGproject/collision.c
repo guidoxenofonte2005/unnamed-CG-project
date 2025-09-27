@@ -50,34 +50,30 @@ void drawCollisionBoxWireframe(CollisionBox box) {
     glPopMatrix();
 }
 
-float *getCollisionNormalVec(CollisionSide side, CollisionBox referenceObj, CollisionBox collidingObj) {
-    float normalVec[] = {0.0f, 0.0f, 0.0f};
-
+void getCollisionNormalVec(CollisionSide side, CollisionBox referenceObj, CollisionBox collidingObj, float *returnVec) {
     switch (side) {
     case TOP:
-        normalVec[Y_AXIS] = 1.0f;
+        returnVec[Y_AXIS] = 1.0f;
         break;
     case BOTTOM:
-        normalVec[Y_AXIS] = -1.0f;
+        returnVec[Y_AXIS] = -1.0f;
         break;
     case SIDE:
         // eixo X
         if (referenceObj.maxX <= collidingObj.minX) {
-            normalVec[X_AXIS] = -1.0f;
+            returnVec[X_AXIS] = -1.0f;
         } else if (referenceObj.minX >= collidingObj.maxX) {
-            normalVec[X_AXIS] = 1.0f;
+            returnVec[X_AXIS] = 1.0f;
         }
         // eixo Z
         else if (referenceObj.maxZ <= collidingObj.minZ) {
-            normalVec[Z_AXIS] = -1.0f;
+            returnVec[Z_AXIS] = -1.0f;
         } else if (referenceObj.minZ >= collidingObj.maxZ) {
-            normalVec[Z_AXIS] = 1.0f;
+            returnVec[Z_AXIS] = 1.0f;
         }
         break;
     default:
         printf("NÃO EXISTE COLISÃO\n");
         break;
     }
-
-    return normalVec;
 }

@@ -143,30 +143,41 @@ void getPlayerCollisionBox(Player *player) {
 }
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
-    bool isColliding = false;
+    float oldX = player->x, oldY = player->y, oldZ = player->z;
+    float move[3] = {speed[0], speed[1], speed[2]};
+    bool collided = false;
 
+    // Tenta mover o player
+    movePlayer(move, player);
+
+    // Testa colisão com cada objeto próximo
     for (int i = 0; i < qtdObjInRange; i++) {
-        SceneObject currentObj = objectsInRange[i];
+        SceneObject *currentObj = &objectsInRange[i];
+        if (isObjectColliding(player->collision, currentObj->collision)) {
+            // Colidiu: volta para posição anterior
+            player->x = oldX; player->y = oldY; player->z = oldZ;
+            getPlayerCollisionBox(player);
 
-        if (isObjectColliding(player->collision, currentObj.collision)) {
-            CollisionSide side = getCollidingObjectSide(player->collision, currentObj.collision); // pega o lado da colisão
-            float *normalCollisionVector = getCollisionNormalVec(side, player->collision, currentObj.collision); // retorna o vetor normal da face que colidiu
+            // Calcula o vetor normal da colisão
+            CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
+            float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
+            getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
 
-            float prodEscalar = speed[X_AXIS] * normalCollisionVector[X_AXIS] +
-                                speed[Y_AXIS] * normalCollisionVector[Y_AXIS] +
-                                speed[Z_AXIS] * normalCollisionVector[Z_AXIS];
-
-            float normalSpeedVector[] = {normalCollisionVector[X_AXIS] * prodEscalar,
+            // Projeta o movimento no plano da superfície (slide)
+            float prodEscalar = move[X_AXIS] * normalCollisionVector[X_AXIS] +
+                                move[Y_AXIS] * normalCollisionVector[Y_AXIS] +
+                                move[Z_AXIS] * normalCollisionVector[Z_AXIS];
+            float normalSpeedVector[3] = {normalCollisionVector[X_AXIS] * prodEscalar,
                                          normalCollisionVector[Y_AXIS] * prodEscalar,
                                          normalCollisionVector[Z_AXIS] * prodEscalar};
+            float slideSpeed[3] = {move[X_AXIS] - normalSpeedVector[X_AXIS],
+                                   move[Y_AXIS] - normalSpeedVector[Y_AXIS],
+                                   move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
 
-            float slideSpeed[] = {speed[X_AXIS] - normalSpeedVector[X_AXIS],
-                                  speed[Y_AXIS] - normalSpeedVector[Y_AXIS],
-                                  speed[Z_AXIS] - normalSpeedVector[Z_AXIS]};
-
+            // Move o player "deslizando" na superfície
             movePlayer(slideSpeed, player);
-        } else {
-            movePlayer(speed, player);
+            collided = true;
+            break; // Só trata a primeira colisão
         }
     }
 }

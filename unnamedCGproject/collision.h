@@ -21,3 +21,4 @@ typedef enum{
 bool isObjectColliding(CollisionBox box1, CollisionBox box2);
 CollisionSide getCollidingObjectSide(CollisionBox referenceObj, CollisionBox collidingObj);
 void drawCollisionBoxWireframe(CollisionBox box);
+void getCollisionNormalVec(CollisionSide side, CollisionBox referenceObj, CollisionBox collidingObj, float *returnVec);

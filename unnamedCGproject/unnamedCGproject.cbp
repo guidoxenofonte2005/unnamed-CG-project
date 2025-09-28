@@ -23,6 +23,10 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="collision.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="collision.h" />
 		<Unit filename="iluminacao.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -32,6 +36,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="object.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="object.h" />
 		<Unit filename="player.c">
 			<Option compilerVar="CC" />
 		</Unit>

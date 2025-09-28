@@ -4,24 +4,35 @@
 #include <GL/freeglut.h>
 
 #include "player.h"
+#include "object.h"
+#include "utils.h"
 
 // Define a macro de implementação da biblioteca
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
 
-// Defina a variável global para armazenar modelo do jogadr
-PlayerModel player_model;
+//                                             minX   minY   minZ  maxX, maxY, maxZ
+ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
 void movePlayer(float *speed, Player *playerObject) {
     playerObject->x += speed[0];
     playerObject->y += speed[1];
     playerObject->z += speed[2];
+
+    playerObject->collision.minX += speed[0];
+    playerObject->collision.minY += speed[1];
+    playerObject->collision.minZ += speed[2];
+    playerObject->collision.maxX += speed[0];
+    playerObject->collision.maxY += speed[1];
+    playerObject->collision.maxZ += speed[2];
 }
 
-void loadPlayerModel(const char* filename) {
+// A função agora recebe um ponteiro para a struct Player.
+void loadPlayerModel(Player* playerObj, const char* filename) {
     // Inicializa as opções e tenta carregar o arquicvo GLTF
     cgltf_options options = {0};
-    cgltf_result result = cgltf_parse_file(&options, filename, &player_model.data);
+    // Tenta carregar o modelo e salva os dados no novo membro 'modelData'.
+    cgltf_result result = cgltf_parse_file(&options, filename, &playerObj->modelData);
 
     if (result != cgltf_result_success) {
         printf("Erro ao carregar o arquivo GLTF: %d\n", result);
@@ -29,25 +40,29 @@ void loadPlayerModel(const char* filename) {
     }
 
     // Carrega os dados binários do modelo na memória
-    result = cgltf_load_buffers(&options, player_model.data, filename);
+    result = cgltf_load_buffers(&options, playerObj->modelData, filename);
     if (result != cgltf_result_success) {
         printf("Erro ao carregar os buffers do arquivo GLTF: %d\n", result);
-        cgltf_free(player_model.data);
+        cgltf_free(playerObj->modelData);
     }
+
+    getPlayerCollisionBox(playerObj);
 }
 
-void drawPlayerModel(Player playerObj, float thetaAngle) {
-    if (!player_model.data) {
+//  A função agora recebe um ponteiro para a struct Player.
+void drawPlayerModel(Player* playerObj, float thetaAngle) {
+    if (!playerObj->modelData) {
         return;
     }
 
     // A lógica de desenho do modelo 3D
     // Itera sobre todas as malhas e primitivas do modelo 3D
 
-    glTranslatef(playerObj.x, playerObj.y, playerObj.z);
+    glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
+    glTranslatef(playerObj->x, playerObj->y, playerObj->z);
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
-    for (int i = 0; i < player_model.data->meshes_count; ++i) {
-        cgltf_mesh* mesh = &player_model.data->meshes[i];
+    for (int i = 0; i < playerObj->modelData->meshes_count; ++i) {
+        cgltf_mesh* mesh = &playerObj->modelData->meshes[i];
 
         for (int j = 0; j < mesh->primitives_count; ++j) {
             cgltf_primitive* primitive = &mesh->primitives[j];
@@ -79,12 +94,90 @@ void drawPlayerModel(Player playerObj, float thetaAngle) {
             }
         }
     }
+    glPopMatrix(); // Restaura o estado da matriz
 }
 
-void cleanupPlayerModel() {
+void cleanupPlayerModel(Player* playerObj) {
     // Libera a memória alocada para os dados do modelo 3d
-    if (player_model.data) {
-        cgltf_free(player_model.data);
-        player_model.data = NULL;
+    if (playerObj->modelData) {
+        cgltf_free(playerObj->modelData);
+        playerObj->modelData = NULL;
+    }
+}
+
+// pega a collisionBox do player
+void getPlayerCollisionBox(Player *player) {
+    cgltf_data *data = player->modelData;
+
+    float minX = 0.0f, minY = 0.0f, minZ = 0.0f, maxX = 0.0f, maxY = 0.0f, maxZ = 0.0f;
+
+    for (size_t meshIndex = 0; meshIndex < data->meshes_count; ++meshIndex) {
+        cgltf_mesh* mesh = &data->meshes[meshIndex];
+        for (size_t primIndex = 0; primIndex < mesh->primitives_count; ++primIndex) {
+            cgltf_primitive* primitive = &mesh->primitives[primIndex];
+            for (size_t attrIndex = 0; attrIndex < primitive->attributes_count; ++attrIndex) {
+                cgltf_attribute* attr = &primitive->attributes[attrIndex];
+                if (attr->type == cgltf_attribute_type_position) {
+                    cgltf_accessor* accessor = attr->data;
+
+                    minX = accessor->min[0];
+                    minY = accessor->min[1];
+                    minZ = accessor->min[2];
+                    maxX = accessor->max[0];
+                    maxY = accessor->max[1];
+                    maxZ = accessor->max[2];
+                }
+            }
+        }
+    }
+    // posição de colisão  min/Max   posição     offset de colisão (torna maior ou menor)
+    player->collision.minX = minX + player->x + playerCollisionOffset.offsetMinX;
+    player->collision.maxX = maxX + player->x + playerCollisionOffset.offsetMaxX;
+    player->collision.minY = minY + player->y + playerCollisionOffset.offsetMinY;
+    player->collision.maxY = maxY + player->y + playerCollisionOffset.offsetMaxY;
+    player->collision.minZ = minZ + player->z + playerCollisionOffset.offsetMinZ;
+    player->collision.maxZ = maxZ + player->z + playerCollisionOffset.offsetMaxZ;
+
+    // printf("PLAYER: %f, %f, %f - %f, %f, %f\n", player->collision.minX, player->collision.minY, player->collision.minZ, player->collision.maxX, player->collision.maxY, player->collision.maxZ);
+}
+
+void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
+    float oldX = player->x, oldY = player->y, oldZ = player->z;
+    float move[3] = {speed[0], speed[1], speed[2]};
+    bool collided = false;
+
+    // Tenta mover o player
+    movePlayer(move, player);
+
+    // Testa colisão com cada objeto próximo
+    for (int i = 0; i < qtdObjInRange; i++) {
+        SceneObject *currentObj = &objectsInRange[i];
+        if (isObjectColliding(player->collision, currentObj->collision)) {
+            // Colidiu: volta para posição anterior
+            player->x = oldX; player->y = oldY; player->z = oldZ;
+            getPlayerCollisionBox(player);
+
+            // Calcula o vetor normal da colisão
+            CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
+            float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
+            getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
+
+            // Projeta o movimento no plano da superfície (slide)
+            float prodEscalar = move[X_AXIS] * normalCollisionVector[X_AXIS] +
+                                move[Y_AXIS] * normalCollisionVector[Y_AXIS] +
+                                move[Z_AXIS] * normalCollisionVector[Z_AXIS];
+            float normalSpeedVector[3] = {normalCollisionVector[X_AXIS] * prodEscalar,
+                                         normalCollisionVector[Y_AXIS] * prodEscalar,
+                                         normalCollisionVector[Z_AXIS] * prodEscalar};
+            float slideSpeed[3] = {move[X_AXIS] - normalSpeedVector[X_AXIS],
+                                   move[Y_AXIS] - normalSpeedVector[Y_AXIS],
+                                   move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
+
+            if (side == TOP) player->isOnGround = true;
+            // Move o player "deslizando" na superfície
+            movePlayer(slideSpeed, player);
+            collided = true;
+            break; // Só trata a primeira colisão
+        }
     }
 }

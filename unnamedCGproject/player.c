@@ -61,6 +61,10 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
     glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
     glTranslatef(playerObj->x, playerObj->y, playerObj->z);
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
     for (int i = 0; i < playerObj->modelData->meshes_count; ++i) {
         cgltf_mesh* mesh = &playerObj->modelData->meshes[i];
 
@@ -70,6 +74,16 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
             if (primitive->type == cgltf_primitive_type_triangles) {
                 cgltf_accessor* positions_accessor = primitive->attributes[0].data;
                 cgltf_accessor* normals_accessor = primitive->attributes[1].data;
+
+                // parte que pega a textura do player
+                cgltf_accessor* texture_coords_accessor = NULL;
+                for (int w = 0; w < primitive->attributes_count; w++) {
+                    if (primitive->attributes[w].type == cgltf_attribute_type_texcoord) {
+                        texture_coords_accessor = primitive->attributes[w].data;
+                        break;
+                    }
+                }
+
                 cgltf_accessor* indices_accessor = primitive->indices;
 
 
@@ -89,6 +103,13 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
                     float normal[3];
                     cgltf_accessor_read_float(normals_accessor, index, normal, 3);
                     glNormal3f(normal[0], normal[1], normal[2]);
+
+                    // se tiver textura associada, coloca
+                    if (texture_coords_accessor) {
+                        float texturePosition[2];
+                        cgltf_accessor_read_float(texture_coords_accessor, index, texturePosition, 2);
+                        glTexCoord2f(texturePosition[0], texturePosition[1]);
+                    }
                 }
                 glEnd();
             }
@@ -180,9 +201,4 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
             break; // Só trata a primeira colisão
         }
     }
-}
-
-GLuint getPlayerTexture(Player *player) {
-    GLuint textureID;
-
 }

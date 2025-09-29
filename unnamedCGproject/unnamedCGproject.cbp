@@ -27,12 +27,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="collision.h" />
-		<Unit filename="iluminacao.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="iluminacao.h" />
 		<Unit filename="libs/cgltf/cgltf.h" />
 		<Unit filename="libs/cgltf/cgltf_write.h" />
+		<Unit filename="lighting.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lighting.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -44,10 +44,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="player.h" />
-		<Unit filename="textura.c">
+		<Unit filename="texture.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="textura.h" />
+		<Unit filename="texture.h" />
 		<Unit filename="utils.c">
 			<Option compilerVar="CC" />
 		</Unit>

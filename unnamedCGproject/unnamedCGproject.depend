@@ -41,7 +41,7 @@
 	"object.h"
 	"player.h"
 
-1759164223 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+1759167893 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -585,4 +585,30 @@
 
 1758815960 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\lighting.h
 	<GL/glut.h>
+
+1759170863 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\texture.c
+	<stdio.h>
+	"texture.h"
+	"player.h"
+	"libs/stb_image/stb_image.h"
+
+1759170869 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\texture.h
+	<GL/glut.h>
+
+1759147217 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\libs\stb_image\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
 

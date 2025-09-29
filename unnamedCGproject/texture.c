@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "texture.h"
+#include "player.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "libs/stb_image/stb_image.h"
@@ -35,3 +36,12 @@ GLuint loadTexture(const char *filename){
 
     return texturaID;
 }
+
+//GLuint getPlayerTexture(Player *player) {
+//    GLuint textureID;
+//    cgltf_data *modelData = player->modelData;
+//
+//    for (cgltf_size i = 0; i < player->modelData->images_count; i++) {
+//        cgltf_image* imageData = &modelData->
+//    }
+//}

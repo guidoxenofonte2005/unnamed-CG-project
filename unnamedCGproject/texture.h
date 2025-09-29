@@ -4,5 +4,6 @@
 
 // Função para carregar uma textura a partir de um arquivo
 GLuint loadTexture(const char *filename);
+//GLuint getPlayerTexture();
 
 #endif // TEXTURE_H

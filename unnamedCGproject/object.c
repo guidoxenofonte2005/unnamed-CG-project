@@ -112,6 +112,8 @@ void getCollisionBoxFromObject(SceneObject *object) {
 }
 
 
+
+
 // platform related thingys
 void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision) {
     SceneObject *newPlatform = &sceneObjects[(*qtdSceneObjects)++];

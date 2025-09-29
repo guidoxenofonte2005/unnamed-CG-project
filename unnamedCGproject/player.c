@@ -181,3 +181,8 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
         }
     }
 }
+
+GLuint getPlayerTexture(Player *player) {
+    GLuint textureID;
+
+}

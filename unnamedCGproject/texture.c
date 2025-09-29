@@ -1,7 +1,9 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#include "textura.h"
 #include <stdio.h>
+
+#include "texture.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "libs/stb_image/stb_image.h"
 
 GLuint loadTexture(const char *filename){
     int largura, altura , canais;
@@ -25,24 +27,9 @@ GLuint loadTexture(const char *filename){
     //Filtro de minificação e magnificação, serve para ajustar quando a imagem/textura for maior/menor que a textura original
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //usa interpolação bilineal para reduzir a imagem
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //... para aumentar
-/*
-    GLenum formato = (canais == 4) ? GL_RGBA : GL_RGB;//Serve para identificar se é uma png ou jpg
-
-    glTexImage2D(GL_TEXTURE_2D, // Tipo de textura
-             0,                // Nível mipmap, ai colocamos a textura original
-             formato,          // Formato interno (como a GPU guarda)
-             largura, altura,  // Dimensões da imagem
-             0,                // Borda (sempre 0)
-             formato,          // Formato dos dados da imagem
-             GL_UNSIGNED_BYTE, // Tipo dos dados (1 byte por canal)
-             dados);           // Ponteiro para os pixels da imagem
-*/
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, largura, altura, 0,
                  (canais == 4 ? GL_RGBA : GL_RGB), GL_UNSIGNED_BYTE, dados);
-
-    //gera versões menores das texturas para os objetos longe da câmera, e deixa a imagem melhor
- //   gluBuild2DMipmaps(GL_TEXTURE_2D, formato, largura, altura, formato, GL_UNSIGNED_BYTE, dados);
 
     stbi_image_free(dados); //libera a informações dos dados da imagem para o opengl usar
 

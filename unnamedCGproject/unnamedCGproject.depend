@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759146052 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759156060 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -41,7 +41,7 @@
 	"object.h"
 	"player.h"
 
-1759146052 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+1759164223 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -61,7 +61,7 @@
 	"object.h"
 	"player.h"
 
-1759146052 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1759163605 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -573,9 +573,16 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759146052 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759165427 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
 	"object.h"
+
+1758815966 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\lighting.c
+	<GL/freeglut.h>
+	"lighting.h"
+
+1758815960 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\lighting.h
+	<GL/glut.h>
 

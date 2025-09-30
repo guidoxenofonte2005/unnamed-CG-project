@@ -124,8 +124,9 @@ void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, floa
     newPlatform->data = NULL;
 }
 
-void drawPlatform(SceneObject *platform,GLuint texFront, GLuint texBack,
-                  GLuint texLeft, GLuint texRight, GLuint texTop, GLuint texBase){
+GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
+
+void drawPlatform(SceneObject *platform){
     glPushMatrix();//Salva a atual matriz
     glTranslatef(platform->x, platform->y, platform->z); // Move a plataforma para a posição dela na cena
 

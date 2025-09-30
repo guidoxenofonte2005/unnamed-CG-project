@@ -595,7 +595,7 @@
 1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1759184819 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
+1759190485 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -607,7 +607,7 @@
 	"utils.h"
 	"textura.h"
 
-1759190439 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.c
+1759191893 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>

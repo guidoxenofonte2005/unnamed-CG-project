@@ -5,6 +5,15 @@
 
 #include "collision.h"
 
+typedef struct {
+    bool isAnimated; // deve ser animado ou não
+    int animationAxis; // 0 para eixo X, 1 para eixo Z
+    float moveSpeed;
+    float moveDirection;
+    float minLimit;
+    float maxLimit;
+} AnimationData;
+
 // Estrutura para armazenar os dados de um objeto 3D
 typedef struct {
     cgltf_data* data;

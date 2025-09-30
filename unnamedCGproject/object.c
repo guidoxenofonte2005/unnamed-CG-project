@@ -46,9 +46,23 @@ void drawObject(SceneObject* object) {
                 cgltf_primitive* primitive = &mesh->primitives[j];
 
                 if (primitive->type == cgltf_primitive_type_triangles) {
-                    cgltf_accessor* positions_accessor = primitive->attributes[0].data;
-                    cgltf_accessor* normals_accessor = primitive->attributes[1].data;
+                    cgltf_accessor* positions_accessor = NULL;
+                    cgltf_accessor* normals_accessor = NULL;
 
+                    // Loop para encontrar os atributos de posição e normal pelo tipo
+                    for (int attr_idx = 0; attr_idx < primitive->attributes_count; ++attr_idx) {
+                        cgltf_attribute* attr = &primitive->attributes[attr_idx];
+                        if (attr->type == cgltf_attribute_type_position) {
+                            positions_accessor = attr->data;
+                        } else if (attr->type == cgltf_attribute_type_normal) {
+                            normals_accessor = attr->data;
+                        }
+                    }
+
+                    // Se não encontrar os dados de vértice, pula para o próximo
+                    if (!positions_accessor || !normals_accessor || !primitive->indices) {
+                        continue;
+                    }
                     // parte que pega a textura do player
                     cgltf_accessor* texture_coords_accessor = NULL;
                     for (int w = 0; w < primitive->attributes_count; w++) {

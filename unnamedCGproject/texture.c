@@ -6,6 +6,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "libs/stb_image/stb_image.h"
 
+int qtdTextures = 0;
+
 GLuint loadTexture(const char *filename){
     int largura, altura , canais;
     // largura, altura -> dimensões da imagem
@@ -37,11 +39,38 @@ GLuint loadTexture(const char *filename){
     return texturaID;
 }
 
-//GLuint getPlayerTexture(Player *player) {
-//    GLuint textureID;
-//    cgltf_data *modelData = player->modelData;
-//
-//    for (cgltf_size i = 0; i < player->modelData->images_count; i++) {
-//        cgltf_image* imageData = &modelData->
-//    }
-//}
+GLuint getTextureFromObject(cgltf_data *modelData) {
+    if (modelData->images_count <= 0) {
+        return 0;
+    }
+
+    cgltf_image *textureImage = &modelData->images[0];
+    cgltf_buffer_view *bufferView = textureImage->buffer_view;
+
+    const unsigned char *imageData = (const unsigned char *) bufferView->buffer->data + bufferView->offset;
+    size_t imageSize = bufferView->size;
+
+    int imgWidth, imgHeight, imgChannels;
+    unsigned char *pixels = stbi_load_from_memory(imageData, imageSize, &imgWidth, &imgHeight, &imgChannels, STBI_rgb_alpha);
+
+    if (pixels) {
+        GLuint textureID;
+        glGenTextures(qtdTextures++, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        //            type        mipmap rgba                     border         color data type  img data
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+        //glGenerateMipmap(GL_TEXTURE_2D);
+
+        // libera a memória
+        stbi_image_free(pixels);
+
+        return textureID;
+    }
+    return 0;
+}

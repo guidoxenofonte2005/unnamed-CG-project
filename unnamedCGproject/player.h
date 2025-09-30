@@ -34,4 +34,6 @@ void cleanupPlayerModel(Player* playerObj);
 //void getPlayerCollisionBox(Player *player);
 void applyGravity(Player* playerObj, float *speed);
 
+extern int qtdTextures;
+
 #endif // PLAYER_H_INCLUDED

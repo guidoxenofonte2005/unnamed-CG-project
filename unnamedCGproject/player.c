@@ -11,6 +11,8 @@
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
 
+GLuint playerTextureID = 0;
+
 //                                             minX   minY   minZ  maxX, maxY, maxZ
 ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
@@ -47,6 +49,7 @@ void loadPlayerModel(Player* playerObj, const char* filename) {
     }
 
     getPlayerCollisionBox(playerObj);
+    playerTextureID = getTextureFromObject(playerObj->modelData);
 }
 
 //  A função agora recebe um ponteiro para a struct Player.
@@ -63,7 +66,8 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    glBindTexture(GL_TEXTURE_2D, playerTextureID);
 
     for (int i = 0; i < playerObj->modelData->meshes_count; ++i) {
         cgltf_mesh* mesh = &playerObj->modelData->meshes[i];
@@ -90,14 +94,10 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
                 glBegin(GL_TRIANGLES);
 
                 // Itera sobre os índdices para desenhar os triângulos dos modelos
+                // a ordem certa de iteração é normal -> textura -> posição
                 for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
                     // Lê o índice do vértice atual
                     cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
-
-                    // Lê a posição do vértice e desenha com a função OpenGl
-                    float position[3];
-                    cgltf_accessor_read_float(positions_accessor, index, position, 3);
-                    glVertex3f(position[0], position[1], position[2]);
 
                     // Lê a normal do vértice e a define para o cálculo de iluminação
                     float normal[3];
@@ -110,6 +110,11 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
                         cgltf_accessor_read_float(texture_coords_accessor, index, texturePosition, 2);
                         glTexCoord2f(texturePosition[0], texturePosition[1]);
                     }
+
+                    // Lê a posição do vértice e desenha com a função OpenGl
+                    float position[3];
+                    cgltf_accessor_read_float(positions_accessor, index, position, 3);
+                    glVertex3f(position[0], position[1], position[2]);
                 }
                 glEnd();
             }

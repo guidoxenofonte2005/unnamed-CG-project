@@ -124,6 +124,75 @@ void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, floa
     newPlatform->data = NULL;
 }
 
+void drawPlatform(SceneObject *platform,GLuint texFront, GLuint texBack,
+                  GLuint texLeft, GLuint texRight, GLuint texTop, GLuint texBase){
+    glPushMatrix();//Salva a atual matriz
+    glTranslatef(platform->x, platform->y, platform->z); // Move a plataforma para a posição dela na cena
+
+    float minX = platform->collision.minX - platform->x;
+    float maxX = platform->collision.maxX - platform->x;
+    float minY = platform->collision.minY - platform->y;
+    float maxY = platform->collision.maxY - platform->y;
+    float minZ = platform->collision.minZ - platform->z;
+    float maxZ = platform->collision.maxZ - platform->z;
+
+    glBindTexture(GL_TEXTURE_2D, texFront); // Ativa a textura da frente
+    glBegin(GL_QUADS); // Início do desenho de um quadrado
+        glTexCoord2f(0,0); glVertex3f(minX, minY, maxZ); // canto inferior esquerdo
+        glTexCoord2f(2,0); glVertex3f(maxX, minY, maxZ); // canto inferior direito
+        glTexCoord2f(2,2); glVertex3f(maxX, maxY, maxZ); // canto superior direito
+        glTexCoord2f(0,2); glVertex3f(minX, maxY, maxZ); // canto superior esquerdo
+    glEnd();
+
+    // Face de trás
+    glBindTexture(GL_TEXTURE_2D, texBack);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0); glVertex3f(maxX, minY, minZ);
+        glTexCoord2f(2,0); glVertex3f(minX, minY, minZ);
+        glTexCoord2f(2,2); glVertex3f(minX, maxY, minZ);
+        glTexCoord2f(0,2); glVertex3f(maxX, maxY, minZ);
+    glEnd();
+
+    // Face da direita
+    glBindTexture(GL_TEXTURE_2D, texRight);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0); glVertex3f(maxX, minY, maxZ);
+        glTexCoord2f(2,0); glVertex3f(maxX, minY, minZ);
+        glTexCoord2f(2,2); glVertex3f(maxX, maxY, minZ);
+        glTexCoord2f(0,2); glVertex3f(maxX, maxY, maxZ);
+    glEnd();
+
+    // Face da esquerda
+    glBindTexture(GL_TEXTURE_2D, texLeft);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0); glVertex3f(minX, minY, minZ);
+        glTexCoord2f(2,0); glVertex3f(minX, minY, maxZ);
+        glTexCoord2f(2,2); glVertex3f(minX, maxY, maxZ);
+        glTexCoord2f(0,2); glVertex3f(minX, maxY, minZ);
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texTop); // substituir por texTop
+    glBegin(GL_QUADS);
+        glNormal3f(0.0f, 1.0f, 0.0f);
+        glTexCoord2f(0,0); glVertex3f(minX, maxY, minZ);
+        glTexCoord2f(2,0); glVertex3f(minX, maxY, maxZ);
+        glTexCoord2f(2,2); glVertex3f(maxX, maxY, maxZ);
+        glTexCoord2f(0,2); glVertex3f(maxX, maxY, minZ);
+    glEnd();
+
+
+    // Base da plataforma
+    // (aqui reaproveitei texBack, mas pode ser outra textura só para a base)
+    glBindTexture(GL_TEXTURE_2D, texBase);
+    glBegin(GL_QUADS);
+        glTexCoord2f(0,0); glVertex3f(minX, minY, minZ);
+        glTexCoord2f(2,0); glVertex3f(maxX, minY, minZ);
+        glTexCoord2f(1,2); glVertex3f(maxX, minY, maxZ);
+        glTexCoord2f(0,2); glVertex3f(minX, minY, maxZ);
+    glEnd();
+
+    glPopMatrix();//Restaura a matriz salva
+}
 
 // load everything up
 void loadScenario(SceneObject *sceneObjects, int *qtdSceneObjects) {

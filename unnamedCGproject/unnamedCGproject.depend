@@ -405,11 +405,11 @@
 1512591001 c:\mingw\include\oleidl.h
 	<objfwd.h>
 
-1758339512 c:\mingw\include\gl\freeglut.h
+1426360528 c:\mingw\include\gl\freeglut.h
 	"freeglut_std.h"
 	"freeglut_ext.h"
 
-1758339512 c:\mingw\include\gl\freeglut_std.h
+1426360528 c:\mingw\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -420,13 +420,13 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1758339512 c:\mingw\include\gl\gl.h
+1301111164 c:\mingw\include\gl\gl.h
 
-1758339512 c:\mingw\include\gl\glu.h
+1301111165 c:\mingw\include\gl\glu.h
 	<stddef.h>
 	<GL/gl.h>
 
-1758339512 c:\mingw\include\gl\freeglut_ext.h
+1426360528 c:\mingw\include\gl\freeglut_ext.h
 	<stdarg.h>
 
 1512590989 c:\mingw\include\math.h
@@ -448,7 +448,7 @@
 1758850822 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1758339512 c:\mingw\include\gl\glut.h
+1426360528 c:\mingw\include\gl\glut.h
 	"freeglut_std.h"
 
 1758799326 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\iluminacao.c
@@ -550,4 +550,110 @@
 	<GL/freeglut.h>
 	"utils.h"
 	"collision.h"
+
+1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\collision.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\utils.h
+	<stdbool.h>
+	"object.h"
+	"player.h"
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.h
+	"libs/cgltf/cgltf.h"
+	"collision.h"
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
+	<stddef.h>
+	<stdint.h>
+	<assert.h>
+	<string.h>
+	<stdio.h>
+	<limits.h>
+	<float.h>
+	<stdlib.h>
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\collision.h
+	<stdbool.h>
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\player.h
+	<stdlib.h>
+	<stdbool.h>
+	"libs/cgltf/cgltf.h"
+	"collision.h"
+
+1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.c
+	<GL/freeglut.h>
+	"iluminacao.h"
+
+1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.h
+	<GL/glut.h>
+
+1759184819 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<GL/freeglut.h>
+	<math.h>
+	<stdbool.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"textura.h"
+
+1759190439 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"object.h"
+
+1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\player.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"libs/cgltf/cgltf.h"
+
+1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"player.h"
+	"object.h"
+
+1759009802 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.h
+	<GL/glut.h>
+
+1759072560 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.c
+	"stb_image.h"
+	"textura.h"
+	<stdio.h>
+
+1758905535 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
 

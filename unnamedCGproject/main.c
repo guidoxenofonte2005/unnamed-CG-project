@@ -10,6 +10,7 @@
 #include "player.h"
 #include "object.h"
 #include "utils.h"
+#include "textura.h"
 
 int verticalMovement;
 int horizontalMovement;
@@ -18,14 +19,14 @@ float fieldOfView = 60.0f;
 
 int lastMousex, lastMousey;
 
-// ângulo horizontal
+// ï¿½ngulo horizontal
 float thetaAngle = 0.0f;
-// ângulo vertical
+// ï¿½ngulo vertical
 float phiAngle = 0.0f;
-// distância da câmera
+// distï¿½ncia da cï¿½mera
 float camRadius = 25.0f;
 
-// ângulo de rotação do player
+// ï¿½ngulo de rotaï¿½ï¿½o do player
 float playerRotation = 0.0f;
 
 bool isCameraActive = false;
@@ -38,45 +39,58 @@ float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
 float deltaTime = 0.0f;
 
-#define MAX_OBJECTS 10 // Define o máximo de objetos na cena
+#define MAX_OBJECTS 10 // Define o mï¿½ximo de objetos na cena
 SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
 SceneObject objectsInCollisionRange[MAX_OBJECTS];
 int objInColRangeCount = 0;
 
+GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
+
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
-    // Habilita o teste de profundidade para a remoção de superfícies ocultas, garantindo que objetos mais próximos da câmera sejam desenhados por cima de objetos mais distantes.
+    // Habilita o teste de profundidade para a remoï¿½ï¿½o de superfï¿½cies ocultas, garantindo que objetos mais prï¿½ximos da cï¿½mera sejam desenhados por cima de objetos mais distantes.
     glEnable(GL_DEPTH_TEST);
-    // Habilita o sistema de iluminação global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
+    // Habilita o sistema de iluminaï¿½ï¿½o global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
     glEnable(GL_LIGHTING);
     // Habilita o z-buffer
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forÃ§ar a textura a substituir a cor/material:
+
+    // Carrega cada textura da plataforma
+    texFront = loadTexture("tex_cenario/girder_wood.png");
+    texBack = loadTexture("tex_cenario/wall_ruined_1.png");
+    texLeft = loadTexture("tex_cenario/wall_ruined_2.png");
+    texRight = loadTexture("tex_cenario/wall_ruined_3.png");
+    texTop = loadTexture("tex_cenario/wood_3.png");
+    texBase = loadTexture("tex_cenario/metal_floor_1.png");
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
+    // Configura uma projeï¿½ï¿½o perspectiva, que simula a visï¿½o humana (objetos distantes parecem menores).
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variï¿½veis de janela
 
-    //1. Define a posição inicial do jogador (à esquerda)
+    //1. Define a posiï¿½ï¿½o inicial do jogador (ï¿½ esquerda)
     player.x = 0.0f;
     player.y = 0.5f;
     player.z = 0.0f;
 
-    // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
+    // Chamada para carregar o modelo 3D uma ï¿½nica vez durante a inicializaï¿½ï¿½o.
     loadPlayerModel(&player, "3dfiles/player.glb");
 
     // Carregando outros objetos da cena e add em um array
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posição (9,0,0)
-    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
-    //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posição (25,0,0)
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chï¿½o
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posiï¿½ï¿½o (9,0,0)
+    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posiï¿½ï¿½o (15,0,0)
+    //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posiï¿½ï¿½o (25,0,0)
 
-    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma função só que gere o cenário inteiro de uma vez
-    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informações do cenário
+    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma funï¿½ï¿½o sï¿½ que gere o cenï¿½rio inteiro de uma vez
+    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informaï¿½ï¿½es do cenï¿½rio
     // fica pra ver depois ent
 
     CollisionBox platCol;
@@ -110,7 +124,7 @@ void display() {
     float camY = player.y + camRadius * sinf(phiAngle);
     float camZ = player.z + camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
-    // Define a orientação da câmera
+    // Define a orientaï¿½ï¿½o da cï¿½mera
     gluLookAt(camX, camY, camZ,
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
@@ -119,18 +133,20 @@ void display() {
     GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
     GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
     GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
-    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posição da luz
+    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posiï¿½ï¿½o da luz
 
-    // Define as propriedades do material (pode ser genérico para todos os objetos)
+    // Define as propriedades do material (pode ser genï¿½rico para todos os objetos)
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f}; // Pouco brilho
     GLfloat shininess = 20;
 
-    // chama a função para aplicar iluminação
+    // chama a funï¿½ï¿½o para aplicar iluminaï¿½ï¿½o
     setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
-    // chama função para desenhar o modelo 3D na tela a cada frane
+    glBindTexture(GL_TEXTURE_2D, 0); // desliga a textura atual
+
+    // chama funï¿½ï¿½o para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
 
     // Desenha todos os objetos da cena
@@ -141,6 +157,8 @@ void display() {
     drawCollisionBoxWireframe(player.collision);
 
     glutPostRedisplay();
+
+    drawPlatform(&sceneObjects[objectCount-1], texFront, texBack, texLeft, texRight, texTop, texBase);
 
     // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
@@ -245,8 +263,8 @@ void handleMouseWheel(int wheel, int direction, int x, int y) {
 }
 
 void handleCloseProgram() {
-    // A função agora chama a função de limpeza do modelo do jogador é chamada
-    // passando a struct 'player' como parâmetro
+    // A funï¿½ï¿½o agora chama a funï¿½ï¿½o de limpeza do modelo do jogador ï¿½ chamada
+    // passando a struct 'player' como parï¿½metro
     cleanupPlayerModel(&player);
     for (int i = 0; i < objectCount; ++i) {
         cleanupObject(&sceneObjects[i]);
@@ -254,24 +272,24 @@ void handleCloseProgram() {
 }
 
 void handleWindowResize(int newWidth, int newHeight) {
-    // define os tamanhos máximo e mínimo da tela
+    // define os tamanhos mï¿½ximo e mï¿½nimo da tela
     if (newWidth < MIN_SCREEN_WIDTH) newWidth = MIN_SCREEN_WIDTH;
     if (newHeight < MIN_SCREEN_HEIGHT) newHeight = MIN_SCREEN_HEIGHT;
 
     if (newWidth > MAX_SCREEN_WIDTH) newWidth = MAX_SCREEN_WIDTH;
     if (newHeight > MAX_SCREEN_HEIGHT) newHeight = MAX_SCREEN_HEIGHT;
 
-    // atualiza a variável global das dimensões da tela
+    // atualiza a variï¿½vel global das dimensï¿½es da tela
     winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
     winHeight = min(max(newHeight, 750), min(newHeight, 1080));
 
-    // volta a tela para o padrão mínimo/máximo caso passe do limite, senão continua normal
+    // volta a tela para o padrï¿½o mï¿½nimo/mï¿½ximo caso passe do limite, senï¿½o continua normal
     glutReshapeWindow(winWidth, winHeight);
 
     // atualiza o viewport
     glViewport(0, 0, winWidth, winHeight);
 
-    // muda a projeção de perspectiva pra acomodar o novo tamanho da tela
+    // muda a projeï¿½ï¿½o de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
@@ -279,7 +297,7 @@ void handleWindowResize(int newWidth, int newHeight) {
     // volta para o modelview
     glMatrixMode(GL_MODELVIEW);
 
-    // dá redisplay na tela por segurança
+    // dï¿½ redisplay na tela por seguranï¿½a
     glutPostRedisplay();
 }
 

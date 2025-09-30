@@ -2,6 +2,7 @@
 #define OBJECT_H_INCLUDED
 
 #include "libs/cgltf/cgltf.h"
+#include "GL/freeglut.h"
 
 #include "collision.h"
 

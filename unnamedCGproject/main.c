@@ -97,6 +97,9 @@ int init() {
 
     loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
 
+    char *tempStr = "scenario.txt";
+    loadObjectsFromFile(tempStr);
+
     return 1;
 }
 

@@ -27,6 +27,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="collision.h" />
+		<Unit filename="fileManager.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="libs/cgltf/cgltf.h" />
 		<Unit filename="libs/cgltf/cgltf_write.h" />
 		<Unit filename="lighting.c">

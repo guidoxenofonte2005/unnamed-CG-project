@@ -6,8 +6,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "libs/stb_image/stb_image.h"
 
-int qtdTextures = 0;
-
 GLuint loadTexture(const char *filename){
     int largura, altura , canais;
     // largura, altura -> dimensões da imagem
@@ -40,7 +38,9 @@ GLuint loadTexture(const char *filename){
 }
 
 GLuint getTextureFromObject(cgltf_data *modelData) {
-    if (modelData->images_count <= 0) {
+    if (modelData == NULL) {
+        return 0;
+    } else if (modelData->images_count <= 0) {
         return 0;
     }
 
@@ -55,7 +55,7 @@ GLuint getTextureFromObject(cgltf_data *modelData) {
 
     if (pixels) {
         GLuint textureID;
-        glGenTextures(qtdTextures++, &textureID);
+        glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

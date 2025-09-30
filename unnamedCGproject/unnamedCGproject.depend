@@ -27,7 +27,7 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759198129 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1759198699 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -541,11 +541,11 @@
 1758944980 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.h
 	<stdbool.h>
 
-1759197603 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.h
+1759200574 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759187270 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.c
+1759200550 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -619,14 +619,15 @@
 1758825194 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.h
 	<GL/glut.h>
 
-1759198041 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
+1759200569 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
 	<stdio.h>
 	"texture.h"
 	"player.h"
 	"libs/stb_image/stb_image.h"
 
-1759197541 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
-	<GL/glut.h>
+1759200242 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
+	<GL/freeglut.h>
+	"libs/cgltf/cgltf.h"
 
 1759187270 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\stb_image\stb_image.h
 	"stb_image.h"

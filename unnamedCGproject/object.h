@@ -12,6 +12,7 @@ typedef struct {
     float y;
     float z;
     CollisionBox collision;
+    GLuint textureID;
 } SceneObject;
 
 // Declarações das funções para manipular a cena
@@ -21,7 +22,5 @@ void cleanupObject(SceneObject* object);
 
 void getCollisionBoxFromObject(SceneObject *object);
 void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision);
-
-extern int qtdTextures;
 
 #endif // OBJECT_H_INCLUDED

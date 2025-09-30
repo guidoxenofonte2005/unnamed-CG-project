@@ -26,12 +26,16 @@ void loadObject(SceneObject* object, const char* filename, float x, float y, flo
     object->z = z;
 
     getCollisionBoxFromObject(object);
+
+    object->textureID = getTextureFromObject(object->data);
 }
 
 void drawObject(SceneObject* object) {
     if (!object->data) {
         return;
     }
+
+    glBindTexture(GL_TEXTURE_2D, object->textureID);
 
     glPushMatrix();
         glTranslatef(object->x, object->y, object->z);
@@ -44,19 +48,35 @@ void drawObject(SceneObject* object) {
                 if (primitive->type == cgltf_primitive_type_triangles) {
                     cgltf_accessor* positions_accessor = primitive->attributes[0].data;
                     cgltf_accessor* normals_accessor = primitive->attributes[1].data;
+
+                    // parte que pega a textura do player
+                    cgltf_accessor* texture_coords_accessor = NULL;
+                    for (int w = 0; w < primitive->attributes_count; w++) {
+                        if (primitive->attributes[w].type == cgltf_attribute_type_texcoord) {
+                            texture_coords_accessor = primitive->attributes[w].data;
+                            break;
+                        }
+                    }
+
                     cgltf_accessor* indices_accessor = primitive->indices;
 
                     glBegin(GL_TRIANGLES);
                     for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
                         cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
 
-                        float position[3];
-                        cgltf_accessor_read_float(positions_accessor, index, position, 3);
-                        glVertex3f(position[0], position[1], position[2]);
-
                         float normal[3];
                         cgltf_accessor_read_float(normals_accessor, index, normal, 3);
                         glNormal3f(normal[0], normal[1], normal[2]);
+
+                        if (texture_coords_accessor) {
+                            float texturePosition[2];
+                            cgltf_accessor_read_float(texture_coords_accessor, index, texturePosition, 2);
+                            glTexCoord2f(texturePosition[0], texturePosition[1]);
+                        }
+
+                        float position[3];
+                        cgltf_accessor_read_float(positions_accessor, index, position, 3);
+                        glVertex3f(position[0], position[1], position[2]);
                     }
                     glEnd();
                 }

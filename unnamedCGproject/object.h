@@ -5,8 +5,9 @@
 
 #include "collision.h"
 
+
 typedef struct {
-    bool isAnimated; // deve ser animado ou não
+    bool isAnimated; // deve ser animado ou nÃ£o
     int animationAxis; // 0 para eixo X, 1 para eixo Z
     float moveSpeed;
     float moveDirection;
@@ -21,10 +22,11 @@ typedef struct {
     float y;
     float z;
     CollisionBox collision;
+    AnimationData anim;
     GLuint textureID;
 } SceneObject;
 
-// Declarações das funções para manipular a cena
+// DeclaraÃ§Ãµes das funÃ§Ãµes para manipular a cena
 void loadObject(SceneObject* object, const char* filename, float x, float y, float z);
 void drawObject(SceneObject* object);
 void cleanupObject(SceneObject* object);

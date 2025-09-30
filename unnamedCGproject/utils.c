@@ -46,7 +46,7 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
     velocity[X_AXIS] *= deltaTime;
     velocity[Z_AXIS] *= deltaTime;
 
-    // Limita a velocidade m�xima
+    // Limita a velocidade máxima
     float speed = sqrt(velocity[X_AXIS]*velocity[X_AXIS] + velocity[Z_AXIS]*velocity[Z_AXIS]);
     if (speed > MAX_PLAYER_HORIZONTAL_SPEED) {
         velocity[X_AXIS] = (velocity[X_AXIS] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
@@ -64,10 +64,10 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
 }
 
 float getDeltaTime() {
-    static clock_t lastTime = 0; // inicializa uma �nica vez
+    static clock_t lastTime = 0; // inicializa uma única vez
     clock_t currentTime = clock(); // pega o tempo atual
-    float delta = (float)(currentTime - lastTime) / CLOCKS_PER_SEC; // calcula o delta, j� dividindo por 1000 para resultado em segundos
-    lastTime = currentTime; // transforma o atual em �ltimo
+    float delta = (float)(currentTime - lastTime) / CLOCKS_PER_SEC; // calcula o delta, já dividindo por 1000 para resultado em segundos
+    lastTime = currentTime; // transforma o atual em último
 
     return delta;
 }
@@ -77,7 +77,7 @@ void getPlayerMovingAngle(float *playerVelocity, float *playerRotation) {
     float speedZ = playerVelocity[Z_AXIS];
 
     if (fabs(speedX) > 0.001f || fabs(speedZ) > 0.001f) {
-        *playerRotation = atan2f(speedX, speedZ) * (180.0f / M_PI); // retorna a rota��o do player
+        *playerRotation = atan2f(speedX, speedZ) * (180.0f / M_PI); // retorna a rotação do player
     }
 }
 
@@ -122,4 +122,45 @@ void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QT
 
     (*objCount) = qtd;
     return sceneObjectsInRange;
+}
+
+void animateObject(SceneObject* object, float deltaTime) {
+    // 1. Verifica se o objeto deve ser animado
+    if (!object->anim.isAnimated) {
+        return;
+    }
+
+    // 2. Anima no eixo correto (X ou Z)
+    if (object->anim.animationAxis == 0) { // Eixo X
+        object->x += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+    } else { // Eixo Z
+        object->z += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+    }
+
+    // 3. Atualiza a caixa de colisão do objeto para acompanhar o movimento
+    if (object->data != NULL) {
+        // Para objetos com modelo 3D
+        getCollisionBoxFromObject(object);
+    } else {
+        // Para a plataforma invisível (atualização manual)
+        if (object->anim.animationAxis == 0) { // Eixo X
+             object->collision.minX += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+             object->collision.maxX += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+        } else { // Eixo Z
+             object->collision.minZ += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+             object->collision.maxZ += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+        }
+    }
+
+
+    // 4. Verifica os limites e inverte a direção
+    float currentPos = (object->anim.animationAxis == 0) ? object->x : object->z;
+
+    if (currentPos > object->anim.maxLimit) {
+        if (object->anim.animationAxis == 0) object->x = object->anim.maxLimit; else object->z = object->anim.maxLimit;
+        object->anim.moveDirection = -1.0f;
+    } else if (currentPos < object->anim.minLimit) {
+        if (object->anim.animationAxis == 0) object->x = object->anim.minLimit; else object->z = object->anim.minLimit;
+        object->anim.moveDirection = 1.0f;
+    }
 }

@@ -25,35 +25,7 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
         char *token = strtok(line, delimiters);
         if (strcmp(token, "PLAYER") == 0) {
             float posX, posY, posZ;
-            while (token != NULL) {
-                token = strtok(NULL, delimiters);
 
-                // player position
-                char *posToken = strtok(token, ",");
-                if (posToken != NULL) {
-                    int posTracker = 0;
-                    while (posToken != NULL) {
-                        switch (posTracker) {
-                        case 0:
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        default:
-                            break;
-                        }
-                    }
-                }
-
-            }
-
-
-            // additional info
-            player->isOnGround = false;
-            player->canJump = false;
-            player->state = IDLE;
-            player->collision =
         }
         else if (strcmp(token, "OBJECT") == 0) {
 

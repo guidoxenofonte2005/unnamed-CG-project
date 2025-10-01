@@ -10,7 +10,7 @@
 	"object.h"
 	"utils.h"
 
-1759275715 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
+1759285349 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -27,7 +27,7 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759283677 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1759285357 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -552,7 +552,7 @@
 	<GL/freeglut.h>
 	"object.h"
 
-1758944843 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
+1759285378 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

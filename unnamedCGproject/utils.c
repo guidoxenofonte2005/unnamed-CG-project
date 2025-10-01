@@ -83,6 +83,11 @@ float getDeltaTime() {
     QueryPerformanceCounter(&currentTime);
     double delta = (double)(currentTime.QuadPart - lastTime.QuadPart) / (double)frequency.QuadPart;
     lastTime = currentTime;
+
+    // evita spikes grandes (p.ex. quando o SO suspendeu o processo)
+    if (delta < 0.0) delta = 0.0;
+    if (delta > 0.25) delta = 0.25;
+
     return (float)delta;
 }
 

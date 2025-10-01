@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "utils.h"
 #include "object.h"
 #include "player.h"
 #include "fileManager.h"
@@ -55,7 +56,14 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
             loadPlatform(sceneObjects, qtdObjects, centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS], &platformCollision);
         }
         else if (strcmp(stringParts[0], "PLAYER") == 0) {
+            float playerCoords[DIMENSIONS];
+            parseFloatValues(stringParts[1], playerCoords);
 
+            player->x = playerCoords[X_AXIS];
+            player->y = playerCoords[Y_AXIS];
+            player->z = playerCoords[Z_AXIS];
+
+            loadPlayerModel(player, stringParts[2]);
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
 

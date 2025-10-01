@@ -62,12 +62,12 @@ int init() {
     gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
 
     //1. Define a posição inicial do jogador (à esquerda)
-    player.x = 0.0f;
-    player.y = 1.0f;
-    player.z = 0.0f;
+    //player.x = 0.0f;
+    //player.y = 1.0f;
+    //player.z = 0.0f;
 
     // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
-    loadPlayerModel(&player, "3dfiles/player.glb");
+    //loadPlayerModel(&player, "3dfiles/player.glb");
 
     // Carregando outros objetos da cena e add em um array
     // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
@@ -87,23 +87,23 @@ int init() {
     // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informações do cenário
     // fica pra ver depois ent
 
-    CollisionBox platCol;
-    float platformWidth = 4.0f;
-    float platformHeight = 2.0f;
-    float platformDepth = 5.0f;
-    float centerX = 0.0f;
-    float centerY = -1.0f;
-    float centerZ = 0.0f;
+    //CollisionBox platCol;
+    //float platformWidth = 4.0f;
+    //float platformHeight = 2.0f;
+    //float platformDepth = 5.0f;
+    //float centerX = 0.0f;
+    //float centerY = -1.0f;
+    //float centerZ = 0.0f;
 
-    platCol.minX = centerX - platformWidth / 2;
-    platCol.maxX = centerX + platformWidth / 2;
-    platCol.minY = centerY - platformHeight / 2;
-    platCol.maxY = centerY + platformHeight / 2;
-    platCol.minZ = centerZ - platformDepth / 2;
-    platCol.maxZ = centerZ + platformDepth / 2;
+    //platCol.minX = centerX - platformWidth / 2;
+    //platCol.maxX = centerX + platformWidth / 2;
+    //platCol.minY = centerY - platformHeight / 2;
+    //platCol.maxY = centerY + platformHeight / 2;
+    //platCol.minZ = centerZ - platformDepth / 2;
+    //platCol.maxZ = centerZ + platformDepth / 2;
     // printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
 
-    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
+    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
     // Animação da plataforma
     //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
     //sceneObjects[objectCount - 1].anim.isAnimated = true;

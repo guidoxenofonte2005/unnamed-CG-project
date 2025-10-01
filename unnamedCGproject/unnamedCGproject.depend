@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759343070 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759347437 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -570,12 +570,12 @@
 	"utils.h"
 	"collision.h"
 
-1759324414 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
+1759347341 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 
-1759240587 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759345804 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -649,11 +649,12 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1759343626 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759347306 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
+	"utils.h"
 	"object.h"
 	"player.h"
 	"fileManager.h"

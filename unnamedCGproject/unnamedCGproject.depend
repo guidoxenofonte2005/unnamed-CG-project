@@ -36,7 +36,7 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1759284118 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+1759284698 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
@@ -71,7 +71,7 @@
 	"player.h"
 	"object.h"
 
-1759284107 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1759284650 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

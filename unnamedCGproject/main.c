@@ -11,6 +11,8 @@
 #include "object.h"
 #include "utils.h"
 
+#define PHYSICS_STEP (1.0f / 60.0f)
+
 int verticalMovement;
 int horizontalMovement;
 
@@ -196,15 +198,31 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
     }
 }
 
-void idleUpdates() {
-    deltaTime = getDeltaTime();
-
+void simulatePhysics(float deltaTime) {
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
-
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
-
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+}
+
+void idleUpdates() {
+    static float accumulator = 0.0f;
+    float frameTime = getDeltaTime();
+    accumulator += frameTime;
+
+    // se muitas frames acumuladas, processa várias physics steps
+    while (accumulator >= PHYSICS_STEP) {
+        simulatePhysics(PHYSICS_STEP);
+        accumulator -= PHYSICS_STEP;
+    }
+    // deltaTime = getDeltaTime();
+
+    // getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
+
+    // getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
+
+    // collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
+    // getPlayerMovingAngle(playerVelocity, &playerRotation);
 
     // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 

@@ -93,7 +93,7 @@ int init() {
     platCol.maxY = centerY + platformHeight / 2;
     platCol.minZ = centerZ - platformDepth / 2;
     platCol.maxZ = centerZ + platformDepth / 2;
-    printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
+    // printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
 
     loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
 
@@ -174,7 +174,7 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     }
     if (pressedKey == 32) {
         moveKeys.jump = true;
-        printf("%d, %d\n", player.isOnGround, player.canJump);
+        // printf("%d, %d\n", player.isOnGround, player.canJump);
     }
 }
 

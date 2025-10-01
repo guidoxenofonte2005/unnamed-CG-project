@@ -70,12 +70,20 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
 }
 
 float getDeltaTime() {
-    static clock_t lastTime = 0; // inicializa uma única vez
-    clock_t currentTime = clock(); // pega o tempo atual
-    float delta = (float)(currentTime - lastTime) / CLOCKS_PER_SEC; // calcula o delta, já dividindo por 1000 para resultado em segundos
-    lastTime = currentTime; // transforma o atual em último
+    static LARGE_INTEGER frequency;
+    static LARGE_INTEGER lastTime;
+    LARGE_INTEGER currentTime;
 
-    return delta;
+    if (frequency.QuadPart == 0) {
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&lastTime);
+        return 0.0f;
+    }
+
+    QueryPerformanceCounter(&currentTime);
+    double delta = (double)(currentTime.QuadPart - lastTime.QuadPart) / (double)frequency.QuadPart;
+    lastTime = currentTime;
+    return (float)delta;
 }
 
 void getPlayerMovingAngle(float *playerVelocity, float *playerRotation) {

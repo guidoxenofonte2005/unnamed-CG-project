@@ -21,13 +21,13 @@
 	"object.h"
 	"utils.h"
 
-1759275837 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
+1759283658 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759280421 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1759283677 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -36,7 +36,7 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1759281504 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+1759284118 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
@@ -71,7 +71,7 @@
 	"player.h"
 	"object.h"
 
-1759281454 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1759284107 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

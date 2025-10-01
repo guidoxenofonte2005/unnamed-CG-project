@@ -28,7 +28,7 @@ void movePlayer(float *speed, Player *playerObject) {
     playerObject->collision.maxY += speed[1];
     playerObject->collision.maxZ += speed[2];
 
-    //printf("%f\n", speed[1]);
+    printf("%f\n", speed[1]);
 }
 
 // A função agora recebe um ponteiro para a struct Player.

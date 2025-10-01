@@ -11,8 +11,6 @@
 #include "object.h"
 #include "utils.h"
 
-#define PHYSICS_STEP (1.0f / 60.0f)
-
 int verticalMovement;
 int horizontalMovement;
 
@@ -215,18 +213,6 @@ void idleUpdates() {
         simulatePhysics(PHYSICS_STEP);
         accumulator -= PHYSICS_STEP;
     }
-    // deltaTime = getDeltaTime();
-
-    // getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
-
-    // getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
-
-    // collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
-    // getPlayerMovingAngle(playerVelocity, &playerRotation);
-
-    // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
-
-    //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
 
     // "Redesenha" a tela
     glutPostRedisplay();

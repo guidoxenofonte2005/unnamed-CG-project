@@ -10,6 +10,19 @@
 
 FILE *loadFilePointer = NULL;
 
+void parseFloatValues(const char *floatString, float *values) {
+    char *tempStr = strdup(floatString);
+    char *token = strtok(tempStr, ",");
+
+    int i = 0;
+    while (token != NULL && i < DIMENSIONS) {
+        values[i++] = atof(token);
+        token = strtok(NULL, ",");
+    }
+
+    free(tempStr);
+}
+
 void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects) {
     if (strcmp(fileLocation, "") == 0) {
         printf("NO FILE STRING RECEIVED");

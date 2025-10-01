@@ -79,8 +79,8 @@ int init() {
     sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
     sceneObjects[objectCount - 1].anim.minLimit = -10.0f;
     sceneObjects[objectCount - 1].anim.maxLimit = 10.0f;
-    objectCount++; // Incrementa o contador DEPOIS de configurar
-    
+    //objectCount++; // Incrementa o contador DEPOIS de configurar
+
     loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
 
     // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma função só que gere o cenário inteiro de uma vez
@@ -105,14 +105,14 @@ int init() {
 
     loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
     // Animação da plataforma
-    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
-    sceneObjects[objectCount - 1].anim.isAnimated = true;
-    sceneObjects[objectCount - 1].anim.animationAxis = 1; // Animação no Eixo Z
-    sceneObjects[objectCount - 1].anim.moveSpeed = 3.0f;
-    sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
-    sceneObjects[objectCount - 1].anim.minLimit = -15.0f; // Limite frontal
-    sceneObjects[objectCount - 1].anim.maxLimit = 15.0f;  // Limite traseiro
-    
+    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
+    //sceneObjects[objectCount - 1].anim.isAnimated = true;
+    //sceneObjects[objectCount - 1].anim.animationAxis = 1; // Animação no Eixo Z
+    //sceneObjects[objectCount - 1].anim.moveSpeed = 3.0f;
+    //sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
+    //sceneObjects[objectCount - 1].anim.minLimit = -15.0f; // Limite frontal
+    //sceneObjects[objectCount - 1].anim.maxLimit = 15.0f;  // Limite traseiro
+
     return 1;
 }
 
@@ -215,7 +215,7 @@ void simulatePhysics(float deltaTime) {
     for (int i = 0; i < objectCount; i++) {
         animateObject(&sceneObjects[i], deltaTime);
     }
-    
+
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);

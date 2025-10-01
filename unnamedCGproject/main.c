@@ -113,6 +113,8 @@ int init() {
     //sceneObjects[objectCount - 1].anim.minLimit = -15.0f; // Limite frontal
     //sceneObjects[objectCount - 1].anim.maxLimit = 15.0f;  // Limite traseiro
 
+    loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount);
+
     return 1;
 }
 

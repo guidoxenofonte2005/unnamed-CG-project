@@ -595,7 +595,7 @@
 1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1759190485 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
+1759334186 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -606,6 +606,7 @@
 	"object.h"
 	"utils.h"
 	"textura.h"
+	"skybox.h"
 
 1759191893 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.c
 	<stdio.h>
@@ -635,7 +636,7 @@
 1759009802 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.h
 	<GL/glut.h>
 
-1759072560 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.c
+1759359557 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.c
 	"stb_image.h"
 	"textura.h"
 	<stdio.h>
@@ -656,4 +657,11 @@
 	<emmintrin.h>
 	<intrin.h>
 	<arm_neon.h>
+
+1759358308 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\skybox.c
+	"skybox.h"
+	"textura.h"
+
+1759273176 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\skybox.h
+	<GL/glut.h>
 

@@ -11,6 +11,7 @@
 #include "object.h"
 #include "utils.h"
 #include "textura.h"
+#include "skybox.h"
 
 int verticalMovement;
 int horizontalMovement;
@@ -60,7 +61,7 @@ int init() {
     glCullFace(GL_BACK);
 
     glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material:
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material
 
     // Carrega cada textura da plataforma
     texFront = loadTexture("tex_cenario/girder_wood.png");
@@ -74,6 +75,9 @@ int init() {
     glLoadIdentity();
     // Configura uma proje��o perspectiva, que simula a vis�o humana (objetos distantes parecem menores).
     gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari�veis de janela
+
+    loadSkybox();
+
 
     //1. Define a posi��o inicial do jogador (� esquerda)
     player.x = 0.0f;
@@ -128,6 +132,14 @@ void display() {
     gluLookAt(camX, camY, camZ,
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
+
+
+    glPushMatrix();
+    // skybox na posição da câmera (sem se mover com o jogador)
+    glTranslatef(player.x, player.y, player.z);
+    drawSkybox(50.0f);
+    glPopMatrix();
+
 
     // Definindo as propriedades da fonte de luz
     GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca

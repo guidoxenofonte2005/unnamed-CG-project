@@ -101,7 +101,7 @@ int init() {
     platCol.maxY = centerY + platformHeight / 2;
     platCol.minZ = centerZ - platformDepth / 2;
     platCol.maxZ = centerZ + platformDepth / 2;
-    printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
+    // printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
 
     loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
     // Animação da plataforma
@@ -187,7 +187,7 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     }
     if (pressedKey == 32) {
         moveKeys.jump = true;
-        printf("%d, %d\n", player.isOnGround, player.canJump);
+        // printf("%d, %d\n", player.isOnGround, player.canJump);
     }
 }
 
@@ -209,25 +209,29 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
     }
 }
 
-void idleUpdates() {
-    deltaTime = getDeltaTime();
 
+void simulatePhysics(float deltaTime) {
     // serve para automatizar o movimento de todos os objetos que você marcou como "animados" na sua cena
     for (int i = 0; i < objectCount; i++) {
         animateObject(&sceneObjects[i], deltaTime);
     }
-
     
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
-
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
-
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+}
 
-    // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+void idleUpdates() {
+    static float accumulator = 0.0f;
+    float frameTime = getDeltaTime();
+    accumulator += frameTime;
 
-    //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+    // se muitas frames acumuladas, processa v�rias physics steps
+    while (accumulator >= PHYSICS_STEP) {
+        simulatePhysics(PHYSICS_STEP);
+        accumulator -= PHYSICS_STEP;
+    }
 
     // "Redesenha" a tela
     glutPostRedisplay();

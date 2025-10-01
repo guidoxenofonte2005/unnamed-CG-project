@@ -27,6 +27,8 @@ void movePlayer(float *speed, Player *playerObject) {
     playerObject->collision.maxX += speed[0];
     playerObject->collision.maxY += speed[1];
     playerObject->collision.maxZ += speed[2];
+
+    printf("%f\n", speed[1]);
 }
 
 // A função agora recebe um ponteiro para a struct Player.
@@ -200,6 +202,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                                    move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
 
             if (side == TOP) player->isOnGround = true;
+            // if (side != NONE) printf("%d\n", side);
             // Move o player "deslizando" na superfície
             movePlayer(slideSpeed, player);
             collided = true;

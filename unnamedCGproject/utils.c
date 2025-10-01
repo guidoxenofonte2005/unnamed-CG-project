@@ -53,23 +53,42 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
         velocity[Z_AXIS] = (velocity[Z_AXIS] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
     }
 
-    //printf("%f, %f\n", velocity[0], velocity[2]);
+
     // PARTE 2 - VELOCIDADE VERTICAL (Y)
+    if (!(*isOnGround)) {
+        velocity[Y_AXIS] -= GRAVITY * deltaTime * deltaTime;
+        if (velocity[Y_AXIS] < -MAX_PLAYER_VERTICAL_SPEED)
+            velocity[Y_AXIS] = -MAX_PLAYER_VERTICAL_SPEED;
+    }
+
     if ((*isOnGround) && moveKeys->jump) {
         velocity[Y_AXIS] = PLAYER_JUMP_FORCE;
         (*isOnGround) = false;
     }
 
-    if (!(*isOnGround)) velocity[Y_AXIS] -= GRAVITY * deltaTime; // v = v0 + at
+    //velocity[Y_AXIS] *= deltaTime;
 }
 
 float getDeltaTime() {
-    static clock_t lastTime = 0; // inicializa uma única vez
-    clock_t currentTime = clock(); // pega o tempo atual
-    float delta = (float)(currentTime - lastTime) / CLOCKS_PER_SEC; // calcula o delta, já dividindo por 1000 para resultado em segundos
-    lastTime = currentTime; // transforma o atual em último
+    static LARGE_INTEGER frequency;
+    static LARGE_INTEGER lastTime;
+    LARGE_INTEGER currentTime;
 
-    return delta;
+    if (frequency.QuadPart == 0) {
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&lastTime);
+        return 0.0f;
+    }
+
+    QueryPerformanceCounter(&currentTime);
+    double delta = (double)(currentTime.QuadPart - lastTime.QuadPart) / (double)frequency.QuadPart;
+    lastTime = currentTime;
+
+    // evita spikes grandes (p.ex. quando o SO suspendeu o processo)
+    if (delta < 0.0) delta = 0.0;
+    if (delta > 0.25) delta = 0.25;
+
+    return (float)delta;
 }
 
 void getPlayerMovingAngle(float *playerVelocity, float *playerRotation) {

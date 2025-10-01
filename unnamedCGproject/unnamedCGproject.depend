@@ -27,7 +27,7 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759275837 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1759280421 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -36,7 +36,7 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1759264724 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+1759280509 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
@@ -71,7 +71,7 @@
 	"player.h"
 	"object.h"
 
-1759275837 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1759280314 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -658,4 +658,15 @@
 	"fileManager.h"
 
 1759253853 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
+
+1759275881 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"object.h"
+	"player.h"
+	"fileManager.h"
+
+1759263831 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
 

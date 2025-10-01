@@ -53,14 +53,19 @@ void getPlayerVelocity(float *velocity, PlayerMoveKeys* moveKeys, float phiAngle
         velocity[Z_AXIS] = (velocity[Z_AXIS] / speed) * MAX_PLAYER_HORIZONTAL_SPEED;
     }
 
-    //printf("%f, %f\n", velocity[0], velocity[2]);
+
     // PARTE 2 - VELOCIDADE VERTICAL (Y)
     if ((*isOnGround) && moveKeys->jump) {
         velocity[Y_AXIS] = PLAYER_JUMP_FORCE;
         (*isOnGround) = false;
     }
 
-    if (!(*isOnGround)) velocity[Y_AXIS] -= GRAVITY * deltaTime; // v = v0 + at
+    if (!(*isOnGround)) {
+        velocity[Y_AXIS] -= GRAVITY * deltaTime;
+        if (velocity[Y_AXIS] < -MAX_PLAYER_VERTICAL_SPEED)
+            velocity[Y_AXIS] = -MAX_PLAYER_VERTICAL_SPEED;
+    }
+    //velocity[Y_AXIS] *= deltaTime;
 }
 
 float getDeltaTime() {

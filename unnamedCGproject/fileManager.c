@@ -37,7 +37,7 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
     while (fgets(line, sizeof(line), loadFilePointer)) {
         line[strcspn(line, "\n")] = 0; // remove o \n do fim da linha
 
-        char *stringParts[MAX_FILE_STRING_SEPARATIONS]; // define o máximo de partes que a string pode ter (nesse caso, 4 partes)
+        char *stringParts[MAX_FILE_STRING_SEPARATIONS]; // define o mï¿½ximo de partes que a string pode ter (nesse caso, 4 partes)
         int partIndex = 0;
 
         char *token = strtok(line, ";");
@@ -67,6 +67,17 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
 
+            player->x = playerCoords[X_AXIS];
+            player->y = playerCoords[Y_AXIS];
+            player->z = playerCoords[Z_AXIS];
+
+            loadPlayerModel(player, stringParts[2]);
+        }
+        else if (strcmp(stringParts[0], "OBJECT") == 0) {
+            float objectCoords[DIMENSIONS];
+            parseFloatValues(stringParts[1], objectCoords);
+
+            loadObject(&sceneObjects[(*qtdObjects)++], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
         }
         else {
             printf("NON-SUPPORTED OBJECT DETECTED: %s. Skipping to the next object...\n", stringParts[0]);

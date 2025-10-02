@@ -1,3 +1,9 @@
+<<<<<<< Updated upstream
 OBJETO;X,Y,Z;AAAAAA;STRING_MODELO_GLB
 PLATAFORMA;centerX,centerY,centerZ;largura,altura,profundidade;
 PLAYER;2.00012,3.01023,4;STRING_MODELO_GLB
+=======
+OBJECT;X,Y,Z;STRING_MODELO_GLB
+PLATFORM;0.0,-1.0,0.0;4.0,2.0,5.0;
+PLAYER;0.0,0.5,0.0;3dfiles/player.glb
+>>>>>>> Stashed changes

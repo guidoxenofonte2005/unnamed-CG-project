@@ -41,7 +41,11 @@
 	"object.h"
 	"player.h"
 
+<<<<<<< Updated upstream
 1759231276 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+=======
+1759347965 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -61,7 +65,11 @@
 	"object.h"
 	"player.h"
 
+<<<<<<< Updated upstream
 1759163605 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+=======
+1759347971 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -649,7 +657,11 @@
 	<intrin.h>
 	<arm_neon.h>
 
+<<<<<<< Updated upstream
 1759253824 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+=======
+1759347625 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

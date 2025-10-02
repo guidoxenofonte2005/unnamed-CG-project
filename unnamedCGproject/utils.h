@@ -3,10 +3,10 @@
 #define PLAYER_FRICTION 0.9f
 #define PLAYER_ACCELERATION 15.0f
 #define MAX_PLAYER_HORIZONTAL_SPEED 100.0f
-#define MAX_PLAYER_VERTICAL_SPEED 1.0f
+#define MAX_PLAYER_VERTICAL_SPEED 1.6f
 
-#define GRAVITY 0.9f
-#define PLAYER_JUMP_FORCE 0.4f
+#define GRAVITY 200.0f
+#define PLAYER_JUMP_FORCE 1.5f
 
 #define COLLISION_DETECTION_RADIUS 30.0f
 
@@ -14,6 +14,8 @@
 #define MAX_SCREEN_WIDTH 1920
 #define MIN_SCREEN_HEIGHT 750
 #define MAX_SCREEN_HEIGHT 1080
+
+#define PHYSICS_STEP (1.0f / 75.0f) // EXTREMAMENTE IMPORTANTE PRA FÕSICA DO JOGO, N√O TIRA POR NADA NO MUNDO
 
 #include "object.h"
 #include "player.h"
@@ -42,3 +44,6 @@ float getDeltaTime();
 void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);
 void updateFOV(float newFOV, float windowWidth, float windowHeight);
 void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QTD_SCENEOBJECTS, SceneObject *sceneObjectsInRange, int *objCount);
+
+// Anima um objeto com base nos seus dados de anima√ß√£o
+void animateObject(SceneObject* object, float deltaTime);

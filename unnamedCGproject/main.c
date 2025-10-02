@@ -18,14 +18,14 @@ float fieldOfView = 60.0f;
 
 int lastMousex, lastMousey;
 
-// ‚ngulo horizontal
+// √¢ngulo horizontal
 float thetaAngle = 0.0f;
-// ‚ngulo vertical
+// √¢ngulo vertical
 float phiAngle = 0.0f;
-// dist‚ncia da c‚mera
+// dist√¢ncia da c√¢mera
 float camRadius = 25.0f;
 
-// ‚ngulo de rotaÁ„o do player
+// √¢ngulo de rota√ß√£o do player
 float playerRotation = 0.0f;
 
 bool isCameraActive = false;
@@ -38,7 +38,7 @@ float playerVelocity[] = {0.0f, 0.0f, 0.0f};
 
 float deltaTime = 0.0f;
 
-#define MAX_OBJECTS 10 // Define o m·ximo de objetos na cena
+#define MAX_OBJECTS 10 // Define o m√°ximo de objetos na cena
 SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
@@ -48,9 +48,9 @@ int objInColRangeCount = 0;
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
-    // Habilita o teste de profundidade para a remoÁ„o de superfÌcies ocultas, garantindo que objetos mais prÛximos da c‚mera sejam desenhados por cima de objetos mais distantes.
+    // Habilita o teste de profundidade para a remo√ß√£o de superf√≠cies ocultas, garantindo que objetos mais pr√≥ximos da c√¢mera sejam desenhados por cima de objetos mais distantes.
     glEnable(GL_DEPTH_TEST);
-    // Habilita o sistema de iluminaÁ„o global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
+    // Habilita o sistema de ilumina√ß√£o global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
     glEnable(GL_LIGHTING);
     // Habilita o z-buffer
     glEnable(GL_CULL_FACE);
@@ -58,47 +58,62 @@ int init() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // Configura uma projeÁ„o perspectiva, que simula a vis„o humana (objetos distantes parecem menores).
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari·veis de janela
+    // Configura uma proje√ß√£o perspectiva, que simula a vis√£o humana (objetos distantes parecem menores).
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari√°veis de janela
 
-    //1. Define a posiÁ„o inicial do jogador (‡ esquerda)
-    player.x = 0.0f;
-    player.y = 0.5f;
-    player.z = 0.0f;
+    //1. Define a posi√ß√£o inicial do jogador (√† esquerda)
+    //player.x = 0.0f;
+    //player.y = 1.0f;
+    //player.z = 0.0f;
 
-    // Chamada para carregar o modelo 3D uma ˙nica vez durante a inicializaÁ„o.
-    loadPlayerModel(&player, "3dfiles/player.glb");
+    // Chamada para carregar o modelo 3D uma √∫nica vez durante a inicializa√ß√£o.
+    //loadPlayerModel(&player, "3dfiles/player.glb");
 
     // Carregando outros objetos da cena e add em um array
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um ch„o
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", 8.0f, 0.0f, 0.0f); // Exemplo de um objeto na posiÁ„o (9,0,0)
-    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posiÁ„o (15,0,0)
-    //loadObject(&sceneObjects[objectCount++], "3dfiles/tree1.glb", -5.0f, 0.0f, 2.0f); // Exemplo de um objeto na posiÁ„o (25,0,0)
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um ch√£o
+    // Carrega o espinho e CONFIGURA A SUA ANIMA√á√ÉO
+    loadObject(&sceneObjects[objectCount++], "3dfiles/spike.glb", 0.0f, 1.0f, -25.0f);
+    sceneObjects[objectCount - 1].anim.isAnimated = true;
+    sceneObjects[objectCount - 1].anim.animationAxis = 0; // Anima√ß√£o no Eixo X
+    sceneObjects[objectCount - 1].anim.moveSpeed = 5.0f;
+    sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
+    sceneObjects[objectCount - 1].anim.minLimit = -10.0f;
+    sceneObjects[objectCount - 1].anim.maxLimit = 10.0f;
+    //objectCount++; // Incrementa o contador DEPOIS de configurar
 
-    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma funÁ„o sÛ que gere o cen·rio inteiro de uma vez
-    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informaÁıes do cen·rio
+    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posi√ß√£o (15,0,0)
+
+    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma fun√ß√£o s√≥ que gere o cen√°rio inteiro de uma vez
+    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informa√ß√µes do cen√°rio
     // fica pra ver depois ent
 
-    CollisionBox platCol;
-    float platformWidth = 4.0f;
-    float platformHeight = 2.0f;
-    float platformDepth = 5.0f;
-    float centerX = 0.0f;
-    float centerY = -1.0f;
-    float centerZ = 0.0f;
+    //CollisionBox platCol;
+    //float platformWidth = 4.0f;
+    //float platformHeight = 2.0f;
+    //float platformDepth = 5.0f;
+    //float centerX = 0.0f;
+    //float centerY = -1.0f;
+    //float centerZ = 0.0f;
 
-    platCol.minX = centerX - platformWidth / 2;
-    platCol.maxX = centerX + platformWidth / 2;
-    platCol.minY = centerY - platformHeight / 2;
-    platCol.maxY = centerY + platformHeight / 2;
-    platCol.minZ = centerZ - platformDepth / 2;
-    platCol.maxZ = centerZ + platformDepth / 2;
-    printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
+    //platCol.minX = centerX - platformWidth / 2;
+    //platCol.maxX = centerX + platformWidth / 2;
+    //platCol.minY = centerY - platformHeight / 2;
+    //platCol.maxY = centerY + platformHeight / 2;
+    //platCol.minZ = centerZ - platformDepth / 2;
+    //platCol.maxZ = centerZ + platformDepth / 2;
+    // printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
 
-    loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
+    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
+    // Anima√ß√£o da plataforma
+    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
+    //sceneObjects[objectCount - 1].anim.isAnimated = true;
+    //sceneObjects[objectCount - 1].anim.animationAxis = 1; // Anima√ß√£o no Eixo Z
+    //sceneObjects[objectCount - 1].anim.moveSpeed = 3.0f;
+    //sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
+    //sceneObjects[objectCount - 1].anim.minLimit = -15.0f; // Limite frontal
+    //sceneObjects[objectCount - 1].anim.maxLimit = 15.0f;  // Limite traseiro
 
-    char *tempStr = "scenario.txt";
-    loadObjectsFromFile(tempStr);
+    loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount);
 
     return 1;
 }
@@ -113,7 +128,7 @@ void display() {
     float camY = player.y + camRadius * sinf(phiAngle);
     float camZ = player.z + camRadius * cosf(phiAngle) * sinf(thetaAngle);
 
-    // Define a orientaÁ„o da c‚mera
+    // Define a orienta√ß√£o da c√¢mera
     gluLookAt(camX, camY, camZ,
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
@@ -122,18 +137,18 @@ void display() {
     GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
     GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
     GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
-    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // PosiÁ„o da luz
+    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posi√ß√£o da luz
 
-    // Define as propriedades do material (pode ser genÈrico para todos os objetos)
+    // Define as propriedades do material (pode ser gen√©rico para todos os objetos)
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f}; // Pouco brilho
     GLfloat shininess = 20;
 
-    // chama a funÁ„o para aplicar iluminaÁ„o
+    // chama a fun√ß√£o para aplicar ilumina√ß√£o
     setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
-    // chama funÁ„o para desenhar o modelo 3D na tela a cada frane
+    // chama fun√ß√£o para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
 
     // Desenha todos os objetos da cena
@@ -174,7 +189,7 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
     }
     if (pressedKey == 32) {
         moveKeys.jump = true;
-        printf("%d, %d\n", player.isOnGround, player.canJump);
+        // printf("%d, %d\n", player.isOnGround, player.canJump);
     }
 }
 
@@ -196,19 +211,29 @@ void keyboardKeyUp(unsigned char key, int x, int y) {
     }
 }
 
-void idleUpdates() {
-    deltaTime = getDeltaTime();
+
+void simulatePhysics(float deltaTime) {
+    // serve para automatizar o movimento de todos os objetos que voc√™ marcou como "animados" na sua cena
+    for (int i = 0; i < objectCount; i++) {
+        animateObject(&sceneObjects[i], deltaTime);
+    }
 
     getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
-
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
-
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+}
 
-    // if (isObjectColliding(player.collision, sceneObjects[0].collision)) printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+void idleUpdates() {
+    static float accumulator = 0.0f;
+    float frameTime = getDeltaTime();
+    accumulator += frameTime;
 
-    //printf("%d", getCollidingObjectSide(player.collision, sceneObjects[0].collision));
+    // se muitas frames acumuladas, processa vÔøΩrias physics steps
+    while (accumulator >= PHYSICS_STEP) {
+        simulatePhysics(PHYSICS_STEP);
+        accumulator -= PHYSICS_STEP;
+    }
 
     // "Redesenha" a tela
     glutPostRedisplay();
@@ -248,8 +273,8 @@ void handleMouseWheel(int wheel, int direction, int x, int y) {
 }
 
 void handleCloseProgram() {
-    // A funÁ„o agora chama a funÁ„o de limpeza do modelo do jogador È chamada
-    // passando a struct 'player' como par‚metro
+    // A fun√ß√£o agora chama a fun√ß√£o de limpeza do modelo do jogador √© chamada
+    // passando a struct 'player' como par√¢metro
     cleanupPlayerModel(&player);
     for (int i = 0; i < objectCount; ++i) {
         cleanupObject(&sceneObjects[i]);
@@ -257,24 +282,24 @@ void handleCloseProgram() {
 }
 
 void handleWindowResize(int newWidth, int newHeight) {
-    // define os tamanhos m·ximo e mÌnimo da tela
+    // define os tamanhos m√°ximo e m√≠nimo da tela
     if (newWidth < MIN_SCREEN_WIDTH) newWidth = MIN_SCREEN_WIDTH;
     if (newHeight < MIN_SCREEN_HEIGHT) newHeight = MIN_SCREEN_HEIGHT;
 
     if (newWidth > MAX_SCREEN_WIDTH) newWidth = MAX_SCREEN_WIDTH;
     if (newHeight > MAX_SCREEN_HEIGHT) newHeight = MAX_SCREEN_HEIGHT;
 
-    // atualiza a vari·vel global das dimensıes da tela
+    // atualiza a vari√°vel global das dimens√µes da tela
     winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
     winHeight = min(max(newHeight, 750), min(newHeight, 1080));
 
-    // volta a tela para o padr„o mÌnimo/m·ximo caso passe do limite, sen„o continua normal
+    // volta a tela para o padr√£o m√≠nimo/m√°ximo caso passe do limite, sen√£o continua normal
     glutReshapeWindow(winWidth, winHeight);
 
     // atualiza o viewport
     glViewport(0, 0, winWidth, winHeight);
 
-    // muda a projeÁ„o de perspectiva pra acomodar o novo tamanho da tela
+    // muda a proje√ß√£o de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
@@ -282,7 +307,7 @@ void handleWindowResize(int newWidth, int newHeight) {
     // volta para o modelview
     glMatrixMode(GL_MODELVIEW);
 
-    // d· redisplay na tela por seguranÁa
+    // d√° redisplay na tela por seguran√ßa
     glutPostRedisplay();
 }
 

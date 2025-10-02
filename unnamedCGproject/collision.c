@@ -73,7 +73,7 @@ void getCollisionNormalVec(CollisionSide side, CollisionBox referenceObj, Collis
         }
         break;
     default:
-        printf("NÃO EXISTE COLISÃO\n");
+        printf("NO COLLISION DETECTED\n");
         break;
     }
 }

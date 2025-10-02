@@ -160,8 +160,15 @@ void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, floa
     newPlatform->data = NULL;
 }
 
+CollisionBox getPlatformCollisionBox(float centerX, float centerY, float centerZ, float width, float height, float depth) {
+    CollisionBox platformCollision;
 
-// load everything up
-void loadScenario(SceneObject *sceneObjects, int *qtdSceneObjects) {
+    platformCollision.minX = centerX - width / 2;
+    platformCollision.maxX = centerX + width / 2;
+    platformCollision.minY = centerY - height / 2;
+    platformCollision.maxY = centerY + height / 2;
+    platformCollision.minZ = centerZ - depth / 2;
+    platformCollision.maxZ = centerZ + depth / 2;
 
+    return platformCollision;
 }

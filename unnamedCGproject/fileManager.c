@@ -4,11 +4,25 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "utils.h"
 #include "object.h"
 #include "player.h"
 #include "fileManager.h"
 
 FILE *loadFilePointer = NULL;
+
+void parseFloatValues(const char *floatString, float *values) {
+    char *tempStr = strdup(floatString);
+    char *token = strtok(tempStr, ",");
+
+    int i = 0;
+    while (token != NULL && i < DIMENSIONS) {
+        values[i++] = atof(token);
+        token = strtok(NULL, ",");
+    }
+
+    free(tempStr);
+}
 
 void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects) {
     if (strcmp(fileLocation, "") == 0) {
@@ -21,21 +35,41 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
 
     char line[MAX_LINE_SIZE];
     while (fgets(line, sizeof(line), loadFilePointer)) {
-        const char *delimiters = ";";
-        char *token = strtok(line, delimiters);
-        if (strcmp(token, "PLAYER") == 0) {
-            float posX, posY, posZ;
+        line[strcspn(line, "\n")] = 0; // remove o \n do fim da linha
 
-        }
-        else if (strcmp(token, "OBJECT") == 0) {
+        char *stringParts[MAX_FILE_STRING_SEPARATIONS]; // define o máximo de partes que a string pode ter (nesse caso, 4 partes)
+        int partIndex = 0;
 
+        char *token = strtok(line, ";");
+        while (token != NULL && partIndex < MAX_FILE_STRING_SEPARATIONS) {
+            stringParts[partIndex++] = token;
+            token = strtok(NULL, ";");
         }
-        else if (strcmp(token, "PLATFORM") == 0) {
+
+        if (strcmp(stringParts[0], "PLATFORM") == 0) {
+            float centerCoords[DIMENSIONS], platformSize[DIMENSIONS];
+            parseFloatValues(stringParts[1], centerCoords);
+            parseFloatValues(stringParts[2], platformSize);
+
+            CollisionBox platformCollision = getPlatformCollisionBox(centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS],
+                                                                     platformSize[X_AXIS], platformSize[Y_AXIS], platformSize[Z_AXIS]);
+            loadPlatform(sceneObjects, qtdObjects, centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS], &platformCollision);
+        }
+        else if (strcmp(stringParts[0], "PLAYER") == 0) {
+            float playerCoords[DIMENSIONS];
+            parseFloatValues(stringParts[1], playerCoords);
+
+            player->x = playerCoords[X_AXIS];
+            player->y = playerCoords[Y_AXIS];
+            player->z = playerCoords[Z_AXIS];
+
+            loadPlayerModel(player, stringParts[2]);
+        }
+        else if (strcmp(stringParts[0], "OBJECT") == 0) {
 
         }
         else {
-            printf("Unable to extract info from object %s\n", token);
-            continue;
+            printf("NON-SUPPORTED OBJECT DETECTED: %s. Skipping to the next object...\n", stringParts[0]);
         }
     }
 

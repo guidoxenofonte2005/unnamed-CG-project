@@ -66,7 +66,10 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
             loadPlayerModel(player, stringParts[2]);
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
+            float objectCoords[DIMENSIONS];
+            parseFloatValues(stringParts[1], objectCoords);
 
+            loadObject(&sceneObjects[(*qtdObjects)++], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
         }
         else {
             printf("NON-SUPPORTED OBJECT DETECTED: %s. Skipping to the next object...\n", stringParts[0]);

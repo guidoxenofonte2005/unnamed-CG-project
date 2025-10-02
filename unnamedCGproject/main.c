@@ -81,7 +81,7 @@ int init() {
     sceneObjects[objectCount - 1].anim.maxLimit = 10.0f;
     //objectCount++; // Incrementa o contador DEPOIS de configurar
 
-    loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
+    // loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
 
     // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma função só que gere o cenário inteiro de uma vez
     // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informações do cenário

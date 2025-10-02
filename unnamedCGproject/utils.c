@@ -109,9 +109,9 @@ void updateFOV(float newFOV, float windowWidth, float windowHeight) {
 }
 
 float get3DDistance(const float *obj1, const float *obj2) {
-    float deltaX = obj2[0] - obj1[0];
-    float deltaY = obj2[1] - obj1[1];
-    float deltaZ = obj2[2] - obj1[2];
+    float deltaX = obj2[X_AXIS] - obj1[X_AXIS];
+    float deltaY = obj2[Y_AXIS] - obj1[Y_AXIS];
+    float deltaZ = obj2[Z_AXIS] - obj1[Z_AXIS];
 
     return sqrtf(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 }

@@ -17,16 +17,16 @@ GLuint playerTextureID = 0;
 ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
 void movePlayer(float *speed, Player *playerObject) {
-    playerObject->x += speed[0];
-    playerObject->y += speed[1];
-    playerObject->z += speed[2];
+    playerObject->x += speed[X_AXIS];
+    playerObject->y += speed[Y_AXIS];
+    playerObject->z += speed[Z_AXIS];
 
-    playerObject->collision.minX += speed[0];
-    playerObject->collision.minY += speed[1];
-    playerObject->collision.minZ += speed[2];
-    playerObject->collision.maxX += speed[0];
-    playerObject->collision.maxY += speed[1];
-    playerObject->collision.maxZ += speed[2];
+    playerObject->collision.minX += speed[X_AXIS];
+    playerObject->collision.minY += speed[Y_AXIS];
+    playerObject->collision.minZ += speed[Z_AXIS];
+    playerObject->collision.maxX += speed[X_AXIS];
+    playerObject->collision.maxY += speed[Y_AXIS];
+    playerObject->collision.maxZ += speed[Z_AXIS];
 
     // printf("%f\n", speed[1]);
 }
@@ -148,12 +148,12 @@ void getPlayerCollisionBox(Player *player) {
                 if (attr->type == cgltf_attribute_type_position) {
                     cgltf_accessor* accessor = attr->data;
 
-                    minX = accessor->min[0];
-                    minY = accessor->min[1];
-                    minZ = accessor->min[2];
-                    maxX = accessor->max[0];
-                    maxY = accessor->max[1];
-                    maxZ = accessor->max[2];
+                    minX = accessor->min[X_AXIS];
+                    minY = accessor->min[Y_AXIS];
+                    minZ = accessor->min[Z_AXIS];
+                    maxX = accessor->max[X_AXIS];
+                    maxY = accessor->max[Y_AXIS];
+                    maxZ = accessor->max[Z_AXIS];
                 }
             }
         }
@@ -170,8 +170,9 @@ void getPlayerCollisionBox(Player *player) {
 }
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
+    //pega a posição anterior do player
     float oldX = player->x, oldY = player->y, oldZ = player->z;
-    float move[3] = {speed[0], speed[1], speed[2]};
+    float move[3] = {speed[X_AXIS], speed[Y_AXIS], speed[Z_AXIS]};
     bool collided = false;
 
     // Tenta mover o player
@@ -181,7 +182,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
     for (int i = 0; i < qtdObjInRange; i++) {
         SceneObject *currentObj = &objectsInRange[i];
         if (isObjectColliding(player->collision, currentObj->collision)) {
-            // Colidiu: volta para posição anterior
+            // se colidiu, volta para posição anterior
             player->x = oldX; player->y = oldY; player->z = oldZ;
             getPlayerCollisionBox(player);
 
@@ -206,6 +207,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                 player->y = currentObj->collision.maxY;
             }
             // if (side != NONE) printf("%d\n", side);
+
             // Move o player "deslizando" na superfície
             movePlayer(slideSpeed, player);
             collided = true;

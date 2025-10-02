@@ -80,7 +80,7 @@ void drawObject(SceneObject* object) {
 
                         float normal[3];
                         cgltf_accessor_read_float(normals_accessor, index, normal, 3);
-                        glNormal3f(normal[0], normal[1], normal[2]);
+                        glNormal3f(normal[X_AXIS], normal[Y_AXIS], normal[Z_AXIS]);
 
                         if (texture_coords_accessor) {
                             float texturePosition[2];
@@ -90,7 +90,7 @@ void drawObject(SceneObject* object) {
 
                         float position[3];
                         cgltf_accessor_read_float(positions_accessor, index, position, 3);
-                        glVertex3f(position[0], position[1], position[2]);
+                        glVertex3f(position[X_AXIS], position[Y_AXIS], position[Z_AXIS]);
                     }
                     glEnd();
                 }
@@ -122,12 +122,12 @@ void getCollisionBoxFromObject(SceneObject *object) {
                     if (attr->type == cgltf_attribute_type_position) {
                         cgltf_accessor* accessor = attr->data;
 
-                        minX = accessor->min[0];
-                        minY = accessor->min[1];
-                        minZ = accessor->min[2];
-                        maxX = accessor->max[0];
-                        maxY = accessor->max[1];
-                        maxZ = accessor->max[2];
+                        minX = accessor->min[X_AXIS];
+                        minY = accessor->min[Y_AXIS];
+                        minZ = accessor->min[Z_AXIS];
+                        maxX = accessor->max[X_AXIS];
+                        maxY = accessor->max[Y_AXIS];
+                        maxZ = accessor->max[Z_AXIS];
                     }
                 }
             }

@@ -17,6 +17,7 @@ GLuint playerTextureID = 0;
 ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
 void movePlayer(float *speed, Player *playerObject) {
+    printf("%f\n", speed[Y_AXIS]);
     playerObject->x += speed[X_AXIS];
     playerObject->y += speed[Y_AXIS];
     playerObject->z += speed[Z_AXIS];
@@ -170,48 +171,92 @@ void getPlayerCollisionBox(Player *player) {
 }
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
-    //pega a posição anterior do player
+    // Guarda posição anterior
     float oldX = player->x, oldY = player->y, oldZ = player->z;
-    float move[3] = {speed[X_AXIS], speed[Y_AXIS], speed[Z_AXIS]};
-    bool collided = false;
+    // Movimento desejado para este step (sua estrutura atual usa *speed* como deslocamento por step)
+    float move[3] = { speed[X_AXIS], speed[Y_AXIS], speed[Z_AXIS] };
 
-    // Tenta mover o player
-    movePlayer(move, player);
+    // Offsets constantes da caixa de colisão em relação à posição do jogador
+    float topOffset = player->collision.maxY - player->y;
+    float bottomOffset = player->collision.minY - player->y;
 
-    // Testa colisão com cada objeto próximo
-    for (int i = 0; i < qtdObjInRange; i++) {
+    // Assume no chão até provar o contrário
+    player->isOnGround = false;
+
+    // --- 1) Move X e resolve colisões X ---
+    float mv[3] = { move[X_AXIS], 0.0f, 0.0f };
+    movePlayer(mv, player);
+
+    for (int i = 0; i < qtdObjInRange; ++i) {
         SceneObject *currentObj = &objectsInRange[i];
         if (isObjectColliding(player->collision, currentObj->collision)) {
-            // se colidiu, volta para posição anterior
-            player->x = oldX; player->y = oldY; player->z = oldZ;
+            // Reverte X
+            player->x = oldX;
             getPlayerCollisionBox(player);
+            // Cancela movimento/velocidade X
+            speed[X_AXIS] = 0.0f;
+            move[X_AXIS] = 0.0f;
+            break;
+        }
+    }
 
-            // Calcula o vetor normal da colisão
+    // --- 2) Move Z e resolve colisões Z ---
+    oldZ = player->z;
+    mv[0] = 0.0f; mv[1] = 0.0f; mv[2] = move[Z_AXIS];
+    movePlayer(mv, player);
+
+    for (int i = 0; i < qtdObjInRange; ++i) {
+        SceneObject *currentObj = &objectsInRange[i];
+        if (isObjectColliding(player->collision, currentObj->collision)) {
+            // Reverte Z
+            player->z = oldZ;
+            getPlayerCollisionBox(player);
+            // Cancela movimento/velocidade Z
+            speed[Z_AXIS] = 0.0f;
+            move[Z_AXIS] = 0.0f;
+            break;
+        }
+    }
+
+    // --- 3) Move Y e resolve colisões Y (aqui definimos "no chão" corretamente) ---
+    oldY = player->y;
+    mv[0] = 0.0f; mv[1] = move[Y_AXIS]; mv[2] = 0.0f;
+    movePlayer(mv, player);
+
+    for (int i = 0; i < qtdObjInRange; ++i) {
+        SceneObject *currentObj = &objectsInRange[i];
+        if (isObjectColliding(player->collision, currentObj->collision)) {
             CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
-            float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
-            getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
 
-            // Projeta o movimento no plano da superfície (slide)
-            float prodEscalar = move[X_AXIS] * normalCollisionVector[X_AXIS] +
-                                move[Y_AXIS] * normalCollisionVector[Y_AXIS] +
-                                move[Z_AXIS] * normalCollisionVector[Z_AXIS];
-            float normalSpeedVector[3] = {normalCollisionVector[X_AXIS] * prodEscalar,
-                                         normalCollisionVector[Y_AXIS] * prodEscalar,
-                                         normalCollisionVector[Z_AXIS] * prodEscalar};
-            float slideSpeed[3] = {move[X_AXIS] - normalSpeedVector[X_AXIS],
-                                   move[Y_AXIS] - normalSpeedVector[Y_AXIS],
-                                   move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
-
-            if (side == TOP) {
+            // Só reconhece "estar em cima" se a colisão vier de cima e o movimento vertical for pra baixo
+            if (side == TOP && move[Y_AXIS] <= 0.0f) {
                 player->isOnGround = true;
-                player->y = currentObj->collision.maxY;
-            }
-            // if (side != NONE) printf("%d\n", side);
+                // reposiciona o player exatamente em cima usando o offset calculado
+                const float EPSILON = 0.001f;
+                player->y = currentObj->collision.maxY + EPS - topOffset;
+                getPlayerCollisionBox(player);
 
-            // Move o player "deslizando" na superfície
-            movePlayer(slideSpeed, player);
-            collided = true;
-            break; // Só trata a primeira colisão
+                // anula movimento/velocidade vertical
+                speed[Y_AXIS] = 0.0f;
+                move[Y_AXIS] = 0.0f;
+            }
+            else if (side == BOTTOM && move[Y_AXIS] >= 0.0f) {
+                // bateu a cabeça — posiciona logo abaixo do teto
+                const float EPS = 0.001f;
+                player->y = currentObj->collision.minY - EPS - bottomOffset;
+                getPlayerCollisionBox(player);
+
+                speed[Y_AXIS] = 0.0f;
+                move[Y_AXIS] = 0.0f;
+            }
+            else {
+                // colisão lateral inesperada em Y: apenas reverte Y e zera componente vertical
+                player->y = oldY;
+                getPlayerCollisionBox(player);
+                speed[Y_AXIS] = 0.0f;
+                move[Y_AXIS] = 0.0f;
+            }
+            break;
         }
     }
 }

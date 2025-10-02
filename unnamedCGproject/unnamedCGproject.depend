@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759428505 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -83,7 +83,7 @@
 
 1759187270 ated upstream
 
-1759405349 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+1759428609 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -94,18 +94,19 @@
 
 1759347625 shed changes
 
-1759231276 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
+1759428530 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
+	"object.h"
 
 1759403589 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
 
-1759405222 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1759428855 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -604,11 +605,12 @@
 	"GL/freeglut.h"
 	"collision.h"
 
-1759403589 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759417623 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
 	"object.h"
+	"utils.h"
 
 1758815966 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\lighting.c
 	<GL/freeglut.h>
@@ -678,7 +680,7 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759417649 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -688,7 +690,7 @@
 	"player.h"
 	"fileManager.h"
 
-1759403640 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
+1759408340 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
 
 1759275881 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>

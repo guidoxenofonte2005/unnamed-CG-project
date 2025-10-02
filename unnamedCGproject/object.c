@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 
 #include "object.h"
+#include "utils.h"
 
 void loadObject(SceneObject* object, const char* filename, float x, float y, float z) {
     cgltf_options options = {0};

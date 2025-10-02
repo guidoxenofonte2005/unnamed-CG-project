@@ -6,6 +6,7 @@
 
 #include "libs/cgltf/cgltf.h"
 #include "collision.h"
+#include "object.h"
 
 typedef enum {
     IDLE,
@@ -33,6 +34,8 @@ void cleanupPlayerModel(Player* playerObj);
 
 //void getPlayerCollisionBox(Player *player);
 void applyGravity(Player* playerObj, float *speed);
+
+void collideAndSlide(float *velocity, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime);
 
 extern int qtdTextures;
 

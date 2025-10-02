@@ -229,13 +229,13 @@ void idleUpdates() {
     float frameTime = getDeltaTime();
     accumulator += frameTime;
 
-    // se muitas frames acumuladas, processa v�rias physics steps
+    // se muitos frames acumulados, processa vários physics steps
     while (accumulator >= PHYSICS_STEP) {
         simulatePhysics(PHYSICS_STEP);
         accumulator -= PHYSICS_STEP;
     }
 
-    // "Redesenha" a tela
+    // "redesenha" a tela
     glutPostRedisplay();
 }
 

@@ -201,7 +201,10 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                                    move[Y_AXIS] - normalSpeedVector[Y_AXIS],
                                    move[Z_AXIS] - normalSpeedVector[Z_AXIS]};
 
-            if (side == TOP) player->isOnGround = true;
+            if (side == TOP) {
+                player->isOnGround = true;
+                player->y = currentObj->collision.maxY;
+            }
             // if (side != NONE) printf("%d\n", side);
             // Move o player "deslizando" na superfície
             movePlayer(slideSpeed, player);

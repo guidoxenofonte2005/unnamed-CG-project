@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759347437 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -10,11 +10,11 @@
 	"object.h"
 	"utils.h"
 
-<<<<<<< HEAD
-1759372145 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
-=======
+1759187270 D
+
 1759285954 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
+
+1759347306 e0df5abf47841e6c2610bfba33ec214821f7b
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -24,18 +24,6 @@
 	"player.h"
 	"object.h"
 	"utils.h"
-
-1759283658 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
-	<stdlib.h>
-	<stdbool.h>
-	"libs/cgltf/cgltf.h"
-	"collision.h"
-
-<<<<<<< HEAD
-1759369816 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
-=======
-1759286098 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -43,25 +31,9 @@
 	"object.h"
 	"utils.h"
 	"libs/cgltf/cgltf.h"
-
-<<<<<<< HEAD
-1759369814 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
-=======
-1759286160 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
 	<stdbool.h>
 	"object.h"
 	"player.h"
-
-<<<<<<< HEAD
-1759187270 ated upstream
-
-1759347965 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
-
-1759347625 shed changes
-=======
-1759340476 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -83,6 +55,44 @@
 	"object.h"
 	"player.h"
 	"fileManager.h"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"player.h"
+	"object.h"
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1759283658 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
+	<stdlib.h>
+	<stdbool.h>
+	"libs/cgltf/cgltf.h"
+	"collision.h"
+
+1759286098 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+
+1759286160 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+
+1759187270 ated upstream
+
+1759403589 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"libs/cgltf/cgltf.h"
+
+1759347625 shed changes
 
 1759231276 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
@@ -90,17 +100,12 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759324637 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
+1759403589 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
 
-<<<<<<< HEAD
-1759347971 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
-
-1759369815 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
-=======
-1759324414 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1759405222 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -111,15 +116,6 @@
 	"object.h"
 
 1759285583 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
-	<GL/freeglut.h>
-	"utils.h"
-	"player.h"
-	"object.h"
 
 1758850823 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
@@ -592,11 +588,9 @@
 	<GL/freeglut.h>
 	"object.h"
 
-<<<<<<< HEAD
-1759369812 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
-=======
 1759285378 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
+
+1759403588 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -605,21 +599,12 @@
 	"utils.h"
 	"collision.h"
 
-1759285456 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<stdbool.h>
-	<GL/freeglut.h>
-	"utils.h"
-	"collision.h"
-
-1759347341 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
+1759403589 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 
-1759345804 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759403589 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -693,10 +678,7 @@
 	<intrin.h>
 	<arm_neon.h>
 
-<<<<<<< HEAD
-1759347625 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
-=======
-1759347306 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -705,9 +687,8 @@
 	"object.h"
 	"player.h"
 	"fileManager.h"
->>>>>>> ed4e0df5abf47841e6c2610bfba33ec214821f7b
 
-1759339567 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
+1759403640 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
 
 1759275881 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>

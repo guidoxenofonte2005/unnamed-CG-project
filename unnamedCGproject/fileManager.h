@@ -7,4 +7,4 @@
 
 #endif // FILEMANAGER_H_INCLUDED
 
-void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects);
+void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects, int max_objects);

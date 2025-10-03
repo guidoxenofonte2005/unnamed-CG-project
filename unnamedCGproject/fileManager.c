@@ -24,7 +24,7 @@ void parseFloatValues(const char *floatString, float *values) {
     free(tempStr);
 }
 
-void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects) {
+void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *player, int *qtdObjects, int max_objects) {
     if (strcmp(fileLocation, "") == 0) {
         printf("NO FILE STRING RECEIVED");
         return;
@@ -66,10 +66,16 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
             loadPlayerModel(player, stringParts[2]);
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
+            if ((*qtdObjects) > max_objects) continue;
             float objectCoords[DIMENSIONS];
             parseFloatValues(stringParts[1], objectCoords);
 
-            loadObject(&sceneObjects[(*qtdObjects)++], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
+            loadObject(&sceneObjects[(*qtdObjects)], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
+
+            if (atoi(stringParts[3]) == 1) {
+                sceneObjects[(*qtdObjects)].type = DANGER;
+            }
+            (*qtdObjects)++;
         }
         else {
             printf("NON-SUPPORTED OBJECT DETECTED: %s. Skipping to the next object...\n", stringParts[0]);

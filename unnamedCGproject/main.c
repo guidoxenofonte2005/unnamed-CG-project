@@ -120,65 +120,54 @@ int init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // Configura uma proje��o perspectiva, que simula a vis�o humana (objetos distantes parecem menores).
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari�veis de janela
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 1000.0); // Ajustado para usar as vari�veis de janela
 
     loadSkybox();
 
 
     //1. Define a posi��o inicial do jogador (� esquerda)
-    player.x = 0.0f;
-    player.y = 2.0f;
-    player.z = 0.0f;
+    //player.x = 0.0f;
+    //player.y = 2.0f;
+    //player.z = 0.0f;
 
     checkpointX = player.x;
     checkpointY = 2.0f;
     checkpointZ = player.z;
 
     // daqui pra baixo tem que substituir pelo load com arquivo
-    loadPlayerModel(&player, "3dfiles/player.glb");
+    //loadPlayerModel(&player, "3dfiles/player.glb");
 
-    // adiciona objetos
-    // Coordenadas (X, Z) para os espinhos, baseadas no seu layout
-    float spikePositions[][2] = {
-        // Vão 1: Uma linha de 3 espinhos
-        {-3.0f, 20.0f}, {3.0f, 20.0f},
-        // Vão 2: Duas linhas de 2 espinhos
-        {-6.0f, 38.0f}, {0.0f, 38.0f}, {6.0f, 38.0f},
-        {-6.0f, 42.0f}, {0.0f, 42.0f}, {6.0f, 42.0f},
-        // Vão 3: Duas linhas de 2 espinhos
-        {-6.0f, 68.0f}, {0.0f, 68.0f}, {6.0f, 68.0f},
-        {-6.0f, 72.0f}, {0.0f, 72.0f}, {6.0f, 72.0f},
-    };
-    int numSpikes = sizeof(spikePositions) / sizeof(spikePositions[0]);
-    // Altura da base dos espinhos para alinhar as pontas com a plataforma
-    float spikeBaseLevelY = -1.5f;
+    loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount, MAX_OBJECTS);
 
-    for (int i = 0; i < numSpikes; i++) {
+    // adiciona ESPINHOS
+    for (int i = 0; i < 15; i++) {
         // Garante que não vamos ultrapassar o limite de objetos
-        if (objectCount >= MAX_OBJECTS) break;
+        // desnecessário agora que não carrega mais
+        // if (objectCount >= MAX_OBJECTS) break;
         // Carrega um espinho na posição correta
-        loadObject(&sceneObjects[objectCount], "3dfiles/spike.glb", spikePositions[i][0], spikeBaseLevelY, spikePositions[i][1]);
+        // agora está no fileManager
+        // loadObject(&sceneObjects[objectCount+numPlatforms], "3dfiles/spike.glb", spikePositions[i][0], spikeBaseLevelY, spikePositions[i][1]);
+
         // Gira o espinho para ficar na vertical
-        sceneObjects[objectCount].rotationAngle = -90.0f;
-        sceneObjects[objectCount].rotX = 1.0f;
-        // Marca objeto como perigoso
-        sceneObjects[objectCount].type = DANGER;
+        sceneObjects[objectCount-i].rotationAngle = -90.0f;
+        sceneObjects[objectCount-i].rotX = 1.0f;
+
         // O vão 3 começa no índice 8 do array spikePositions (0-indexed)
-        if (i >= 8) {
-            SceneObject* currentSpike = &sceneObjects[objectCount];
+        if (i <= 6) {
+            SceneObject* currentSpike = &sceneObjects[objectCount-i];
             currentSpike->anim.isAnimated = true;
             currentSpike->anim.animationAxis = 2; // Animação no Eixo Y
             currentSpike->anim.moveSpeed = 5.0f;
             currentSpike->anim.moveDirection = 1.0f;
             // Define os limites do movimento vertical
-            currentSpike->anim.minLimit = spikeBaseLevelY; // Ponto mais baixo
-            currentSpike->anim.maxLimit = spikeBaseLevelY + 7.0f; // Ponto mais alto
+            currentSpike->anim.minLimit = currentSpike->y; // Ponto mais baixo
+            currentSpike->anim.maxLimit = currentSpike->y + 7.0f; // Ponto mais alto
         }
-        objectCount++; // Incrementa o contador de objetos
+        //objectCount++; // Incrementa o contador de objetos
     }
 
     // agora adiciona plataformas
-    loadLevelPlatforms();
+    //loadLevelPlatforms();
 
     // Pra animar alguma plataforma, faz o msm que fiz abaixo (verifique o índice em PlatformData levelPlatforms[])
     // Índice da plataforma 9 é (0-indexed, então é 8)
@@ -381,7 +370,7 @@ void handleWindowResize(int newWidth, int newHeight) {
     // muda a proje��o de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
+    gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 1000.0f);
 
     glMatrixMode(GL_MODELVIEW);
 

@@ -102,7 +102,7 @@ void updateFOV(float newFOV, float windowWidth, float windowHeight) {
     glPushMatrix();
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluPerspective(newFOV, windowWidth / windowHeight, 0.1, 100.0);
+        gluPerspective(newFOV, windowWidth / windowHeight, 0.1, 1000.0);
     glPopMatrix();
 }
 

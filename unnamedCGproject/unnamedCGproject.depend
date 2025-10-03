@@ -10,7 +10,7 @@
 	"object.h"
 	"utils.h"
 
-1759512918 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
+1759522067 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -29,7 +29,7 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759503305 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
+1759515682 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -73,7 +73,7 @@
 	"player.h"
 	"object.h"
 
-1759503305 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1759519698 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -636,13 +636,13 @@
 1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.h
 	<GL/glut.h>
 
-1759503689 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
+1759519252 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
 	<stdio.h>
 	"texture.h"
 	"player.h"
 	"libs/stb_image/stb_image.h"
 
-1759503305 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
+1759519272 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
 	<GL/freeglut.h>
 	"libs/cgltf/cgltf.h"
 
@@ -674,7 +674,7 @@
 
 1759253853 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
 
-1759503305 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759521441 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -684,7 +684,7 @@
 	"player.h"
 	"fileManager.h"
 
-1759503305 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
+1759521453 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
 
 1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5�  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
 	<stdio.h>

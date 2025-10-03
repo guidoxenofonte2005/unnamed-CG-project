@@ -120,7 +120,7 @@ int init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // Configura uma proje��o perspectiva, que simula a vis�o humana (objetos distantes parecem menores).
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari�veis de janela
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 1000.0); // Ajustado para usar as vari�veis de janela
 
     loadSkybox();
 
@@ -136,6 +136,8 @@ int init() {
 
     // daqui pra baixo tem que substituir pelo load com arquivo
     loadPlayerModel(&player, "3dfiles/player.glb");
+
+    loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount);
 
     // adiciona objetos
     // Coordenadas (X, Z) para os espinhos, baseadas no seu layout
@@ -178,7 +180,7 @@ int init() {
     }
 
     // agora adiciona plataformas
-    loadLevelPlatforms();
+    //loadLevelPlatforms();
 
     // Pra animar alguma plataforma, faz o msm que fiz abaixo (verifique o índice em PlatformData levelPlatforms[])
     // Índice da plataforma 9 é (0-indexed, então é 8)
@@ -381,7 +383,7 @@ void handleWindowResize(int newWidth, int newHeight) {
     // muda a proje��o de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
+    gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 1000.0f);
 
     glMatrixMode(GL_MODELVIEW);
 

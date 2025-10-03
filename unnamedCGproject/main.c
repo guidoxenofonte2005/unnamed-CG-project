@@ -9,6 +9,8 @@
 #include "player.h"
 #include "object.h"
 #include "utils.h"
+#include "textura.h"
+#include "skybox.h"
 
 #define DEATH_Y_LEVEL -15.0f // Define a altura em que o jogador volta para o ponto inicial
 #define MAX_OBJECTS 50 // Define o máximo de objetos na cena
@@ -92,6 +94,8 @@ PlatformData levelPlatforms[] = {
 };
 int numPlatforms = sizeof(levelPlatforms) / sizeof(PlatformData);
 
+GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
+
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
@@ -102,11 +106,26 @@ int init() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material
+
+    // Carrega cada textura da plataforma
+    texFront = loadTexture("tex_cenario/girder_wood.png");
+    texBack = loadTexture("tex_cenario/wall_ruined_1.png");
+    texLeft = loadTexture("tex_cenario/wall_ruined_2.png");
+    texRight = loadTexture("tex_cenario/wall_ruined_3.png");
+    texTop = loadTexture("tex_cenario/wood_3.png");
+    texBase = loadTexture("tex_cenario/metal_floor_1.png");
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0);
+    // Configura uma proje��o perspectiva, que simula a vis�o humana (objetos distantes parecem menores).
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as vari�veis de janela
 
-    // posição inicial
+    loadSkybox();
+
+
+    //1. Define a posi��o inicial do jogador (� esquerda)
     player.x = 0.0f;
     player.y = 2.0f;
     player.z = 0.0f;
@@ -189,22 +208,38 @@ void display() {
     float camX = player.x + camRadius * cosf(phiAngle) * cosf(thetaAngle);
     float camY = player.y + camRadius * sinf(phiAngle);
     float camZ = player.z + camRadius * cosf(phiAngle) * sinf(thetaAngle);
+
+    // Define a orienta��o da c�mera
     gluLookAt(camX, camY, camZ,
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
 
-    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
-    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f};
 
+    glPushMatrix();
+    // skybox na posição da câmera (sem se mover com o jogador)
+    glTranslatef(player.x, player.y, player.z);
+    drawSkybox(50.0f);
+    glPopMatrix();
+
+
+    // Definindo as propriedades da fonte de luz
+    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
+    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
+    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
+    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posi��o da luz
+
+    // Define as propriedades do material (pode ser gen�rico para todos os objetos)
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f};
     GLfloat shininess = 20;
 
+    // chama a fun��o para aplicar ilumina��o
     setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
+    glBindTexture(GL_TEXTURE_2D, 0); // desliga a textura atual
+
+    // chama fun��o para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
     for (int i = 0; i < objectCount; ++i) {
         drawObject(&sceneObjects[i]);
@@ -328,23 +363,29 @@ void handleCloseProgram() {
 }
 
 void handleWindowResize(int newWidth, int newHeight) {
+    // define os tamanhos m�ximo e m�nimo da tela
     if (newWidth < MIN_SCREEN_WIDTH) newWidth = MIN_SCREEN_WIDTH;
     if (newHeight < MIN_SCREEN_HEIGHT) newHeight = MIN_SCREEN_HEIGHT;
     if (newWidth > MAX_SCREEN_WIDTH) newWidth = MAX_SCREEN_WIDTH;
     if (newHeight > MAX_SCREEN_HEIGHT) newHeight = MAX_SCREEN_HEIGHT;
 
+    // atualiza a vari�vel global das dimens�es da tela
     winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
     winHeight = min(max(newHeight, 750), min(newHeight, 1080));
 
+    // volta a tela para o padr�o m�nimo/m�ximo caso passe do limite, sen�o continua normal
     glutReshapeWindow(winWidth, winHeight);
 
     glViewport(0, 0, winWidth, winHeight);
 
+    // muda a proje��o de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
 
     glMatrixMode(GL_MODELVIEW);
+
+    // d� redisplay na tela por seguran�a
     glutPostRedisplay();
 }
 

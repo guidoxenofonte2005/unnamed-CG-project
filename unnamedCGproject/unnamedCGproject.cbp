@@ -48,10 +48,19 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="player.h" />
+<<<<<<< HEAD
 		<Unit filename="texture.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="texture.h" />
+=======
+		<Unit filename="skybox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="textura.c">
+			<Option compilerVar="CC" />
+		</Unit>
+>>>>>>> merge-friend
 		<Unit filename="utils.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -1,21 +1,21 @@
+// Deus nos dê mt paciência nesse projeto
+
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <windows.h>
 #include <GL/freeglut.h>
-
 #include <math.h>
 #include <stdbool.h>
-
 #include "player.h"
 #include "object.h"
 #include "utils.h"
 
+#define DEATH_Y_LEVEL -15.0f // Define a altura em que o jogador volta para o ponto inicial
+#define MAX_OBJECTS 50 // Define o máximo de objetos na cena
+
 int verticalMovement;
 int horizontalMovement;
-
 float fieldOfView = 60.0f;
-
 int lastMousex, lastMousey;
 
 // ângulo horizontal
@@ -31,95 +31,157 @@ float playerRotation = 0.0f;
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
 
-Player player = {0.0f, 0.0f, 0.0f, false, true, IDLE, {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, NULL};
+Player player = {
+    0.0f, 0.0f, 0.0f,     // x, y, z
+    false,                 // isOnGround
+    true,                  // canJump
+    false,                 // isRespawning
+    false,                 // isJumping
+    IDLE,                  // state
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, // collision
+    NULL                   // modelData
+};
+
 PlayerMoveKeys moveKeys = {false, false, false, false, false, false};
 
+float checkpointX, checkpointY, checkpointZ;
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
-
 float deltaTime = 0.0f;
 
-#define MAX_OBJECTS 10 // Define o máximo de objetos na cena
 SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
+// índice de início das plataformas no array sceneObjects
+int platformStartIndex = 0;
 SceneObject objectsInCollisionRange[MAX_OBJECTS];
 int objInColRangeCount = 0;
+
+// Array que guarda as plataformas
+PlatformData levelPlatforms[] = {
+    // 1. O Chão (Plataforma Inicial)
+    // A superfície superior (onde o jogador pisa) está em Y = 1.0.
+    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 0.0f, .width = 30.0f, .height = 4.0f, .depth = 30.0f },
+
+    // 2. A Parede Traseira (no lado Z negativo)
+    { .centerX = 0.0f, .centerY = 11.0f, .centerZ = -16.0f, .width = 32.0f, .height = 20.0f, .depth = 2.0f },
+
+    // 3. A Parede Esquerda (no lado X negativo)
+    { .centerX = -16.0f, .centerY = 11.0f, .centerZ = 0.0f, .width = 2.0f, .height = 20.0f, .depth = 30.0f },
+
+    // 4. A Parede Direita (no lado X positivo)
+    // Igual à parede esquerda, mas no lado oposto.
+    { .centerX = 16.0f, .centerY = 11.0f, .centerZ = 0.0f, .width = 2.0f, .height = 20.0f, .depth = 30.0f },
+
+    // 5. O Teto
+    { .centerX = 0.0f, .centerY = 22.0f, .centerZ = 0.0f, .width = 32.0f, .height = 2.0f, .depth = 32.0f },
+
+    // 6. Nova Plataforma Pequena no meio do vão
+    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 30.0f, .width = 8.0f, .height = 4.0f, .depth = 8.0f },
+
+    // 7. plataforma (mais à frente e à direita)
+    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 55.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
+
+    // 8. plataforma (mais à frente e à direita)
+    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 85.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
+
+    // 9. plataforma (diagonal da plataforma 8)
+    { .centerX = 10.0f, .centerY = 10.0f, .centerZ = 115.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
+
+    // 10. plataforma (diagonal da plataforma 8)
+    { .centerX = -10.0f, .centerY = 30.0f, .centerZ = 115.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
+};
+int numPlatforms = sizeof(levelPlatforms) / sizeof(PlatformData);
 
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
 
-    // Habilita o teste de profundidade para a remoção de superfícies ocultas, garantindo que objetos mais próximos da câmera sejam desenhados por cima de objetos mais distantes.
     glEnable(GL_DEPTH_TEST);
-    // Habilita o sistema de iluminação global do OpenGL, Sem isso, os modelos apareceriam sem sombreamento.
+
     glEnable(GL_LIGHTING);
-    // Habilita o z-buffer
+
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // Configura uma projeção perspectiva, que simula a visão humana (objetos distantes parecem menores).
-    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0); // Ajustado para usar as variáveis de janela
+    gluPerspective(fieldOfView, (float)winWidth / (float)winHeight, 0.1, 100.0);
 
-    //1. Define a posição inicial do jogador (à esquerda)
-    //player.x = 0.0f;
-    //player.y = 1.0f;
-    //player.z = 0.0f;
+    // posição inicial
+    player.x = 0.0f;
+    player.y = 2.0f;
+    player.z = 0.0f;
 
-    // Chamada para carregar o modelo 3D uma única vez durante a inicialização.
-    //loadPlayerModel(&player, "3dfiles/player.glb");
+    checkpointX = player.x;
+    checkpointY = 2.0f;
+    checkpointZ = player.z;
 
-    // Carregando outros objetos da cena e add em um array
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/grass1.glb", 0.0f, -1.0f, 0.0f); // Exemplo de um chão
-    // Carrega o espinho e CONFIGURA A SUA ANIMAÇÃO
-    loadObject(&sceneObjects[objectCount++], "3dfiles/spike.glb", 0.0f, 1.0f, -25.0f);
-    sceneObjects[objectCount - 1].anim.isAnimated = true;
-    sceneObjects[objectCount - 1].anim.animationAxis = 0; // Animação no Eixo X
-    sceneObjects[objectCount - 1].anim.moveSpeed = 5.0f;
-    sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
-    sceneObjects[objectCount - 1].anim.minLimit = -10.0f;
-    sceneObjects[objectCount - 1].anim.maxLimit = 10.0f;
-    //objectCount++; // Incrementa o contador DEPOIS de configurar
+    // daqui pra baixo tem que substituir pelo load com arquivo
+    loadPlayerModel(&player, "3dfiles/player.glb");
 
-    // loadObject(&sceneObjects[objectCount++], "3dfiles/hydrant.glb", 15.0f, 0.0f, -10.0f); // Exemplo de um objeto na posição (15,0,0)
+    // adiciona objetos
+    // Coordenadas (X, Z) para os espinhos, baseadas no seu layout
+    float spikePositions[][2] = {
+        // Vão 1: Uma linha de 3 espinhos
+        {-3.0f, 20.0f}, {3.0f, 20.0f},
+        // Vão 2: Duas linhas de 2 espinhos
+        {-6.0f, 38.0f}, {0.0f, 38.0f}, {6.0f, 38.0f},
+        {-6.0f, 42.0f}, {0.0f, 42.0f}, {6.0f, 42.0f},
+        // Vão 3: Duas linhas de 2 espinhos
+        {-6.0f, 68.0f}, {0.0f, 68.0f}, {6.0f, 68.0f},
+        {-6.0f, 72.0f}, {0.0f, 72.0f}, {6.0f, 72.0f},
+    };
+    int numSpikes = sizeof(spikePositions) / sizeof(spikePositions[0]);
+    // Altura da base dos espinhos para alinhar as pontas com a plataforma
+    float spikeBaseLevelY = -1.5f;
 
-    // depois seria bom colocar todos os loadObjects e o loadPlatforms em uma função só que gere o cenário inteiro de uma vez
-    // talvez precisaria fzr um sistema q leia um arquivo pra pegar as informações do cenário
-    // fica pra ver depois ent
+    for (int i = 0; i < numSpikes; i++) {
+        // Garante que não vamos ultrapassar o limite de objetos
+        if (objectCount >= MAX_OBJECTS) break;
+        // Carrega um espinho na posição correta
+        loadObject(&sceneObjects[objectCount], "3dfiles/spike.glb", spikePositions[i][0], spikeBaseLevelY, spikePositions[i][1]);
+        // Gira o espinho para ficar na vertical
+        sceneObjects[objectCount].rotationAngle = -90.0f;
+        sceneObjects[objectCount].rotX = 1.0f;
+        // Marca objeto como perigoso
+        sceneObjects[objectCount].type = DANGER;
+        // O vão 3 começa no índice 8 do array spikePositions (0-indexed)
+        if (i >= 8) {
+            SceneObject* currentSpike = &sceneObjects[objectCount];
+            currentSpike->anim.isAnimated = true;
+            currentSpike->anim.animationAxis = 2; // Animação no Eixo Y
+            currentSpike->anim.moveSpeed = 5.0f;
+            currentSpike->anim.moveDirection = 1.0f;
+            // Define os limites do movimento vertical
+            currentSpike->anim.minLimit = spikeBaseLevelY; // Ponto mais baixo
+            currentSpike->anim.maxLimit = spikeBaseLevelY + 7.0f; // Ponto mais alto
+        }
+        objectCount++; // Incrementa o contador de objetos
+    }
 
-    //CollisionBox platCol;
-    //float platformWidth = 4.0f;
-    //float platformHeight = 2.0f;
-    //float platformDepth = 5.0f;
-    //float centerX = 0.0f;
-    //float centerY = -1.0f;
-    //float centerZ = 0.0f;
+    // agora adiciona plataformas
+    loadLevelPlatforms();
 
-    //platCol.minX = centerX - platformWidth / 2;
-    //platCol.maxX = centerX + platformWidth / 2;
-    //platCol.minY = centerY - platformHeight / 2;
-    //platCol.maxY = centerY + platformHeight / 2;
-    //platCol.minZ = centerZ - platformDepth / 2;
-    //platCol.maxZ = centerZ + platformDepth / 2;
-    // printf("%f, %f, %f - %f, %f, %f\n", platCol.minX, platCol.minY, platCol.minZ, platCol.maxX, platCol.maxY, platCol.maxZ);
+    // Pra animar alguma plataforma, faz o msm que fiz abaixo (verifique o índice em PlatformData levelPlatforms[])
+    // Índice da plataforma 9 é (0-indexed, então é 8)
+    int ninePlatformIndex = platformStartIndex + 8;
+    // Garante que não vamos acessar um índice fora do array
+    if (ninePlatformIndex < objectCount) {
+        // Ativa a animação
+        sceneObjects[ninePlatformIndex].anim.isAnimated = true;
+        // Define os parâmetros da animação
+        sceneObjects[ninePlatformIndex].anim.animationAxis = 0; // 0 para Eixo X, 1 para Eixo Z
+        sceneObjects[ninePlatformIndex].anim.moveSpeed = 8.0f;     // Velocidade do movimento
+        sceneObjects[ninePlatformIndex].anim.moveDirection = 1.0f; // Começa se movendo na direção positiva
 
-    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
-    // Animação da plataforma
-    //loadPlatform(sceneObjects, &objectCount, centerX, centerY, centerZ, &platCol);
-    //sceneObjects[objectCount - 1].anim.isAnimated = true;
-    //sceneObjects[objectCount - 1].anim.animationAxis = 1; // Animação no Eixo Z
-    //sceneObjects[objectCount - 1].anim.moveSpeed = 3.0f;
-    //sceneObjects[objectCount - 1].anim.moveDirection = 1.0f;
-    //sceneObjects[objectCount - 1].anim.minLimit = -15.0f; // Limite frontal
-    //sceneObjects[objectCount - 1].anim.maxLimit = 15.0f;  // Limite traseiro
+        // A plataforma começará em x=0.0 e se moverá entre -20.0 e 20.0
+        sceneObjects[ninePlatformIndex].anim.minLimit = -20.0f;
+    }
 
-    loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount);
 
     return 1;
 }
 
 void display() {
-    // Limpa o buffer de cor e o de profundidade em cada frame.
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -127,31 +189,23 @@ void display() {
     float camX = player.x + camRadius * cosf(phiAngle) * cosf(thetaAngle);
     float camY = player.y + camRadius * sinf(phiAngle);
     float camZ = player.z + camRadius * cosf(phiAngle) * sinf(thetaAngle);
-
-    // Define a orientação da câmera
     gluLookAt(camX, camY, camZ,
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
 
-    // Definindo as propriedades da fonte de luz
-    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
-    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
-    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
-    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posição da luz
+    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};
+    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f};
 
-    // Define as propriedades do material (pode ser genérico para todos os objetos)
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
-    GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f}; // Pouco brilho
+    GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f};
     GLfloat shininess = 20;
 
-    // chama a função para aplicar iluminação
     setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
-    // chama função para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
-
-    // Desenha todos os objetos da cena
     for (int i = 0; i < objectCount; ++i) {
         drawObject(&sceneObjects[i]);
         drawCollisionBoxWireframe(sceneObjects[i].collision);
@@ -159,15 +213,12 @@ void display() {
     drawCollisionBoxWireframe(player.collision);
 
     glutPostRedisplay();
-
-    // Troca o buffer de desenho para exibir a nova cena.
     glutSwapBuffers();
 }
 
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
-    if (pressedKey == 27) { // ESC
+    if (pressedKey == 27) {
         isCameraActive = !isCameraActive;
-
         if (isCameraActive) {
             glutSetCursor(GLUT_CURSOR_NONE);
             glutWarpPointer(winWidth / 2, winHeight / 2);
@@ -175,89 +226,86 @@ void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
             glutSetCursor(GLUT_CURSOR_INHERIT);
         }
     }
-    if (pressedKey == 119) {
-        moveKeys.w = true;
-    }
-    if (pressedKey == 97) {
-        moveKeys.a = true;
-    }
-    if (pressedKey == 115) {
-        moveKeys.s = true;
-    }
-    if (pressedKey == 100) {
-        moveKeys.d = true;
-    }
-    if (pressedKey == 32) {
-        moveKeys.jump = true;
-        // printf("%d, %d\n", player.isOnGround, player.canJump);
-    }
+    if (pressedKey == 119) moveKeys.w = true;
+    if (pressedKey == 97) moveKeys.a = true;
+    if (pressedKey == 115) moveKeys.s = true;
+    if (pressedKey == 100) moveKeys.d = true;
+    if (pressedKey == 32) moveKeys.jump = true;
 }
 
 void keyboardKeyUp(unsigned char key, int x, int y) {
-    if (key == 119) {
-        moveKeys.w = false;
-    }
-    if (key == 97) {
-        moveKeys.a = false;
-    }
-    if (key == 115) {
-        moveKeys.s = false;
-    }
-    if (key == 100) {
-        moveKeys.d = false;
-    }
-    if (key == 32) {
-        moveKeys.jump = false;
-    }
+    if (key == 119) moveKeys.w = false;
+    if (key == 97) moveKeys.a = false;
+    if (key == 115) moveKeys.s = false;
+    if (key == 100) moveKeys.d = false;
+    if (key == 32) moveKeys.jump = false;
 }
 
-
 void simulatePhysics(float deltaTime) {
-    // serve para automatizar o movimento de todos os objetos que você marcou como "animados" na sua cena
+    // 1. Anima objetos da cena
     for (int i = 0; i < objectCount; i++) {
         animateObject(&sceneObjects[i], deltaTime);
     }
 
-    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &player.isOnGround);
+    // 2. Guarda estado anterior e reseta o estado "no chão"
+    bool wasOnGround = player.isOnGround;
+    player.isOnGround = false; // recalculado na colisão
+
+    // 3. Calcula a velocidade pretendida do jogador (movimento + gravidade)
+    getPlayerVelocity(playerVelocity, &moveKeys, phiAngle, thetaAngle, deltaTime, &wasOnGround); // Usamos wasOnGround para o pulo
+
+    // 4. Limita a velocidade de queda para evitar "tunneling"
+    float maxFallSpeed = -50.0f;
+    if (playerVelocity[1] < maxFallSpeed) {
+        playerVelocity[1] = maxFallSpeed;
+    }
+
+    // 5. Detecta objetos próximos para otimizar a colisão
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
+
+    // 6. Verifica colisões com objetos perigosos ANTES do movimento
+    for (int i = 0; i < objInColRangeCount; i++) {
+        if (objectsInCollisionRange[i].type == DANGER &&
+            isObjectColliding(player.collision, objectsInCollisionRange[i].collision)) {
+            printf("Colidiu com um objeto perigoso! Morreu!\n");
+            respawnPlayer();
+            return; // Sai da física neste frame
+        }
+    }
+
+    // 7. Processa movimento e colisões com plataformas/paredes
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+
+    // 8. Verifica morte por queda
+    if (player.y < DEATH_Y_LEVEL) {
+        respawnPlayer();
+    }
 }
 
 void idleUpdates() {
     static float accumulator = 0.0f;
     float frameTime = getDeltaTime();
     accumulator += frameTime;
-
-    // se muitas frames acumuladas, processa v�rias physics steps
     while (accumulator >= PHYSICS_STEP) {
         simulatePhysics(PHYSICS_STEP);
         accumulator -= PHYSICS_STEP;
     }
-
-    // "Redesenha" a tela
     glutPostRedisplay();
 }
 
 void handleMouseMovement(int x, int y) {
     if (!isCameraActive) return;
-
     int centerX = winWidth / 2;
     int centerY = winHeight / 2;
-
     int dx = x - centerX;
     int dy = y - centerY;
-
     float mouseSensitivity = 0.005f;
-
     thetaAngle += dx * mouseSensitivity;
     phiAngle += dy * mouseSensitivity;
-
     if (phiAngle > 1.55f)  phiAngle = 1.55f;
     if (phiAngle < -1.55f) phiAngle = -1.55f;
-
     glutWarpPointer(centerX, centerY);
-    // glutPostRedisplay();
 }
 
 void handleMouseWheel(int wheel, int direction, int x, int y) {
@@ -273,8 +321,6 @@ void handleMouseWheel(int wheel, int direction, int x, int y) {
 }
 
 void handleCloseProgram() {
-    // A função agora chama a função de limpeza do modelo do jogador é chamada
-    // passando a struct 'player' como parâmetro
     cleanupPlayerModel(&player);
     for (int i = 0; i < objectCount; ++i) {
         cleanupObject(&sceneObjects[i]);
@@ -282,33 +328,63 @@ void handleCloseProgram() {
 }
 
 void handleWindowResize(int newWidth, int newHeight) {
-    // define os tamanhos máximo e mínimo da tela
     if (newWidth < MIN_SCREEN_WIDTH) newWidth = MIN_SCREEN_WIDTH;
     if (newHeight < MIN_SCREEN_HEIGHT) newHeight = MIN_SCREEN_HEIGHT;
-
     if (newWidth > MAX_SCREEN_WIDTH) newWidth = MAX_SCREEN_WIDTH;
     if (newHeight > MAX_SCREEN_HEIGHT) newHeight = MAX_SCREEN_HEIGHT;
 
-    // atualiza a variável global das dimensões da tela
     winWidth = min(max(newWidth, 1000), min(newWidth, 1920));
     winHeight = min(max(newHeight, 750), min(newHeight, 1080));
 
-    // volta a tela para o padrão mínimo/máximo caso passe do limite, senão continua normal
     glutReshapeWindow(winWidth, winHeight);
 
-    // atualiza o viewport
     glViewport(0, 0, winWidth, winHeight);
 
-    // muda a projeção de perspectiva pra acomodar o novo tamanho da tela
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, (float) winWidth / (float) winHeight, 0.1f, 100.0f);
 
-    // volta para o modelview
     glMatrixMode(GL_MODELVIEW);
-
-    // dá redisplay na tela por segurança
     glutPostRedisplay();
+}
+
+// atualizado para o fileManager
+// Função para carregar as plataformas
+void loadLevelPlatforms() {
+    platformStartIndex = objectCount; // guarda o índice inicial das plataformas
+    for (int i = 0; i < numPlatforms; i++) {
+        CollisionBox platCol;
+        PlatformData currentPlatform = levelPlatforms[i];
+        platCol.minX = currentPlatform.centerX - currentPlatform.width / 2;
+        platCol.maxX = currentPlatform.centerX + currentPlatform.width / 2;
+        platCol.minY = currentPlatform.centerY - currentPlatform.height / 2;
+        platCol.maxY = currentPlatform.centerY + currentPlatform.height / 2;
+        platCol.minZ = currentPlatform.centerZ - currentPlatform.depth / 2;
+        platCol.maxZ = currentPlatform.centerZ + currentPlatform.depth / 2;
+        loadPlatform(sceneObjects, &objectCount, currentPlatform.centerX, currentPlatform.centerY, currentPlatform.centerZ, &platCol);
+    }
+}
+
+// Função para respawnar o player caso ele morra
+void respawnPlayer() {
+    printf("GAME OVER! Voltando para o checkpoint.\n");
+    // 1. Reposiciona o player acima da plataforma inicial
+    player.x = checkpointX;
+    player.y = checkpointY + 0.1f; // Adiciona pequeno offset para garantir que está acima
+    player.z = checkpointZ;
+
+    // 2. CRÍTICO: Zera COMPLETAMENTE as velocidades
+    playerVelocity[0] = 0.0f;
+    player.y = checkpointY + 0.5f; // Offset para garantir que ele caia sobre a plataforma
+    playerVelocity[2] = 0.0f;
+
+    // 3. Atualiza a caixa de colisão na nova posição
+    updatePlayerCollisionBox(&player);
+
+    // 4. Define flags de estado corretas
+    player.isRespawning = false;
+    player.isOnGround = false;  // Força a física a detectar o chão novamente
+    player.isJumping = true;
 }
 
 int main(int argc, char** argv)
@@ -318,21 +394,14 @@ int main(int argc, char** argv)
     glutInitWindowPosition(200, 50);
     glutInitWindowSize(winWidth, winHeight);
     glutCreateWindow("HALLO");
-
     init();
-
     glutIdleFunc(idleUpdates);
-
     glutKeyboardFunc(handleKeyboardInput);
     glutKeyboardUpFunc(keyboardKeyUp);
-
     glutPassiveMotionFunc(handleMouseMovement);
     glutMouseWheelFunc(handleMouseWheel);
-
     glutCloseFunc(handleCloseProgram);
-
     glutReshapeFunc(handleWindowResize);
-
     glutDisplayFunc(display);
     glutMainLoop();
     return 0;

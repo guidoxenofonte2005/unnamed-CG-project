@@ -66,14 +66,6 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
             loadPlayerModel(player, stringParts[2]);
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
-
-            player->x = playerCoords[X_AXIS];
-            player->y = playerCoords[Y_AXIS];
-            player->z = playerCoords[Z_AXIS];
-
-            loadPlayerModel(player, stringParts[2]);
-        }
-        else if (strcmp(stringParts[0], "OBJECT") == 0) {
             float objectCoords[DIMENSIONS];
             parseFloatValues(stringParts[1], objectCoords);
 

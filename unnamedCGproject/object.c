@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <GL/freeglut.h>
-
 #include "object.h"
 
 void loadObject(SceneObject* object, const char* filename, float x, float y, float z) {
@@ -25,8 +23,25 @@ void loadObject(SceneObject* object, const char* filename, float x, float y, flo
     object->y = y;
     object->z = z;
 
-    getCollisionBoxFromObject(object);
+    // Define o tipo padrão para objetos carregados
+    object->type = DEFAULT;
 
+    // Inicializa a rotação
+    object->rotationAngle = 0.0f;
+    object->rotX = 0.0f;
+    object->rotY = 0.0f;
+    object->rotZ = 0.0f;
+
+    // Inicializa os dados de animação para um estado "desligado".
+    // Isso impede que o objeto se mova aleatoriamente por lixo na memória.
+    object->anim.isAnimated = false;
+    object->anim.animationAxis = 0;
+    object->anim.moveSpeed = 0.0f;
+    object->anim.moveDirection = 1.0f;
+    object->anim.minLimit = 0.0f;
+    object->anim.maxLimit = 0.0f;
+
+    getCollisionBoxFromObject(object);
     object->textureID = getTextureFromObject(object->data);
 }
 
@@ -34,21 +49,19 @@ void drawObject(SceneObject* object) {
     if (!object->data) {
         return;
     }
-
     glBindTexture(GL_TEXTURE_2D, object->textureID);
-
     glPushMatrix();
         glTranslatef(object->x, object->y, object->z);
-
+        if (object->rotationAngle != 0.0f) {
+            glRotatef(object->rotationAngle, object->rotX, object->rotY, object->rotZ);
+        }
         for (int i = 0; i < object->data->meshes_count; ++i) {
             cgltf_mesh* mesh = &object->data->meshes[i];
             for (int j = 0; j < mesh->primitives_count; ++j) {
                 cgltf_primitive* primitive = &mesh->primitives[j];
-
                 if (primitive->type == cgltf_primitive_type_triangles) {
                     cgltf_accessor* positions_accessor = NULL;
                     cgltf_accessor* normals_accessor = NULL;
-
                     // Loop para encontrar os atributos de posição e normal pelo tipo
                     for (int attr_idx = 0; attr_idx < primitive->attributes_count; ++attr_idx) {
                         cgltf_attribute* attr = &primitive->attributes[attr_idx];
@@ -58,7 +71,6 @@ void drawObject(SceneObject* object) {
                             normals_accessor = attr->data;
                         }
                     }
-
                     // Se não encontrar os dados de vértice, pula para o próximo
                     if (!positions_accessor || !normals_accessor || !primitive->indices) {
                         continue;
@@ -71,26 +83,21 @@ void drawObject(SceneObject* object) {
                             break;
                         }
                     }
-
                     cgltf_accessor* indices_accessor = primitive->indices;
-
                     glBegin(GL_TRIANGLES);
                     for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
                         cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
-
                         float normal[3];
                         cgltf_accessor_read_float(normals_accessor, index, normal, 3);
-                        glNormal3f(normal[X_AXIS], normal[Y_AXIS], normal[Z_AXIS]);
-
+                        glNormal3f(normal[0], normal[1], normal[2]);
                         if (texture_coords_accessor) {
                             float texturePosition[2];
                             cgltf_accessor_read_float(texture_coords_accessor, index, texturePosition, 2);
                             glTexCoord2f(texturePosition[0], texturePosition[1]);
                         }
-
                         float position[3];
                         cgltf_accessor_read_float(positions_accessor, index, position, 3);
-                        glVertex3f(position[X_AXIS], position[Y_AXIS], position[Z_AXIS]);
+                        glVertex3f(position[0], position[1], position[2]);
                     }
                     glEnd();
                 }
@@ -109,10 +116,8 @@ void cleanupObject(SceneObject* object) {
 // pega a collisionBox de um determinado objeto
 void getCollisionBoxFromObject(SceneObject *object) {
     cgltf_data *data = object->data;
-
     if (data != NULL) {
         float minX = 0.0f, minY = 0.0f, minZ = 0.0f, maxX = 0.0f, maxY = 0.0f, maxZ = 0.0f;
-
         for (size_t meshIndex = 0; meshIndex < data->meshes_count; ++meshIndex) {
             cgltf_mesh* mesh = &data->meshes[meshIndex];
             for (size_t primIndex = 0; primIndex < mesh->primitives_count; ++primIndex) {
@@ -121,43 +126,54 @@ void getCollisionBoxFromObject(SceneObject *object) {
                     cgltf_attribute* attr = &primitive->attributes[attrIndex];
                     if (attr->type == cgltf_attribute_type_position) {
                         cgltf_accessor* accessor = attr->data;
-
-                        minX = accessor->min[X_AXIS];
-                        minY = accessor->min[Y_AXIS];
-                        minZ = accessor->min[Z_AXIS];
-                        maxX = accessor->max[X_AXIS];
-                        maxY = accessor->max[Y_AXIS];
-                        maxZ = accessor->max[Z_AXIS];
+                        minX = accessor->min[0];
+                        minY = accessor->min[1];
+                        minZ = accessor->min[2];
+                        maxX = accessor->max[0];
+                        maxY = accessor->max[1];
+                        maxZ = accessor->max[2];
                     }
                 }
             }
         }
-
         object->collision.minX = minX + object->x;
         object->collision.maxX = maxX + object->x;
         object->collision.minY = minY + object->y;
         object->collision.maxY = maxY + object->y;
         object->collision.minZ = minZ + object->z;
         object->collision.maxZ = maxZ + object->z;
+
+        // Se o objeto for perigoso (um espinho), ajusta sua caixa de colisão
+        // para corresponder à sua forma vertical, ignorando a altura do modelo original.
+        if (object->type == DANGER) {
+            // Define a base da colisão na posição Y do objeto
+            object->collision.minY = object->y;
+            // Define o topo da colisão. Ajuste o '3.0f' se quiser que a caixa seja mais alta ou mais baixa.
+            object->collision.maxY = object->y + 3.0f;
+        }
     }
-
-
     // printf("OBJ: %f, %f, %f - %f, %f, %f\n", object->collision.minX, object->collision.minY, object->collision.minZ, object->collision.maxX, object->collision.maxY, object->collision.maxZ);
 }
-
-
-
 
 // platform related thingys
 void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision) {
     SceneObject *newPlatform = &sceneObjects[(*qtdSceneObjects)++];
-
     newPlatform->x = x;
     newPlatform->y = y;
     newPlatform->z = z;
-
     newPlatform->collision = (*platformCollision);
     newPlatform->data = NULL;
+
+    // Define o tipo da plataforma
+    newPlatform->type = PLATFORM;
+
+    // Inicializa os dados de animação para um estado "desligado"
+    newPlatform->anim.isAnimated = false;
+    newPlatform->anim.animationAxis = 0;
+    newPlatform->anim.moveSpeed = 0.0f;
+    newPlatform->anim.moveDirection = 1.0f;
+    newPlatform->anim.minLimit = 0.0f;
+    newPlatform->anim.maxLimit = 0.0f;
 }
 
 CollisionBox getPlatformCollisionBox(float centerX, float centerY, float centerZ, float width, float height, float depth) {

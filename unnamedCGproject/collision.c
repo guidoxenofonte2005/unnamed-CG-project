@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-
 #include <GL/freeglut.h>
-
 #include "utils.h"
-
 #include "collision.h"
 
 bool isObjectColliding(CollisionBox box1, CollisionBox box2) {
@@ -19,7 +16,6 @@ CollisionSide getCollidingObjectSide(CollisionBox referenceObj, CollisionBox col
     float deltaX = fmin(referenceObj.maxX, collidingObj.maxX) - fmax(referenceObj.minX, collidingObj.minX);
     float deltaY = fmin(referenceObj.maxY, collidingObj.maxY) - fmax(referenceObj.minY, collidingObj.minY);
     float deltaZ = fmin(referenceObj.maxZ, collidingObj.maxZ) - fmax(referenceObj.minZ, collidingObj.minZ);
-
     float referenceCenterY = (referenceObj.minY + referenceObj.maxY) / 2.0f;
     float collidingObjCenterY = (collidingObj.minY + collidingObj.maxY) / 2.0f;
 

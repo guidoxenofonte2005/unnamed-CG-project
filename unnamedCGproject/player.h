@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-
 #include "libs/cgltf/cgltf.h"
 #include "collision.h"
 
@@ -19,9 +18,12 @@ typedef struct {
     float z;
     bool isOnGround;
     bool canJump;
+    bool isRespawning;
+    bool isJumping;
     PlayerState state;
     CollisionBox collision;
     cgltf_data* modelData; // Adiciona o ponteiro para os dados do modelo 3D.
+    CollisionBox initialCollision;
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);
@@ -33,6 +35,7 @@ void cleanupPlayerModel(Player* playerObj);
 
 //void getPlayerCollisionBox(Player *player);
 void applyGravity(Player* playerObj, float *speed);
+void updatePlayerCollisionBox(Player* player);
 
 extern int qtdTextures;
 

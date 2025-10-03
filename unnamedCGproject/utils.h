@@ -45,5 +45,8 @@ void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);
 void updateFOV(float newFOV, float windowWidth, float windowHeight);
 void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QTD_SCENEOBJECTS, SceneObject *sceneObjectsInRange, int *objCount);
 
-// Anima um objeto com base nos seus dados de animaÃ§Ã£o
+// Anima um objeto com base nos seus dados de animação
 void animateObject(SceneObject* object, float deltaTime);
+void respawnPlayer();
+
+extern ObjectCollisionOffset playerCollisionOffset;

@@ -8,7 +8,6 @@ typedef struct {
     float maxX, maxY, maxZ;
 } CollisionBox;
 
-
 typedef enum{
     NONE,
     SIDE,

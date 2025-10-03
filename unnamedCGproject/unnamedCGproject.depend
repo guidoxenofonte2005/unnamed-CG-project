@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759325058 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -9,12 +9,8 @@
 	"player.h"
 	"object.h"
 	"utils.h"
-
-1759187270 D
 
 1759285954 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\main.c
-
-1759347306 e0df5abf47841e6c2610bfba33ec214821f7b
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -24,66 +20,14 @@
 	"player.h"
 	"object.h"
 	"utils.h"
-	<stdio.h>
-	<stdlib.h>
-	<GL/freeglut.h>
-	"player.h"
-	"object.h"
-	"utils.h"
-	"libs/cgltf/cgltf.h"
-	<stdbool.h>
-	"object.h"
-	"player.h"
-	<stdio.h>
-	<stdlib.h>
-	<GL/freeglut.h>
-	"player.h"
-	"object.h"
-	"utils.h"
-	"libs/cgltf/cgltf.h"
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
-	<GL/freeglut.h>
-	"utils.h"
-	"player.h"
-	"object.h"
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	"object.h"
-	"player.h"
-	"fileManager.h"
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<time.h>
-	<GL/freeglut.h>
-	"utils.h"
-	"player.h"
-	"object.h"
-	<stdio.h>
-	<stdlib.h>
-	<math.h>
-	<stdbool.h>
-	<GL/freeglut.h>
-	"utils.h"
-	"collision.h"
 
-1759283658 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759286098 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
-
-1759286160 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
-
-1759187270 ated upstream
-
-1759405349 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -92,7 +36,19 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1759347625 shed changes
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.h
+	<stdbool.h>
+	"object.h"
+	"player.h"
+
+1759324414 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"libs/cgltf/cgltf.h"
 
 1759231276 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
@@ -100,12 +56,12 @@
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759403589 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
+1759324637 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
 
-1759405222 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
+1759324414 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -115,9 +71,17 @@
 	"player.h"
 	"object.h"
 
-1759285583 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"player.h"
+	"object.h"
 
-1758850823 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
 	<stdint.h>
 	<assert.h>
@@ -449,11 +413,11 @@
 1512591001 c:\mingw\include\oleidl.h
 	<objfwd.h>
 
-1757350946 c:\mingw\include\gl\freeglut.h
+1758339512 c:\mingw\include\gl\freeglut.h
 	"freeglut_std.h"
 	"freeglut_ext.h"
 
-1757350946 c:\mingw\include\gl\freeglut_std.h
+1758339512 c:\mingw\include\gl\freeglut_std.h
 	<windows.h>
 	<EGL/egl.h>
 	<GLES/gl.h>
@@ -464,13 +428,13 @@
 	<GL/glu.h>
 	<stdlib.h>
 
-1757350946 c:\mingw\include\gl\gl.h
+1758339512 c:\mingw\include\gl\gl.h
 
-1757350946 c:\mingw\include\gl\glu.h
+1758339512 c:\mingw\include\gl\glu.h
 	<stddef.h>
 	<GL/gl.h>
 
-1757350946 c:\mingw\include\gl\freeglut_ext.h
+1758339512 c:\mingw\include\gl\freeglut_ext.h
 	<stdarg.h>
 
 1512590989 c:\mingw\include\math.h
@@ -492,7 +456,7 @@
 1758850822 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1757350946 c:\mingw\include\gl\glut.h
+1758339512 c:\mingw\include\gl\glut.h
 	"freeglut_std.h"
 
 1759146052 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\iluminacao.c
@@ -512,7 +476,7 @@
 1758818669 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1758830067 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
+1759441903 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -523,13 +487,13 @@
 	"object.h"
 	"utils.h"
 
-1758829657 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
+1759441020 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1758818669 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
+1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
 	<stdint.h>
 	<assert.h>
@@ -539,58 +503,34 @@
 	<float.h>
 	<stdlib.h>
 
-1758818669 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
-
-1758826093 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
+1759439820 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
 	<stdbool.h>
 
-1758829980 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
+1759441736 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
+	<stdbool.h>
+	"object.h"
+	"player.h"
+
+1759441375 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
 	"player.h"
+	"object.h"
+	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1758818669 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
+1759440949 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<time.h>
-	"utils.h"
-
-1758818669 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
-	<stdlib.h>
-	<math.h>
 	<GL/freeglut.h>
 	"utils.h"
-	"collision.h"
-
-1758826291 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
-	"libs/cgltf/cgltf.h"
-
-1758826296 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
-	<stdio.h>
-	<stdlib.h>
-	<GL/freeglut.h>
+	"player.h"
 	"object.h"
 
-1758944980 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.h
-	<stdbool.h>
-
-1759369813 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.h
-	"libs/cgltf/cgltf.h"
-	"GL/freeglut.h"
-	"collision.h"
-
-1759369813 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.c
-	<stdio.h>
-	<stdlib.h>
-	<GL/freeglut.h>
-	"object.h"
-
-1759285378 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
-
-1759403588 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
+1759439825 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -599,12 +539,55 @@
 	"utils.h"
 	"collision.h"
 
-1759403589 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
+1759439831 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 
-1759403589 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759439837 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"object.h"
+
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.h
+	<stdbool.h>
+
+1759458783 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.h
+	"libs/cgltf/cgltf.h"
+	"GL/freeglut.h"
+	"collision.h"
+
+1759459324 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\object.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"object.h"
+
+1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1759285456 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1759324414 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
+	"libs/cgltf/cgltf.h"
+	"GL/freeglut.h"
+	"collision.h"
+
+1759240587 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -644,24 +627,24 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1758825194 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.c
+1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.c
 	<GL/freeglut.h>
 	"lighting.h"
 
-1758825194 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.h
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\lighting.h
 	<GL/glut.h>
 
-1759200569 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
+1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.c
 	<stdio.h>
 	"texture.h"
 	"player.h"
 	"libs/stb_image/stb_image.h"
 
-1759200242 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\texture.h
 	<GL/freeglut.h>
 	"libs/cgltf/cgltf.h"
 
-1759187270 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\stb_image\stb_image.h
+1759454964 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\libs\stb_image\stb_image.h
 	"stb_image.h"
 	<stdio.h>
 	<stdlib.h>
@@ -678,7 +661,18 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1759403640 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759280763 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"object.h"
+	"player.h"
+	"fileManager.h"
+
+1759253853 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
+
+1759450696 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -688,9 +682,47 @@
 	"player.h"
 	"fileManager.h"
 
-1759403640 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.h
+1759433409 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
 
-1759275881 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
+	<stdbool.h>
+	"object.h"
+	"player.h"
+
+1759341168 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
+	"libs/cgltf/cgltf.h"
+	"GL/freeglut.h"
+	"collision.h"
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
+	<stddef.h>
+	<stdint.h>
+	<assert.h>
+	<string.h>
+	<stdio.h>
+	<limits.h>
+	<float.h>
+	<stdlib.h>
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
+	<stdbool.h>
+
+1759347250 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
+	<stdlib.h>
+	<stdbool.h>
+	"libs/cgltf/cgltf.h"
+	"collision.h"
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -699,5 +731,239 @@
 	"player.h"
 	"fileManager.h"
 
-1759263831 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
+	<GL/freeglut.h>
+	"lighting.h"
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
+	<GL/glut.h>
+
+1759347469 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<GL/freeglut.h>
+	<math.h>
+	<stdbool.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"object.h"
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"libs/cgltf/cgltf.h"
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
+	<stdio.h>
+	"texture.h"
+	"player.h"
+	"libs/stb_image/stb_image.h"
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
+	<GL/freeglut.h>
+	"libs/cgltf/cgltf.h"
+
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"player.h"
+	"object.h"
+
+1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"object.h"
+	"player.h"
+	"fileManager.h"
+
+1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
+
+1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
+	<GL/freeglut.h>
+	"lighting.h"
+
+1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
+	<GL/glut.h>
+
+1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
+	<stdio.h>
+	"texture.h"
+	"player.h"
+	"libs/stb_image/stb_image.h"
+
+1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
+	<GL/freeglut.h>
+	"libs/cgltf/cgltf.h"
+
+1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\collision.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<stdbool.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"collision.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\utils.h
+	<stdbool.h>
+	"object.h"
+	"player.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\object.h
+	"libs/cgltf/cgltf.h"
+	"GL/freeglut.h"
+	"collision.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\libs\cgltf\cgltf.h
+	<stddef.h>
+	<stdint.h>
+	<assert.h>
+	<string.h>
+	<stdio.h>
+	<limits.h>
+	<float.h>
+	<stdlib.h>
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\collision.h
+	<stdbool.h>
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\player.h
+	<stdlib.h>
+	<stdbool.h>
+	"libs/cgltf/cgltf.h"
+	"collision.h"
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\filemanager.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"object.h"
+	"player.h"
+	"fileManager.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\filemanager.h
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\lighting.c
+	<GL/freeglut.h>
+	"lighting.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\lighting.h
+	<GL/glut.h>
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<GL/freeglut.h>
+	<math.h>
+	<stdbool.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\object.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"object.h"
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\player.c
+	<stdio.h>
+	<stdlib.h>
+	<GL/freeglut.h>
+	"player.h"
+	"object.h"
+	"utils.h"
+	"libs/cgltf/cgltf.h"
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\texture.c
+	<stdio.h>
+	"texture.h"
+	"player.h"
+	"libs/stb_image/stb_image.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\texture.h
+	<GL/freeglut.h>
+	"libs/cgltf/cgltf.h"
+
+1759454964 c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\libs\stb_image\stb_image.h
+	"stb_image.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<stddef.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	<math.h>
+	<stdio.h>
+	<assert.h>
+	<stdint.h>
+	<emmintrin.h>
+	<intrin.h>
+	<arm_neon.h>
+
+1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\utils.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<GL/freeglut.h>
+	"utils.h"
+	"player.h"
+	"object.h"
 

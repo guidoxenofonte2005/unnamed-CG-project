@@ -469,14 +469,14 @@
 1759146052 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.h
 	<stdbool.h>
 
-1758818669 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\iluminacao.c
+1758818669 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\iluminacao.c
 	<GL/freeglut.h>
 	"iluminacao.h"
 
-1758818669 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\iluminacao.h
+1758818669 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\iluminacao.h
 	<GL/glut.h>
 
-1759441903 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
+1759441903 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -487,13 +487,13 @@
 	"object.h"
 	"utils.h"
 
-1759441020 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
+1759441020 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
+1759339325 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
 	<stdint.h>
 	<assert.h>
@@ -503,15 +503,15 @@
 	<float.h>
 	<stdlib.h>
 
-1759439820 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
+1759439820 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
 	<stdbool.h>
 
-1759441736 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
+1759441736 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
 
-1759441375 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
+1759441375 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -520,7 +520,7 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-1759440949 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
+1759440949 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -530,7 +530,7 @@
 	"player.h"
 	"object.h"
 
-1759439825 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
+1759439825 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -539,13 +539,12 @@
 	"utils.h"
 	"collision.h"
 
-<<<<<<< HEAD
-1759439831 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
+1759439831 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 
-1759439837 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
+1759439837 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -566,9 +565,6 @@
 	"object.h"
 
 1759454964 source:c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\collision.c
-=======
-1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\collision.c
->>>>>>> merge-friend
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -577,7 +573,6 @@
 	"utils.h"
 	"collision.h"
 
-<<<<<<< HEAD
 1759285456 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
@@ -689,7 +684,7 @@
 
 1759433409 c:\users\guido e ageu\desktop\unnamed cg project\unnamed-cg-project\unnamedcgproject\filemanager.h
 
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -698,28 +693,17 @@
 	"utils.h"
 	"collision.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
-=======
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\utils.h
->>>>>>> merge-friend
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
 
-<<<<<<< HEAD
-1759341168 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
+1759341168 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
-=======
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.h
-	"libs/cgltf/cgltf.h"
-	"collision.h"
-
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\libs\cgltf\cgltf.h
->>>>>>> merge-friend
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\cgltf\cgltf.h
 	<stddef.h>
 	<stdint.h>
 	<assert.h>
@@ -729,24 +713,16 @@
 	<float.h>
 	<stdlib.h>
 
-<<<<<<< HEAD
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\collision.h
 	<stdbool.h>
 
-1759347250 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
-=======
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\collision.h
-	<stdbool.h>
-
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\player.h
->>>>>>> merge-friend
+1759347250 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 
-<<<<<<< HEAD
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -755,26 +731,16 @@
 	"player.h"
 	"fileManager.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
 
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
 	<GL/freeglut.h>
 	"lighting.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
 	<GL/glut.h>
 
-1759347469 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
-=======
-1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.c
-	<GL/freeglut.h>
-	"iluminacao.h"
-
-1758999945 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\iluminacao.h
-	<GL/glut.h>
-
-1759334186 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\main.c
->>>>>>> merge-friend
+1759347469 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -784,25 +750,17 @@
 	"player.h"
 	"object.h"
 	"utils.h"
-<<<<<<< HEAD
-
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\object.c
-=======
 	"textura.h"
 	"skybox.h"
 
 1759191893 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\object.c
->>>>>>> merge-friend
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
 	"object.h"
 
-<<<<<<< HEAD
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
-=======
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\player.c
 1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\player.c
->>>>>>> merge-friend
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -811,18 +769,17 @@
 	"utils.h"
 	"libs/cgltf/cgltf.h"
 
-<<<<<<< HEAD
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
 	<stdio.h>
 	"texture.h"
 	"player.h"
 	"libs/stb_image/stb_image.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
 	<GL/freeglut.h>
 	"libs/cgltf/cgltf.h"
 
-1759339325 c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
+1759339325 c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
 	"stb_image.h"
 	<stdio.h>
 	<stdlib.h>
@@ -839,10 +796,7 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
-=======
-1758999945 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\utils.c
->>>>>>> merge-friend
+1759339325 source:c:\users\anton\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\utils.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -852,8 +806,7 @@
 	"player.h"
 	"object.h"
 
-<<<<<<< HEAD
-1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
+1759339325 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -862,37 +815,26 @@
 	"player.h"
 	"fileManager.h"
 
-1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
+1759339325 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\filemanager.h
 
-1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
+1759339325 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.c
 	<GL/freeglut.h>
 	"lighting.h"
 
-1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
+1759339325 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\lighting.h
 	<GL/glut.h>
 
-1759339325 source:c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
+1759339325 source:c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.c
 	<stdio.h>
 	"texture.h"
 	"player.h"
 	"libs/stb_image/stb_image.h"
 
-1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
+1759339325 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\texture.h
 	<GL/freeglut.h>
 	"libs/cgltf/cgltf.h"
 
-1759339325 c:\users\antônio josé\onedrive\documentos\faculdade\5º  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
-=======
-1759009802 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.h
-	<GL/glut.h>
-
-1759359557 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\textura.c
-	"stb_image.h"
-	"textura.h"
-	<stdio.h>
-
-1758905535 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\stb_image.h
->>>>>>> merge-friend
+1759339325 c:\users\antï¿½nio josï¿½\onedrive\documentos\faculdade\5ï¿½  semestre\cg\unnamed-cg-project-main\unnamedcgproject\libs\stb_image\stb_image.h
 	"stb_image.h"
 	<stdio.h>
 	<stdlib.h>
@@ -909,7 +851,6 @@
 	<intrin.h>
 	<arm_neon.h>
 
-<<<<<<< HEAD
 1759454964 source:c:\users\guido e ageu\downloads\codiguin\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
@@ -1029,12 +970,3 @@
 	"player.h"
 	"object.h"
 
-=======
-1759358308 source:c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\skybox.c
-	"skybox.h"
-	"textura.h"
-
-1759273176 c:\users\joaom\onedrive\documentos\meugithub\meu_fork-cg-project\unnamedcgproject\skybox.h
-	<GL/glut.h>
-
->>>>>>> merge-friend

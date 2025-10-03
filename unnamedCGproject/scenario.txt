@@ -22,3 +22,4 @@ OBJECT;6.0,-1.5,68.0;3dfiles/spike.glb;1
 OBJECT;-6.0,-1.5,72.0;3dfiles/spike.glb;1
 OBJECT;0.0,-1.5,72.0;3dfiles/spike.glb;1
 OBJECT;6.0,-1.5,72.0;3dfiles/spike.glb;1
+PLAYER;0.0,2.0,0.0;3dfiles/player.glb

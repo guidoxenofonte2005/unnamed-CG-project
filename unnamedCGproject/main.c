@@ -126,16 +126,16 @@ int init() {
 
 
     //1. Define a posi��o inicial do jogador (� esquerda)
-    player.x = 0.0f;
-    player.y = 2.0f;
-    player.z = 0.0f;
+    //player.x = 0.0f;
+    //player.y = 2.0f;
+    //player.z = 0.0f;
 
     checkpointX = player.x;
     checkpointY = 2.0f;
     checkpointZ = player.z;
 
     // daqui pra baixo tem que substituir pelo load com arquivo
-    loadPlayerModel(&player, "3dfiles/player.glb");
+    //loadPlayerModel(&player, "3dfiles/player.glb");
 
     loadObjectsFromFile("scenario.txt", sceneObjects, &player, &objectCount, MAX_OBJECTS);
 

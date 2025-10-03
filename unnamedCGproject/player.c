@@ -152,59 +152,79 @@ void getPlayerCollisionBox(Player *player) {
 }
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
-    float oldX = player->x, oldY = player->y, oldZ = player->z;
+    const int maxIterations = 5; // Limite para evitar loops infinitos
     float move[3] = {speed[0], speed[1], speed[2]};
+    player->isOnGround = false;  // Resetar estado no começo da movimentação
 
-    // Tenta mover o player
-    movePlayer(move, player);
+    for (int iteration = 0; iteration < maxIterations; iteration++) {
+        float oldX = player->x, oldY = player->y, oldZ = player->z;
 
-    // Testa colisão
-    for (int i = 0; i < qtdObjInRange; i++) {
-        SceneObject *currentObj = &objectsInRange[i];
+        // Tenta mover o player com o movimento restante
+        movePlayer(move, player);
 
-        if (isObjectColliding(player->collision, currentObj->collision)) {
-            // Se for perigoso, mata o player
-            if (currentObj->type == DANGER) {
-                printf("Colidiu com um objeto perigoso! Morreu!\n");
-                respawnPlayer();
-                return;
+        bool collided = false;
+
+        for (int i = 0; i < qtdObjInRange; i++) {
+            SceneObject *currentObj = &objectsInRange[i];
+
+            if (isObjectColliding(player->collision, currentObj->collision)) {
+                // Se for perigoso, mata o player
+                if (currentObj->type == DANGER) {
+                    printf("Colidiu com um objeto perigoso! Morreu!\n");
+                    respawnPlayer();
+                    return;
+                }
+
+                // Volta para posição anterior
+                player->x = oldX;
+                player->y = oldY;
+                player->z = oldZ;
+
+                // Recalcula a collision box na posição antiga
+                getPlayerCollisionBox(player);
+
+                // Calcula normal da colisão
+                CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
+                float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
+                getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
+
+                // Projeta o vetor de movimento para calcular o vetor tangente (slide)
+                float prodEscalar = move[X_AXIS] * normalCollisionVector[X_AXIS] +
+                                    move[Y_AXIS] * normalCollisionVector[Y_AXIS] +
+                                    move[Z_AXIS] * normalCollisionVector[Z_AXIS];
+                float normalSpeedVector[3] = {
+                    normalCollisionVector[X_AXIS] * prodEscalar,
+                    normalCollisionVector[Y_AXIS] * prodEscalar,
+                    normalCollisionVector[Z_AXIS] * prodEscalar
+                };
+
+                // Ajusta o vetor movimento para "deslizar" pela superfície
+                move[X_AXIS] -= normalSpeedVector[X_AXIS];
+                move[Y_AXIS] -= normalSpeedVector[Y_AXIS];
+                move[Z_AXIS] -= normalSpeedVector[Z_AXIS];
+
+                // Trata colisões tipo TOP e BOTTOM
+                if (side == TOP) {
+                    player->isOnGround = true;
+                    player->canJump = true;
+                    move[Y_AXIS] = 0.0f;
+                }
+                else if (side == BOTTOM) {
+                    move[Y_AXIS] = fminf(move[Y_AXIS], 0.0f);
+                }
+                // Para colisões SIDE (laterais), não é preciso mais nada,
+                // pois o componente da velocidade na direção da normal já foi removido acima
+                collided = true;
+
+                // Atualiza collision box após ajuste
+                getPlayerCollisionBox(player);
+
+                break; // Recomeça a verificação a partir da nova posição e vetor ajustado
             }
+        }
 
-            // Volta para posição anterior
-            player->x = oldX;
-            player->y = oldY;
-            player->z = oldZ;
-
-            // IMPORTANTE: Recalcula a collision box na posição antiga
-            getPlayerCollisionBox(player);
-
-            // Calcula slide
-            CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
-            float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
-            getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
-
-            float prodEscalar = move[X_AXIS] * normalCollisionVector[X_AXIS] +
-                                move[Y_AXIS] * normalCollisionVector[Y_AXIS] +
-                                move[Z_AXIS] * normalCollisionVector[Z_AXIS];
-            float normalSpeedVector[3] = {
-                normalCollisionVector[X_AXIS] * prodEscalar,
-                normalCollisionVector[Y_AXIS] * prodEscalar,
-                normalCollisionVector[Z_AXIS] * prodEscalar
-            };
-            float slideSpeed[3] = {
-                move[X_AXIS] - normalSpeedVector[X_AXIS],
-                move[Y_AXIS] - normalSpeedVector[Y_AXIS],
-                move[Z_AXIS] - normalSpeedVector[Z_AXIS]
-            };
-
-            // Se colidiu com o topo de algo, está no chão
-            if (side == TOP) {
-                player->isOnGround = true;
-                player->canJump = true;
-            }
-
-            // Move deslizando
-            movePlayer(slideSpeed, player);
+        if (!collided) {
+            // Movimento resolvido sem colisão, sai do loop
             break;
         }
     }

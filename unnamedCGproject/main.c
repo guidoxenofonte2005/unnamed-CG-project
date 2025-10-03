@@ -9,7 +9,7 @@
 #include "player.h"
 #include "object.h"
 #include "utils.h"
-#include "textura.h"
+#include "texture.h"
 #include "skybox.h"
 
 #define DEATH_Y_LEVEL -15.0f // Define a altura em que o jogador volta para o ponto inicial

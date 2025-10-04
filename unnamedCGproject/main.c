@@ -54,14 +54,14 @@ SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
 // índice de início das plataformas no array sceneObjects
-int platformStartIndex = 0;
+int platformStartIndex = 0; //  por enquanto não vai usar isso, talvez depois
 SceneObject objectsInCollisionRange[MAX_OBJECTS];
 int objInColRangeCount = 0;
 
 //GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
 
 int init() {
-    glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+    glClearColor(0.32f, 0.23f, 0.5f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
 

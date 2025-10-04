@@ -53,7 +53,10 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
 
             CollisionBox platformCollision = getPlatformCollisionBox(centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS],
                                                                      platformSize[X_AXIS], platformSize[Y_AXIS], platformSize[Z_AXIS]);
+
             loadPlatform(sceneObjects, qtdObjects, centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS], &platformCollision);
+
+            loadPlatformTextures(&sceneObjects[(*qtdObjects)], atoi(stringParts[3]));
         }
         else if (strcmp(stringParts[0], "PLAYER") == 0) {
             float playerCoords[DIMENSIONS];
@@ -72,8 +75,16 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
 
             loadObject(&sceneObjects[(*qtdObjects)], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
 
-            if (atoi(stringParts[3]) == 1) {
+            switch (atoi(stringParts[3])) {
+            case 1:
                 sceneObjects[(*qtdObjects)].type = DANGER;
+                break;
+            case 2:
+                sceneObjects[(*qtdObjects)].type = FLAG;
+                break;
+            default:
+                printf("TIPO INSERIDO NÃO É SUPORTADO\n");
+                break;
             }
             (*qtdObjects)++;
         }

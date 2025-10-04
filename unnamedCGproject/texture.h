@@ -5,6 +5,11 @@
 
 #include "libs/cgltf/cgltf.h"
 
+typedef struct {
+    GLuint texBack, texFront, texLeft, texRight;
+    GLuint texTop, texBase;
+} PlatformTextureTypes;
+
 // Função para carregar uma textura a partir de um arquivo
 GLuint loadTexture(const char *filename);
 

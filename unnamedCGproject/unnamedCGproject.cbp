@@ -48,6 +48,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="player.h" />
+		<Unit filename="skybox.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="skybox.h" />
 		<Unit filename="texture.c">
 			<Option compilerVar="CC" />
 		</Unit>

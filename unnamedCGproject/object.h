@@ -4,12 +4,14 @@
 #include "libs/cgltf/cgltf.h"
 #include "GL/freeglut.h"
 #include "collision.h"
+#include "texture.h"
 
 // Enum para os tipos de objetos
 typedef enum {
     DEFAULT, // Um objeto genérico
     PLATFORM,
-    DANGER   // Um objeto perigoso
+    DANGER,  // Um objeto perigoso
+    FLAG
 } ObjectType;
 
 typedef struct {
@@ -21,7 +23,7 @@ typedef struct {
     float maxLimit;
 } AnimationData;
 
-// Estrutura para armazenar os dados de um objeto 3D
+// Estrutura para armazenar os dados de um objeto 3D e plataformas
 typedef struct {
     cgltf_data* data;
     float x;
@@ -33,13 +35,8 @@ typedef struct {
     AnimationData anim;
     ObjectType type;
     GLuint textureID;
+    PlatformTextureTypes platformTextures;
 } SceneObject;
-
-// Estrutura para armazenar as plataformas
-typedef struct {
-    float centerX, centerY, centerZ;
-    float width, height, depth;
-} PlatformData;
 
 // Declarações das funções para manipular a cena
 void loadObject(SceneObject* object, const char* filename, float x, float y, float z);
@@ -49,5 +46,7 @@ void getCollisionBoxFromObject(SceneObject *object);
 
 void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision);
 CollisionBox getPlatformCollisionBox(float centerX, float centerY, float centerZ, float width, float height, float depth);
+void drawPlatform(SceneObject *platform);
+void loadPlatformTextures(SceneObject *platform, int textureType);
 
 #endif // OBJECT_H_INCLUDED

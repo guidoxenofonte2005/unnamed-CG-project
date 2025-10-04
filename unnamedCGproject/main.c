@@ -44,7 +44,7 @@ Player player = {
     NULL                   // modelData
 };
 
-PlayerMoveKeys moveKeys = {false, false, false, false, false, false};
+PlayerMoveKeys moveKeys = {false, false, false, false, false};
 
 float checkpointX, checkpointY, checkpointZ;
 float playerVelocity[] = {0.0f, 0.0f, 0.0f};
@@ -58,43 +58,7 @@ int platformStartIndex = 0;
 SceneObject objectsInCollisionRange[MAX_OBJECTS];
 int objInColRangeCount = 0;
 
-// Array que guarda as plataformas
-PlatformData levelPlatforms[] = {
-    // 1. O Chão (Plataforma Inicial)
-    // A superfície superior (onde o jogador pisa) está em Y = 1.0.
-    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 0.0f, .width = 30.0f, .height = 4.0f, .depth = 30.0f },
-
-    // 2. A Parede Traseira (no lado Z negativo)
-    { .centerX = 0.0f, .centerY = 11.0f, .centerZ = -16.0f, .width = 32.0f, .height = 20.0f, .depth = 2.0f },
-
-    // 3. A Parede Esquerda (no lado X negativo)
-    { .centerX = -16.0f, .centerY = 11.0f, .centerZ = 0.0f, .width = 2.0f, .height = 20.0f, .depth = 30.0f },
-
-    // 4. A Parede Direita (no lado X positivo)
-    // Igual à parede esquerda, mas no lado oposto.
-    { .centerX = 16.0f, .centerY = 11.0f, .centerZ = 0.0f, .width = 2.0f, .height = 20.0f, .depth = 30.0f },
-
-    // 5. O Teto
-    { .centerX = 0.0f, .centerY = 22.0f, .centerZ = 0.0f, .width = 32.0f, .height = 2.0f, .depth = 32.0f },
-
-    // 6. Nova Plataforma Pequena no meio do vão
-    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 30.0f, .width = 8.0f, .height = 4.0f, .depth = 8.0f },
-
-    // 7. plataforma (mais à frente e à direita)
-    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 55.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
-
-    // 8. plataforma (mais à frente e à direita)
-    { .centerX = 0.0f, .centerY = -1.0f, .centerZ = 85.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
-
-    // 9. plataforma (diagonal da plataforma 8)
-    { .centerX = 10.0f, .centerY = 10.0f, .centerZ = 115.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
-
-    // 10. plataforma (diagonal da plataforma 8)
-    { .centerX = -10.0f, .centerY = 30.0f, .centerZ = 115.0f, .width = 15.0f, .height = 4.0f, .depth = 15.0f },
-};
-int numPlatforms = sizeof(levelPlatforms) / sizeof(PlatformData);
-
-GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
+//GLuint texFront, texBack, texLeft, texRight, texTop, texBase;
 
 int init() {
     glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
@@ -108,14 +72,6 @@ int init() {
 
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material
-
-    // Carrega cada textura da plataforma
-    texFront = loadTexture("tex_cenario/girder_wood.png");
-    texBack = loadTexture("tex_cenario/wall_ruined_1.png");
-    texLeft = loadTexture("tex_cenario/wall_ruined_2.png");
-    texRight = loadTexture("tex_cenario/wall_ruined_3.png");
-    texTop = loadTexture("tex_cenario/wood_3.png");
-    texBase = loadTexture("tex_cenario/metal_floor_1.png");
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -169,7 +125,6 @@ int init() {
     // agora adiciona plataformas
     //loadLevelPlatforms();
 
-    // Pra animar alguma plataforma, faz o msm que fiz abaixo (verifique o índice em PlatformData levelPlatforms[])
     // Índice da plataforma 9 é (0-indexed, então é 8)
     int ninePlatformIndex = platformStartIndex + 8;
     // Garante que não vamos acessar um índice fora do array
@@ -231,10 +186,15 @@ void display() {
     // chama fun��o para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
     for (int i = 0; i < objectCount; ++i) {
-        drawObject(&sceneObjects[i]);
-        drawCollisionBoxWireframe(sceneObjects[i].collision);
+        if (sceneObjects[i].type == PLATFORM) {
+            drawPlatform(&sceneObjects[i]);
+        }
+        else {
+            drawObject(&sceneObjects[i]);
+        }
+        //drawCollisionBoxWireframe(sceneObjects[i].collision);
     }
-    drawCollisionBoxWireframe(player.collision);
+    //drawCollisionBoxWireframe(player.collision);
 
     glutPostRedisplay();
     glutSwapBuffers();
@@ -376,23 +336,6 @@ void handleWindowResize(int newWidth, int newHeight) {
 
     // d� redisplay na tela por seguran�a
     glutPostRedisplay();
-}
-
-// atualizado para o fileManager
-// Função para carregar as plataformas
-void loadLevelPlatforms() {
-    platformStartIndex = objectCount; // guarda o índice inicial das plataformas
-    for (int i = 0; i < numPlatforms; i++) {
-        CollisionBox platCol;
-        PlatformData currentPlatform = levelPlatforms[i];
-        platCol.minX = currentPlatform.centerX - currentPlatform.width / 2;
-        platCol.maxX = currentPlatform.centerX + currentPlatform.width / 2;
-        platCol.minY = currentPlatform.centerY - currentPlatform.height / 2;
-        platCol.maxY = currentPlatform.centerY + currentPlatform.height / 2;
-        platCol.minZ = currentPlatform.centerZ - currentPlatform.depth / 2;
-        platCol.maxZ = currentPlatform.centerZ + currentPlatform.depth / 2;
-        loadPlatform(sceneObjects, &objectCount, currentPlatform.centerX, currentPlatform.centerY, currentPlatform.centerZ, &platCol);
-    }
 }
 
 // Função para respawnar o player caso ele morra

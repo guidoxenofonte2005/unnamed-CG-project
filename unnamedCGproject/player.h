@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "libs/cgltf/cgltf.h"
 #include "collision.h"
+#include "object.h"
 
 typedef enum {
     IDLE,
@@ -24,17 +25,22 @@ typedef struct {
     CollisionBox collision;
     cgltf_data* modelData; // Adiciona o ponteiro para os dados do modelo 3D.
     CollisionBox initialCollision;
+    int groundObjectIndex; // guarda o ï¿½ndice do objeto que o player tï¿½ em cima
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);
 
-// Declarações das funções de importação e desenho
+// Declaraï¿½ï¿½es das funï¿½ï¿½es de importaï¿½ï¿½o e desenho
 void loadPlayerModel(Player* playerObj, const char* filename);
 void drawPlayerModel(Player* playerObj, float thetaAngle);
 void cleanupPlayerModel(Player* playerObj);
 
-//void getPlayerCollisionBox(Player *player);
+void getPlayerCollisionBox(Player *player);
 void applyGravity(Player* playerObj, float *speed);
 void updatePlayerCollisionBox(Player* player);
+
+void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime);
+
+extern int qtdTextures;
 
 #endif // PLAYER_H_INCLUDED

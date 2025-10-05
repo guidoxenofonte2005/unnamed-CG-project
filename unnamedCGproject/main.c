@@ -140,6 +140,76 @@ int init() {
         sceneObjects[ninePlatformIndex].anim.minLimit = -20.0f;
     }
 
+    for (int i = 0; i < objectCount; i++) {
+        SceneObject* currentObject = &sceneObjects[i];
+
+        // Animação para a Plataforma 9 (que se move para os lados)
+        // Posição inicial dela: X=10, Y=10, Z=115
+        if (currentObject->x == 10.0f && currentObject->y == 10.0f && currentObject->z == 115.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 0; // 0 para Eixo X
+            currentObject->anim.moveSpeed = 8.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = -10.0f; // Moverá de -10 a 10 no eixo X
+            currentObject->anim.maxLimit = 10.0f;
+        }
+
+        // Animação para a Plataforma 11 (que sobe e desce)
+        // Posição inicial dela: X=-10, Y=50, Z=140
+        if (currentObject->x == -10.0f && currentObject->y == 50.0f && currentObject->z == 140.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 2; // 2 para Eixo Y
+            currentObject->anim.moveSpeed = 4.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = 40.0f; // Ponto mais baixo
+            currentObject->anim.maxLimit = 60.0f; // Ponto mais alto
+        }
+
+        // Animação para a Plataforma 12 (que se move para os lados)
+        // Posição inicial dela: X=-10, Y=50, Z=165
+        if (currentObject->x == -10.0f && currentObject->y == 50.0f && currentObject->z == 165.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 0; // 0 para Eixo X
+            currentObject->anim.moveSpeed = 5.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = -20.0f; // Moverá de -10 a 10 no eixo X
+            currentObject->anim.maxLimit = 20.0f;
+        }
+
+        // Animação para a Plataforma 13 (que se move para os lados)
+        // Posição inicial dela: X=-10, Y=50, Z=190
+        if (currentObject->x == -10.0f && currentObject->y == 50.0f && currentObject->z == 190.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 0; // 0 para Eixo X
+            currentObject->anim.moveSpeed = 8.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = -10.0f; // Moverá de -10 a 10 no eixo X
+            currentObject->anim.maxLimit = 10.0f;
+        }
+
+        // Animação para a Plataforma 14 (que se move para os lados)
+        // Posição inicial dela: X=-10, Y=50, Z=215
+        if (currentObject->x == -10.0f && currentObject->y == 50.0f && currentObject->z == 215.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 0; // 0 para Eixo X
+            currentObject->anim.moveSpeed = 6.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = -15.0f; // Moverá de -10 a 10 no eixo X
+            currentObject->anim.maxLimit = 15.0f;
+        }
+
+        // Animação para a Plataforma 15 (que se move para os lados)
+        // Posição inicial dela: X=-10, Y=50, Z=240
+        if (currentObject->x == -10.0f && currentObject->y == 50.0f && currentObject->z == 240.0f) {
+            currentObject->anim.isAnimated = true;
+            currentObject->anim.animationAxis = 0; // 0 para Eixo X
+            currentObject->anim.moveSpeed = 7.0f;
+            currentObject->anim.moveDirection = 1.0f;
+            currentObject->anim.minLimit = -10.0f; // Moverá de -10 a 10 no eixo X
+            currentObject->anim.maxLimit = 10.0f;
+        }
+    }
+
 
     return 1;
 }
@@ -255,11 +325,35 @@ void simulatePhysics(float deltaTime) {
             respawnPlayer();
             return; // Sai da física neste frame
         }
+
+        else if (objectsInCollisionRange[i].type == FLAG) {
+                checkpointX = objectsInCollisionRange[i].x + 2.0f;
+                checkpointY = objectsInCollisionRange[i].y + 1.0f;
+                checkpointZ = objectsInCollisionRange[i].z + 2.0f;
+                printf("Checkpoint atualizado em (%.1f, %.1f, %.1f)\n", checkpointX, checkpointY, checkpointZ);
+                // Opcional: Desativa a bandeira para não ser pega novamente
+                objectsInCollisionRange[i].type = DEFAULT;
+            }
     }
 
     // 7. Processa movimento e colisões com plataformas/paredes
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
+
+    // 7.1 acessa o objeto original que o player tá em cima
+    if (player.isOnGround && player.groundObjectIndex >= 0 && player.groundObjectIndex < objInColRangeCount) {
+        SceneObject* groundObj = &objectsInCollisionRange[player.groundObjectIndex];
+
+        if (groundObj->anim.isAnimated) {
+            // Delta real de movimento da plataforma
+            float platform_dx = groundObj->x - groundObj->prevX;
+            float platform_dy = groundObj->y - groundObj->prevY;
+            float platform_dz = groundObj->z - groundObj->prevZ;
+
+            float movement[3] = {platform_dx, platform_dy, platform_dz};
+            movePlayer(movement, &player);
+        }
+    }
 
     // 8. Verifica morte por queda
     if (player.y < DEATH_Y_LEVEL) {

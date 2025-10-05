@@ -4,8 +4,10 @@
 #include "player.h"
 #include "object.h"
 #include "utils.h"
+#include <math.h>
 
-// Define a macro de implementação da biblioteca
+
+// Define a macro de implementaï¿½ï¿½o da biblioteca
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
 
@@ -29,9 +31,9 @@ void movePlayer(float *speed, Player *playerObject) {
     playerObject->collision.maxZ += speed[2];
 }
 
-// A função agora recebe um ponteiro para a struct Player.
+// A funï¿½ï¿½o agora recebe um ponteiro para a struct Player.
 void loadPlayerModel(Player* playerObj, const char* filename) {
-    // Inicializa as opções e tenta carregar o arquicvo GLTF
+    // Inicializa as opï¿½ï¿½es e tenta carregar o arquicvo GLTF
     cgltf_options options = {0};
     // Tenta carregar o modelo e salva os dados no novo membro 'modelData'.
     cgltf_result result = cgltf_parse_file(&options, filename, &playerObj->modelData);
@@ -39,7 +41,7 @@ void loadPlayerModel(Player* playerObj, const char* filename) {
         printf("Erro ao carregar o arquivo GLTF: %d\n", result);
         return;
     }
-    // Carrega os dados binários do modelo na memória
+    // Carrega os dados binï¿½rios do modelo na memï¿½ria
     result = cgltf_load_buffers(&options, playerObj->modelData, filename);
     if (result != cgltf_result_success) {
         printf("Erro ao carregar os buffers do arquivo GLTF: %d\n", result);
@@ -50,12 +52,12 @@ void loadPlayerModel(Player* playerObj, const char* filename) {
     playerObj->initialCollision = playerObj->collision;
 }
 
-//  A função agora recebe um ponteiro para a struct Player.
+//  A funï¿½ï¿½o agora recebe um ponteiro para a struct Player.
 void drawPlayerModel(Player* playerObj, float thetaAngle) {
     if (!playerObj->modelData) {
         return;
     }
-    // A lógica de desenho do modelo 3D
+    // A lï¿½gica de desenho do modelo 3D
     // Itera sobre todas as malhas e primitivas do modelo 3D
     glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
     glTranslatef(playerObj->x, playerObj->y, playerObj->z);
@@ -81,12 +83,12 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
                 cgltf_accessor* indices_accessor = primitive->indices;
 
                 glBegin(GL_TRIANGLES);
-                // Itera sobre os índdices para desenhar os triângulos dos modelos
-                // a ordem certa de iteração é normal -> textura -> posição
+                // Itera sobre os ï¿½nddices para desenhar os triï¿½ngulos dos modelos
+                // a ordem certa de iteraï¿½ï¿½o ï¿½ normal -> textura -> posiï¿½ï¿½o
                 for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
-                    // Lê o índice do vértice atual
+                    // Lï¿½ o ï¿½ndice do vï¿½rtice atual
                     cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
-                    // Lê a normal do vértice e a define para o cálculo de iluminação
+                    // Lï¿½ a normal do vï¿½rtice e a define para o cï¿½lculo de iluminaï¿½ï¿½o
                     float normal[3];
                     cgltf_accessor_read_float(normals_accessor, index, normal, 3);
                     glNormal3f(normal[0], normal[1], normal[2]);
@@ -96,7 +98,7 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
                         cgltf_accessor_read_float(texture_coords_accessor, index, texturePosition, 2);
                         glTexCoord2f(texturePosition[0], texturePosition[1]);
                     }
-                    // Lê a posição do vértice e desenha com a função OpenGl
+                    // Lï¿½ a posiï¿½ï¿½o do vï¿½rtice e desenha com a funï¿½ï¿½o OpenGl
                     float position[3];
                     cgltf_accessor_read_float(positions_accessor, index, position, 3);
                     glVertex3f(position[0], position[1], position[2]);
@@ -109,7 +111,7 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
 }
 
 void cleanupPlayerModel(Player* playerObj) {
-    // Libera a memória alocada para os dados do modelo 3d
+    // Libera a memï¿½ria alocada para os dados do modelo 3d
     if (playerObj->modelData) {
         cgltf_free(playerObj->modelData);
         playerObj->modelData = NULL;
@@ -141,7 +143,7 @@ void getPlayerCollisionBox(Player *player) {
             }
         }
 
-        // CORREÇÃO: Usa as dimensões base do modelo + posição atual + offset
+        // CORREï¿½ï¿½O: Usa as dimensï¿½es base do modelo + posiï¿½ï¿½o atual + offset
         player->collision.minX = player->x + minX + playerCollisionOffset.offsetMinX;
         player->collision.maxX = player->x + maxX + playerCollisionOffset.offsetMaxX;
         player->collision.minY = player->y + minY + playerCollisionOffset.offsetMinY;
@@ -154,7 +156,8 @@ void getPlayerCollisionBox(Player *player) {
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime) {
     const int maxIterations = 5; // Limite para evitar loops infinitos
     float move[3] = {speed[0], speed[1], speed[2]};
-    player->isOnGround = false;  // Resetar estado no começo da movimentação
+    player->isOnGround = false;  // Resetar estado no comeï¿½o da movimentaï¿½ï¿½o
+    player->groundObjectIndex = -1; // Reseta o indice do objeto qeu o playe tï¿½ em cima
 
     for (int iteration = 0; iteration < maxIterations; iteration++) {
         float oldX = player->x, oldY = player->y, oldZ = player->z;
@@ -175,15 +178,15 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     return;
                 }
 
-                // Volta para posição anterior
+                // Volta para posiï¿½ï¿½o anterior
                 player->x = oldX;
                 player->y = oldY;
                 player->z = oldZ;
 
-                // Recalcula a collision box na posição antiga
+                // Recalcula a collision box na posiï¿½ï¿½o antiga
                 getPlayerCollisionBox(player);
 
-                // Calcula normal da colisão
+                // Calcula normal da colisï¿½o
                 CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
                 float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
                 getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
@@ -198,52 +201,40 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     normalCollisionVector[Z_AXIS] * prodEscalar
                 };
 
-                // Ajusta o vetor movimento para "deslizar" pela superfície
+                // Ajusta o vetor movimento para "deslizar" pela superfï¿½cie
                 move[X_AXIS] -= normalSpeedVector[X_AXIS];
                 move[Y_AXIS] -= normalSpeedVector[Y_AXIS];
                 move[Z_AXIS] -= normalSpeedVector[Z_AXIS];
 
-                // Trata colisões tipo TOP e BOTTOM
+                // Trata colisï¿½es tipo TOP e BOTTOM
                 if (side == TOP) {
                     player->isOnGround = true;
                     player->canJump = true;
+                    player->groundObjectIndex = i; // Guarde o indice do objeto original
                     move[Y_AXIS] = 0.0f;
                 }
                 else if (side == BOTTOM) {
                     move[Y_AXIS] = fminf(move[Y_AXIS], 0.0f);
                 }
-                // Para colisões SIDE (laterais), não é preciso mais nada,
-                // pois o componente da velocidade na direção da normal já foi removido acima
+                // Para colisï¿½es SIDE (laterais), nï¿½o ï¿½ preciso mais nada,
+                // pois o componente da velocidade na direï¿½ï¿½o da normal jï¿½ foi removido acima
                 collided = true;
 
-                // Atualiza collision box após ajuste
+                // Atualiza collision box apï¿½s ajuste
                 getPlayerCollisionBox(player);
 
-                break; // Recomeça a verificação a partir da nova posição e vetor ajustado
+                break; // Recomeï¿½a a verificaï¿½ï¿½o a partir da nova posiï¿½ï¿½o e vetor ajustado
             }
         }
 
         if (!collided) {
-            // Movimento resolvido sem colisão, sai do loop
+            // Movimento resolvido sem colisï¿½o, sai do loop
             break;
         }
     }
 }
 
+// Atualiza a box collision do player pra quando ele morrer a box ir junto
 void updatePlayerCollisionBox(Player* player) {
     getPlayerCollisionBox(player);
-    // Pega as dimensões originais da caixa de colisão
-    /*float offsetXMin = player->initialCollision.minX;
-    float offsetXMax = player->initialCollision.maxX;
-    float offsetYMin = player->initialCollision.minY;
-    float offsetYMax = player->initialCollision.maxY;
-    float offsetZMin = player->initialCollision.minZ;
-    float offsetZMax = player->initialCollision.maxZ;
-    // Recalcula a posição da caixa de colisão no mundo
-    player->collision.minX = player->x + offsetXMin;
-    player->collision.maxX = player->x + offsetXMax;
-    player->collision.minY = player->y + offsetYMin;
-    player->collision.maxY = player->y + offsetYMax;
-    player->collision.minZ = player->z + offsetZMin;
-    player->collision.maxZ = player->z + offsetZMax;*/
 }

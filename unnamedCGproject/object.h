@@ -10,8 +10,8 @@
 typedef enum {
     DEFAULT, // Um objeto genérico
     PLATFORM,
-    DANGER,  // Um objeto perigoso
-    FLAG
+    DANGER, // Um objeto perigoso
+    FLAG // Um objeto para mercar chek
 } ObjectType;
 
 typedef struct {
@@ -23,12 +23,14 @@ typedef struct {
     float maxLimit;
 } AnimationData;
 
-// Estrutura para armazenar os dados de um objeto 3D e plataformas
+// Estrutura para armazenar os dados de um objeto 3D
 typedef struct {
     cgltf_data* data;
     float x;
     float y;
     float z;
+    float prevX, prevY, prevZ;
+    float scale;
     float rotationAngle; // O ângulo da rotação em graus
     float rotX, rotY, rotZ; // O vetor do eixo de rotação (ex: 1,0,0 para o eixo X)
     CollisionBox collision;
@@ -47,6 +49,7 @@ void getCollisionBoxFromObject(SceneObject *object);
 void loadPlatform(SceneObject *sceneObjects, int *qtdSceneObjects, float x, float y, float z, CollisionBox *platformCollision);
 CollisionBox getPlatformCollisionBox(float centerX, float centerY, float centerZ, float width, float height, float depth);
 void drawPlatform(SceneObject *platform);
+
 void loadPlatformTextures(SceneObject *platform, int textureType);
 
 #endif // OBJECT_H_INCLUDED

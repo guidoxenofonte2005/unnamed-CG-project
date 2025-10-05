@@ -140,6 +140,21 @@ void animateObject(SceneObject* object, float deltaTime) {
     if (!object->anim.isAnimated) {
         return;
     }
+
+    // Gaurda posição anterior
+    object->prevX = object->x;
+    object->prevY = object->y;
+    object->prevZ = object->z;
+    // Atualiza posição
+    if (object->anim.animationAxis == 0) {
+        object->x += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+    } else if (object->anim.animationAxis == 1) {
+        object->z += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+    } else if (object->anim.animationAxis == 2) {
+        object->y += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;
+    }
+
+
     // 2. Anima no eixo correto
     if (object->anim.animationAxis == 0) { // Eixo X
         object->x += object->anim.moveDirection * object->anim.moveSpeed * deltaTime;

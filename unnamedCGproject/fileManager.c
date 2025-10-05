@@ -37,7 +37,7 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
     while (fgets(line, sizeof(line), loadFilePointer)) {
         line[strcspn(line, "\n")] = 0; // remove o \n do fim da linha
 
-        char *stringParts[MAX_FILE_STRING_SEPARATIONS]; // define o m�ximo de partes que a string pode ter (nesse caso, 4 partes)
+        char *stringParts[MAX_FILE_STRING_SEPARATIONS];
         int partIndex = 0;
 
         char *token = strtok(line, ";");
@@ -56,7 +56,7 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
 
             loadPlatform(sceneObjects, qtdObjects, centerCoords[X_AXIS], centerCoords[Y_AXIS], centerCoords[Z_AXIS], &platformCollision);
 
-            loadPlatformTextures(&sceneObjects[(*qtdObjects)], atoi(stringParts[3]));
+            loadPlatformTextures(&sceneObjects[(*qtdObjects)-1], atoi(stringParts[3]));
         }
         else if (strcmp(stringParts[0], "PLAYER") == 0) {
             float playerCoords[DIMENSIONS];
@@ -69,23 +69,38 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
             loadPlayerModel(player, stringParts[2]);
         }
         else if (strcmp(stringParts[0], "OBJECT") == 0) {
-            if ((*qtdObjects) > max_objects) continue;
+            if ((*qtdObjects) >= max_objects) continue;
             float objectCoords[DIMENSIONS];
             parseFloatValues(stringParts[1], objectCoords);
 
+            // Carrega o objeto (a escala será 1.0 por padrão)
             loadObject(&sceneObjects[(*qtdObjects)], stringParts[2], objectCoords[X_AXIS], objectCoords[Y_AXIS], objectCoords[Z_AXIS]);
 
-            switch (atoi(stringParts[3])) {
-            case 1:
-                sceneObjects[(*qtdObjects)].type = DANGER;
-                break;
-            case 2:
-                sceneObjects[(*qtdObjects)].type = FLAG;
-                break;
-            default:
-                printf("TIPO INSERIDO NÃO É SUPORTADO\n");
-                break;
+            // Lê a escala do arquivo, se existir
+            if (partIndex > 4) {
+                float scaleValue = atof(stringParts[4]);
+                if (scaleValue > 0) { // Garante que a escala não seja zero ou negativa
+                    sceneObjects[(*qtdObjects)].scale = scaleValue;
+                }
             }
+
+            // Recalcula a caixa de colisão DEPOIS de definir a escala
+            getCollisionBoxFromObject(&sceneObjects[(*qtdObjects)]);
+
+            // Define se o tipo
+            switch (atoi(stringParts[3])) {
+                case 1:
+                    sceneObjects[(*qtdObjects)].type = DANGER;
+                    break;
+                case 3:
+                    sceneObjects[(*qtdObjects)].type = FLAG;
+                    break;
+                default:
+                    printf("TIPO INSERIDO NÃO É SUPORTADO\n");
+                    break;
+            }
+
+            // Incrementa o contador de objetos no final
             (*qtdObjects)++;
         }
         else {
@@ -95,3 +110,4 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
 
     fclose(loadFilePointer);
 }
+

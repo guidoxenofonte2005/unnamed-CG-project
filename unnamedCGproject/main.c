@@ -19,6 +19,9 @@ int verticalMovement;
 int horizontalMovement;
 float fieldOfView = 60.0f;
 int lastMousex, lastMousey;
+// Estado do jogo
+bool gameCompleted = false;
+float completionX, completionY, completionZ;
 
 // ângulo horizontal
 float thetaAngle = 0.0f;
@@ -80,15 +83,13 @@ int init() {
 
     loadSkybox();
 
-
-    //1. Define a posi��o inicial do jogador (� esquerda)
-    //player.x = 0.0f;
-    //player.y = 2.0f;
-    //player.z = 0.0f;
-
     checkpointX = player.x;
     checkpointY = 2.0f;
     checkpointZ = player.z;
+
+    completionX = -10.0f;  // x da última plataforma
+    completionY = 50.0f;   // y da última plataforma
+    completionZ = 360.0f; // z da ultima plataforma
 
     // daqui pra baixo tem que substituir pelo load com arquivo
     //loadPlayerModel(&player, "3dfiles/player.glb");
@@ -97,12 +98,6 @@ int init() {
 
     // adiciona ESPINHOS
     for (int i = 0; i < 15; i++) {
-        // Garante que não vamos ultrapassar o limite de objetos
-        // desnecessário agora que não carrega mais
-        // if (objectCount >= MAX_OBJECTS) break;
-        // Carrega um espinho na posição correta
-        // agora está no fileManager
-        // loadObject(&sceneObjects[objectCount+numPlatforms], "3dfiles/spike.glb", spikePositions[i][0], spikeBaseLevelY, spikePositions[i][1]);
 
         // Gira o espinho para ficar na vertical
         sceneObjects[objectCount-i].rotationAngle = -90.0f;
@@ -119,7 +114,6 @@ int init() {
             currentSpike->anim.minLimit = currentSpike->y; // Ponto mais baixo
             currentSpike->anim.maxLimit = currentSpike->y + 7.0f; // Ponto mais alto
         }
-        //objectCount++; // Incrementa o contador de objetos
     }
 
     // agora adiciona plataformas
@@ -271,13 +265,133 @@ void display() {
     }
     //drawCollisionBoxWireframe(player.collision);
 
-    drawShadow(&player, objectsInCollisionRange, playerRotation);
+    if (player.isOnGround && player.groundObjectIndex >= 0) {
+        SceneObject *groundObj = &objectsInCollisionRange[player.groundObjectIndex];
 
-    glutPostRedisplay();
+        // Define o plano (y = constante da parte superior da plataforma)
+        GLfloat plane[4] = {0.0f, 1.0f, 0.0f, -(groundObj->collision.maxY + 0.1f)};
+        GLfloat shadowMat[16];
+        GLfloat lightPos[] = {200.0f, 500.0f, 200.0f, 1.0f};
+
+        // Cria a matriz de sombra (usa a função do shadow.c)
+        makeShadowMatrix(plane, lightPos, shadowMat);
+
+        // Desenha a sombra diretamente
+        glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glPushMatrix();
+            glMultMatrixf(shadowMat);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
+
+            // Desenha o modelo do player projetado
+            glTranslatef(player.x, player.y, player.z);
+            glRotatef(playerRotation, 0.0f, 1.0f, 0.0f);
+            glScalef(1.0f, 1.0f, 1.0f);
+
+            // Usa o mesmo desenho do modelo do player
+            if (player.modelData) {
+                for (int i = 0; i < player.modelData->meshes_count; ++i) {
+                    cgltf_mesh* mesh = &player.modelData->meshes[i];
+                    for (int j = 0; j < mesh->primitives_count; ++j) {
+                        cgltf_primitive* primitive = &mesh->primitives[j];
+                        if (primitive->type == cgltf_primitive_type_triangles) {
+                            cgltf_accessor* positions_accessor = primitive->attributes[0].data;
+                            cgltf_accessor* indices_accessor = primitive->indices;
+
+                            glBegin(GL_TRIANGLES);
+                            for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
+                                cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
+                                float pos[3];
+                                cgltf_accessor_read_float(positions_accessor, index, pos, 3);
+                                glVertex3f(pos[0], pos[1], pos[2]);
+                            }
+                            glEnd();
+                        }
+                    }
+                }
+            }
+
+        glPopMatrix();
+        glPopAttrib();
+    }
+
+    if (gameCompleted) {
+    // Salva o estado atual das matrizes
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    // Configura projeção ortográfica 2D
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, winWidth, 0, winHeight);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    // Desativa recursos que interferem no texto 2D
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_TEXTURE_2D);
+
+    // Cor dourada
+    glColor3f(1.0f, 0.8f, 0.0f);
+
+    // Mensagem principal - fonte ainda maior
+    const char* message1 = "GG! Voce passou em CG!";
+    float textWidth1 = 0;
+    for (int i = 0; message1[i] != '\0'; i++) {
+        textWidth1 += glutBitmapWidth(GLUT_BITMAP_9_BY_15, message1[i]);
+    }
+    float x1 = (winWidth - textWidth1) / 2;
+    float y1 = winHeight * 0.8f; // 60% da altura da tela (mais para cima)
+
+    glRasterPos2f(x1, y1);
+    for (int i = 0; message1[i] != '\0'; i++) {
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, message1[i]);
+    }
+
+    // Mensagem secundária - fonte maior também
+    const char* message2 = "Pressione ESC para sair";
+    float textWidth2 = 0;
+    for (int i = 0; message2[i] != '\0'; i++) {
+        textWidth2 += glutBitmapWidth(GLUT_BITMAP_8_BY_13, message2[i]);
+    }
+    float x2 = (winWidth - textWidth2) / 2;
+    float y2 = winHeight * 0.75f; // 40% da altura da tela
+
+    glRasterPos2f(x2, y2);
+    for (int i = 0; message2[i] != '\0'; i++) {
+        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, message2[i]);
+    }
+
+    // Restaura estado original
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_TEXTURE_2D);
+
+    // Restaura as matrizes
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
     glutSwapBuffers();
 }
 
 void handleKeyboardInput(unsigned char pressedKey, int x, int y) {
+    if (gameCompleted && pressedKey == 27) {
+        printf("Jogo concluído! Saindo...\n");
+        exit(0);
+    }
+
     if (pressedKey == 27) {
         isCameraActive = !isCameraActive;
         if (isCameraActive) {
@@ -323,6 +437,7 @@ void simulatePhysics(float deltaTime) {
 
     // 5. Detecta objetos próximos para otimizar a colisão
     getObjectsInCollisionRange(player, sceneObjects, MAX_OBJECTS, objectsInCollisionRange, &objInColRangeCount);
+    updatePlayerCollisionBox(&player);
 
     // 6. Verifica colisões com objetos perigosos ANTES do movimento
     for (int i = 0; i < objInColRangeCount; i++) {
@@ -333,16 +448,26 @@ void simulatePhysics(float deltaTime) {
             return; // Sai da física neste frame
         }
 
-        else if (objectsInCollisionRange[i].type == FLAG) {
-                checkpointX = objectsInCollisionRange[i].x + 2.0f;
+        else if (objectsInCollisionRange[i].type == FLAG && !objectsInCollisionRange[i].checkpointActivated) {
+            if (isObjectColliding(player.collision, objectsInCollisionRange[i].collision)) {
+                checkpointX = objectsInCollisionRange[i].x - 2.0f;
                 checkpointY = objectsInCollisionRange[i].y + 1.0f;
-                checkpointZ = objectsInCollisionRange[i].z + 2.0f;
+                checkpointZ = objectsInCollisionRange[i].z - 2.0f;
                 printf("Checkpoint atualizado em (%.1f, %.1f, %.1f)\n", checkpointX, checkpointY, checkpointZ);
-                // Opcional: Desativa a bandeira para não ser pega novamente
-                objectsInCollisionRange[i].type = DEFAULT;
-            }
-    }
 
+                // Marca o objeto original como ativado
+                for (int j = 0; j < objectCount; j++) {
+                    if (sceneObjects[j].x == objectsInCollisionRange[i].x &&
+                        sceneObjects[j].y == objectsInCollisionRange[i].y &&
+                        sceneObjects[j].z == objectsInCollisionRange[i].z &&
+                        sceneObjects[j].type == FLAG) {
+                        sceneObjects[j].checkpointActivated = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
     // 7. Processa movimento e colisões com plataformas/paredes
     collideAndSlide(playerVelocity, &player, objectsInCollisionRange, objInColRangeCount, deltaTime);
     getPlayerMovingAngle(playerVelocity, &playerRotation);
@@ -365,6 +490,20 @@ void simulatePhysics(float deltaTime) {
     // 8. Verifica morte por queda
     if (player.y < DEATH_Y_LEVEL) {
         respawnPlayer();
+    }
+
+    // 9. Verifica se chegou ao final
+    if (!gameCompleted) {
+        float distanceToCompletion = sqrtf(
+            powf(player.x - completionX, 2) +
+            powf(player.y - completionY, 2) +
+            powf(player.z - completionZ, 2)
+        );
+
+        if (distanceToCompletion < 5.0f) { // Raio de 5 unidades
+            gameCompleted = true;
+            printf("GG! Você passou em CG!\n");
+        }
     }
 }
 
@@ -460,6 +599,45 @@ void respawnPlayer() {
     player.isOnGround = false;  // Força a física a detectar o chão novamente
     player.isJumping = true;
 }
+
+
+// Desenha o texto de que ganhemo o jogo
+void drawText(float x, float y, const char *text, void (*font)) {
+    // Salva estado
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+
+    // Configura 2D
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, winWidth, 0, winHeight);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glColor3f(1.0f, 0.8f, 0.0f); // Dourado
+
+    glRasterPos2f(x, y);
+    for (int i = 0; text[i] != '\0'; i++) {
+        glutBitmapCharacter(font, text[i]);
+    }
+
+    // Restaura estado
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
+
+
+
 
 int main(int argc, char** argv)
 {

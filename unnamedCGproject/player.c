@@ -178,6 +178,33 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     respawnPlayer();
                     return;
                 }
+                if (currentObj->type == FLAG && !currentObj->checkpointActivated) {
+                // Como estamos dentro de collideAndSlide, precisamos acessar as variáveis globais
+                // Declare essas variáveis como extern no player.h:
+                extern float checkpointX, checkpointY, checkpointZ;
+                extern SceneObject sceneObjects[];
+                extern int objectCount;
+
+                checkpointX = currentObj->x - 2.0f;
+                checkpointY = currentObj->y + 1.0f;
+                checkpointZ = currentObj->z - 2.0f;
+                printf("*** CHECKPOINT ATUALIZADO em (%.1f, %.1f, %.1f) ***\n",
+                       checkpointX, checkpointY, checkpointZ);
+
+                // Marca no array original
+                for (int j = 0; j < objectCount; j++) {
+                    if (sceneObjects[j].x == currentObj->x &&
+                        sceneObjects[j].y == currentObj->y &&
+                        sceneObjects[j].z == currentObj->z &&
+                        sceneObjects[j].type == FLAG) {
+                        sceneObjects[j].checkpointActivated = true;
+                        printf("*** FLAG MARCADA COMO ATIVADA ***\n");
+                        break;
+                    }
+                }
+            // Marca a cópia local também para não repetir no mesmo frame
+            currentObj->checkpointActivated = true;
+        }
 
                 // Volta para posi��o anterior
                 player->x = oldX;
@@ -213,6 +240,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     player->canJump = true;
                     player->groundObjectIndex = i; // Guarde o indice do objeto original
                     move[Y_AXIS] = 0.0f;
+
                 }
                 else if (side == BOTTOM) {
                     move[Y_AXIS] = fminf(move[Y_AXIS], 0.0f);

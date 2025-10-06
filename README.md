@@ -19,7 +19,7 @@ implementações.
 - [x] Pontos extras (cada item vale 0,5 ponto extra):
     - [x] Importação de um objeto.
     - [x] Adição de texturas nos objetos.
-    - [ ] Implementação da projeção da sombra dos objetos.
+    - [X] Implementação da projeção da sombra dos objetos.
 ---
 ### Instruções:
 ##### lorem ipsum dolor sit amet

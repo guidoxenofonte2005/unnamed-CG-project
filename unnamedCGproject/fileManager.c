@@ -11,6 +11,7 @@
 
 FILE *loadFilePointer = NULL;
 
+
 void parseFloatValues(const char *floatString, float *values) {
     char *tempStr = strdup(floatString);
     char *token = strtok(tempStr, ",");
@@ -94,6 +95,9 @@ void loadObjectsFromFile(char *fileLocation, SceneObject *sceneObjects, Player *
                     break;
                 case 3:
                     sceneObjects[(*qtdObjects)].type = FLAG;
+                    break;
+                case 4:
+                    sceneObjects[(*qtdObjects)].type = WIN;
                     break;
                 default:
                     printf("TIPO INSERIDO NÃO É SUPORTADO\n");

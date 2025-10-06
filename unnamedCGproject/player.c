@@ -7,13 +7,13 @@
 #include <math.h>
 
 
-// Define a macro de implementa��o da biblioteca
+// Define a macro de implementacao da biblioteca
 #define CGLTF_IMPLEMENTATION
 #include "libs/cgltf/cgltf.h"
 
 GLuint playerTextureID = 0;
 
-//                                 minX  minY  minZ  maxX, maxY, maxZ
+//                                             minX   minY   minZ  maxX, maxY, maxZ
 ObjectCollisionOffset playerCollisionOffset = {0.0f, -0.5f, -0.5f, 0.0f, 2.0f, 0.0f};
 
 void movePlayer(float *speed, Player *playerObject) {
@@ -31,43 +31,42 @@ void movePlayer(float *speed, Player *playerObject) {
     playerObject->collision.maxZ += speed[2];
 }
 
-// A fun��o agora recebe um ponteiro para a struct Player.
 void loadPlayerModel(Player* playerObj, const char* filename) {
-    // Inicializa as op��es e tenta carregar o arquicvo GLTF
+    // Inicializa as opcoes e tenta carregar o arquivo GLB
     cgltf_options options = {0};
-    // Tenta carregar o modelo e salva os dados no novo membro 'modelData'.
+
+    // Tenta carregar o modelo e salva os dados no modelData.
     cgltf_result result = cgltf_parse_file(&options, filename, &playerObj->modelData);
     if (result != cgltf_result_success) {
         printf("Erro ao carregar o arquivo GLTF: %d\n", result);
         return;
     }
-    // Carrega os dados bin�rios do modelo na mem�ria
+
+    // Carrega os dados binarios do modelo na memoria
     result = cgltf_load_buffers(&options, playerObj->modelData, filename);
     if (result != cgltf_result_success) {
         printf("Erro ao carregar os buffers do arquivo GLTF: %d\n", result);
         cgltf_free(playerObj->modelData);
     }
+
     getPlayerCollisionBox(playerObj);
     playerTextureID = getTextureFromObject(playerObj->modelData);
-    playerObj->initialCollision = playerObj->collision;
 }
 
-//  A fun��o agora recebe um ponteiro para a struct Player.
 void drawPlayerModel(Player* playerObj, float thetaAngle) {
     if (!playerObj->modelData) {
         return;
     }
-    // A l�gica de desenho do modelo 3D
-    // Itera sobre todas as malhas e primitivas do modelo 3D
+    
     glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
     glTranslatef(playerObj->x, playerObj->y, playerObj->z);
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, playerTextureID);
 
-    for (int i = 0; i < playerObj->modelData->meshes_count; ++i) {
+    for (size_t i = 0; i < playerObj->modelData->meshes_count; ++i) {
         cgltf_mesh* mesh = &playerObj->modelData->meshes[i];
-        for (int j = 0; j < mesh->primitives_count; ++j) {
+        for (size_t j = 0; j < mesh->primitives_count; ++j) {
             cgltf_primitive* primitive = &mesh->primitives[j];
             if (primitive->type == cgltf_primitive_type_triangles) {
                 cgltf_accessor* positions_accessor = primitive->attributes[0].data;
@@ -75,7 +74,7 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
 
                 // parte que pega a textura do player
                 cgltf_accessor* texture_coords_accessor = NULL;
-                for (int w = 0; w < primitive->attributes_count; w++) {
+                for (size_t w = 0; w < primitive->attributes_count; w++) {
                     if (primitive->attributes[w].type == cgltf_attribute_type_texcoord) {
                         texture_coords_accessor = primitive->attributes[w].data;
                         break;
@@ -179,42 +178,49 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     return;
                 }
                 if (currentObj->type == FLAG && !currentObj->checkpointActivated) {
-                // Como estamos dentro de collideAndSlide, precisamos acessar as variáveis globais
-                // Declare essas variáveis como extern no player.h:
-                extern float checkpointX, checkpointY, checkpointZ;
-                extern SceneObject sceneObjects[];
-                extern int objectCount;
+                    // Como estamos dentro de collideAndSlide, precisamos acessar as variáveis globais
+                    // Declare essas variáveis como extern no player.h:
+                    extern float checkpointX, checkpointY, checkpointZ;
+                    extern SceneObject sceneObjects[];
+                    extern int objectCount;
 
-                checkpointX = currentObj->x - 2.0f;
-                checkpointY = currentObj->y + 1.0f;
-                checkpointZ = currentObj->z - 2.0f;
-                printf("*** CHECKPOINT ATUALIZADO em (%.1f, %.1f, %.1f) ***\n",
-                       checkpointX, checkpointY, checkpointZ);
+                    checkpointX = currentObj->x - 2.0f;
+                    checkpointY = currentObj->y + 1.0f;
+                    checkpointZ = currentObj->z - 2.0f;
+                    printf("*** CHECKPOINT ATUALIZADO em (%.1f, %.1f, %.1f) ***\n",
+                        checkpointX, checkpointY, checkpointZ);
 
-                // Marca no array original
-                for (int j = 0; j < objectCount; j++) {
-                    if (sceneObjects[j].x == currentObj->x &&
-                        sceneObjects[j].y == currentObj->y &&
-                        sceneObjects[j].z == currentObj->z &&
-                        sceneObjects[j].type == FLAG) {
-                        sceneObjects[j].checkpointActivated = true;
-                        printf("*** FLAG MARCADA COMO ATIVADA ***\n");
-                        break;
+                    // Marca no array original
+                    for (int j = 0; j < objectCount; j++) {
+                        if (sceneObjects[j].x == currentObj->x &&
+                            sceneObjects[j].y == currentObj->y &&
+                            sceneObjects[j].z == currentObj->z &&
+                            sceneObjects[j].type == FLAG) {
+                            sceneObjects[j].checkpointActivated = true;
+                            printf("*** FLAG MARCADA COMO ATIVADA ***\n");
+                            break;
+                        }
                     }
+                    // Marca a cópia local também para não repetir no mesmo frame
+                    currentObj->checkpointActivated = true;
                 }
-            // Marca a cópia local também para não repetir no mesmo frame
-            currentObj->checkpointActivated = true;
-        }
 
-                // Volta para posi��o anterior
+                if (currentObj->type == WIN) {
+                    gameCompleted = true;
+                    printf("GG! Você passou em CG!\n");
+                    currentObj->type = DEFAULT; // evita ativação múltipla
+                    // Não retorna aqui, permite o slide normal
+                }
+
+                // Volta para posicaoo anterior
                 player->x = oldX;
                 player->y = oldY;
                 player->z = oldZ;
 
-                // Recalcula a collision box na posi��o antiga
+                // Recalcula a collision box na posicaoo antiga
                 getPlayerCollisionBox(player);
 
-                // Calcula normal da colis�o
+                // Calcula normal da colisao
                 CollisionSide side = getCollidingObjectSide(player->collision, currentObj->collision);
                 float normalCollisionVector[3] = {0.0f, 0.0f, 0.0f};
                 getCollisionNormalVec(side, player->collision, currentObj->collision, normalCollisionVector);
@@ -229,15 +235,14 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                     normalCollisionVector[Z_AXIS] * prodEscalar
                 };
 
-                // Ajusta o vetor movimento para "deslizar" pela superf�cie
+                // Ajusta o vetor movimento para
                 move[X_AXIS] -= normalSpeedVector[X_AXIS];
                 move[Y_AXIS] -= normalSpeedVector[Y_AXIS];
                 move[Z_AXIS] -= normalSpeedVector[Z_AXIS];
 
-                // Trata colis�es tipo TOP e BOTTOM
+                // Trata colisoes TOP e BOTTOM
                 if (side == TOP) {
                     player->isOnGround = true;
-                    player->canJump = true;
                     player->groundObjectIndex = i; // Guarde o indice do objeto original
                     move[Y_AXIS] = 0.0f;
 
@@ -245,19 +250,18 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                 else if (side == BOTTOM) {
                     move[Y_AXIS] = fminf(move[Y_AXIS], 0.0f);
                 }
-                // Para colis�es SIDE (laterais), n�o � preciso mais nada,
-                // pois o componente da velocidade na dire��o da normal j� foi removido acima
+                // Para colisoes laterais, o componente da velocidade na direcao da normal ja foi removido
                 collided = true;
 
-                // Atualiza collision box ap�s ajuste
+                // Atualiza collision box apos ajuste
                 getPlayerCollisionBox(player);
 
-                break; // Recome�a a verifica��o a partir da nova posi��o e vetor ajustado
+                break; // Recomeca a verificacao a partir da nova posicao e vetor ajustado
             }
         }
 
         if (!collided) {
-            // Movimento resolvido sem colis�o, sai do loop
+            // Movimento resolvido sem colisao, sai do loop
             break;
         }
     }

@@ -71,9 +71,9 @@ void drawShadow(Player *player, SceneObject *objectsInCollisionRange, float play
 
             // Usa o mesmo desenho do modelo do player
             if (player->modelData) {
-                for (int i = 0; i < player->modelData->meshes_count; ++i) {
+                for (size_t i = 0; i < player->modelData->meshes_count; ++i) {
                     cgltf_mesh* mesh = &player->modelData->meshes[i];
-                    for (int j = 0; j < mesh->primitives_count; ++j) {
+                    for (size_t j = 0; j < mesh->primitives_count; ++j) {
                         cgltf_primitive* primitive = &mesh->primitives[j];
                         if (primitive->type == cgltf_primitive_type_triangles) {
                             cgltf_accessor* positions_accessor = primitive->attributes[0].data;

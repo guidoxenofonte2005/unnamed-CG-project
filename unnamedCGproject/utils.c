@@ -106,6 +106,7 @@ void updateFOV(float newFOV, float windowWidth, float windowHeight) {
     glPopMatrix();
 }
 
+// usada unicamente aqui nesse arquivo, por isso não tá no .h
 float get3DDistance(const float *obj1, const float *obj2) {
     float deltaX = obj2[0] - obj1[0];
     float deltaY = obj2[1] - obj1[1];

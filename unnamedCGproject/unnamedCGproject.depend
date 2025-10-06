@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1759768787 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
+1759794778 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -47,7 +47,7 @@
 	"object.h"
 	"player.h"
 
-1759764778 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
+1759789999 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -57,14 +57,14 @@
 	<math.h>
 	"libs/cgltf/cgltf.h"
 
-1759764778 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
+1759794937 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\player.h
 	<stdlib.h>
 	<stdbool.h>
 	"libs/cgltf/cgltf.h"
 	"collision.h"
 	"object.h"
 
-1759764778 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
+1759790876 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\utils.h
 	<stdbool.h>
 	"object.h"
 	"player.h"
@@ -582,7 +582,7 @@
 	"utils.h"
 	"collision.h"
 
-1759541574 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
+1759792593 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\collision.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -591,13 +591,13 @@
 	"utils.h"
 	"collision.h"
 
-1759764778 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
+1759794534 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.h
 	"libs/cgltf/cgltf.h"
 	"GL/freeglut.h"
 	"collision.h"
 	"texture.h"
 
-1759764778 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
+1759794652 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\object.c
 	<stdio.h>
 	<stdlib.h>
 	<GL/freeglut.h>
@@ -671,7 +671,7 @@
 	<intrin.h>
 	<arm_neon.h>
 
-1759764778 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
+1759793938 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\filemanager.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -999,13 +999,13 @@
 1759541575 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\skybox.h
 	<GL/glut.h>
 
-1759768332 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\shadow.c
+1759793273 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\shadow.c
 	"player.h"
 	"object.h"
 	"shadow.h"
 	<GL/freeglut.h>
 
-1759768326 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\shadow.h
+1759768943 c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\shadow.h
 	<GL/freeglut.h>
 
 1759541575 source:c:\users\guido\desktop\unnamed-cg-project\unnamedcgproject\skybox.c

@@ -15,8 +15,6 @@
 #define DEATH_Y_LEVEL -15.0f // Define a altura em que o jogador volta para o ponto inicial
 #define MAX_OBJECTS 50 // Define o máximo de objetos na cena
 
-int verticalMovement;
-int horizontalMovement;
 float fieldOfView = 60.0f;
 int lastMousex, lastMousey;
 // Estado do jogo
@@ -36,17 +34,14 @@ float playerRotation = 0.0f;
 bool isCameraActive = false;
 int winWidth = 1000, winHeight = 750;
 
-Player player = {
-    0.0f, 0.0f, 0.0f,     // x, y, z
-    false,                 // isOnGround
-    true,                  // canJump
-    false,                 // isRespawning
-    false,                 // isJumping
-    IDLE,                  // state
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, // collision
-    NULL                   // modelData
-};
+Player player = {0.0f, 0.0f, 0.0f, // x, y, z
+                 false, // isOnGround
+                 IDLE, // state
+                 {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, // collisionBox
+                 NULL, // modelData
+                 0}; // groundObjectIndex
 
+//                           W      A      S      D     JUMP
 PlayerMoveKeys moveKeys = {false, false, false, false, false};
 
 float checkpointX, checkpointY, checkpointZ;
@@ -57,7 +52,6 @@ SceneObject sceneObjects[MAX_OBJECTS];
 int objectCount = 0;
 
 // índice de início das plataformas no array sceneObjects
-int platformStartIndex = 0; //  por enquanto não vai usar isso, talvez depois
 SceneObject objectsInCollisionRange[MAX_OBJECTS];
 int objInColRangeCount = 0;
 
@@ -116,24 +110,7 @@ int init() {
         }
     }
 
-    // agora adiciona plataformas
-    //loadLevelPlatforms();
-
-    // Índice da plataforma 9 é (0-indexed, então é 8)
-    int ninePlatformIndex = platformStartIndex + 8;
-    // Garante que não vamos acessar um índice fora do array
-    if (ninePlatformIndex < objectCount) {
-        // Ativa a animação
-        sceneObjects[ninePlatformIndex].anim.isAnimated = true;
-        // Define os parâmetros da animação
-        sceneObjects[ninePlatformIndex].anim.animationAxis = 0; // 0 para Eixo X, 1 para Eixo Z
-        sceneObjects[ninePlatformIndex].anim.moveSpeed = 8.0f;     // Velocidade do movimento
-        sceneObjects[ninePlatformIndex].anim.moveDirection = 1.0f; // Começa se movendo na direção positiva
-
-        // A plataforma começará em x=0.0 e se moverá entre -20.0 e 20.0
-        sceneObjects[ninePlatformIndex].anim.minLimit = -20.0f;
-    }
-
+    // ADICIONA ANIMAÇÕES
     for (int i = 0; i < objectCount; i++) {
         SceneObject* currentObject = &sceneObjects[i];
 
@@ -208,10 +185,6 @@ int init() {
     return 1;
 }
 
-void drawPlayerShadowFunc(void) {
-    drawPlayerModel(&player, playerRotation);
-}
-
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -246,7 +219,7 @@ void display() {
     GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f};
     GLfloat shininess = 20;
 
-    // chama a fun��o para aplicar ilumina��o
+    // chama a funcao para aplicar iluminacao
     setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
 
     glBindTexture(GL_TEXTURE_2D, 0); // desliga a textura atual
@@ -441,8 +414,7 @@ void simulatePhysics(float deltaTime) {
 
     // 6. Verifica colisões com objetos perigosos ANTES do movimento
     for (int i = 0; i < objInColRangeCount; i++) {
-        if (objectsInCollisionRange[i].type == DANGER &&
-            isObjectColliding(player.collision, objectsInCollisionRange[i].collision)) {
+        if (objectsInCollisionRange[i].type == DANGER && isObjectColliding(player.collision, objectsInCollisionRange[i].collision)) {
             printf("Colidiu com um objeto perigoso! Morreu!\n");
             respawnPlayer();
             return; // Sai da física neste frame
@@ -465,6 +437,13 @@ void simulatePhysics(float deltaTime) {
                         break;
                     }
                 }
+            }
+        }
+
+        else if (objectsInCollisionRange[i].type == WIN) {
+            if (isObjectColliding(player.collision, objectsInCollisionRange[i].collision)) {
+                gameCompleted = true;
+                objectsInCollisionRange[i].type = DEFAULT;
             }
         }
     }
@@ -490,20 +469,6 @@ void simulatePhysics(float deltaTime) {
     // 8. Verifica morte por queda
     if (player.y < DEATH_Y_LEVEL) {
         respawnPlayer();
-    }
-
-    // 9. Verifica se chegou ao final
-    if (!gameCompleted) {
-        float distanceToCompletion = sqrtf(
-            powf(player.x - completionX, 2) +
-            powf(player.y - completionY, 2) +
-            powf(player.z - completionZ, 2)
-        );
-
-        if (distanceToCompletion < 5.0f) { // Raio de 5 unidades
-            gameCompleted = true;
-            printf("GG! Você passou em CG!\n");
-        }
     }
 }
 
@@ -595,9 +560,7 @@ void respawnPlayer() {
     updatePlayerCollisionBox(&player);
 
     // 4. Define flags de estado corretas
-    player.isRespawning = false;
     player.isOnGround = false;  // Força a física a detectar o chão novamente
-    player.isJumping = true;
 }
 
 

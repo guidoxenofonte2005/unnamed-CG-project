@@ -11,7 +11,8 @@ typedef enum {
     DEFAULT, // Um objeto genérico
     PLATFORM,
     DANGER, // Um objeto perigoso
-    FLAG // Um objeto para mercar chek
+    FLAG, // Um objeto para marcar checkpoint
+    WIN
 } ObjectType;
 
 typedef struct {

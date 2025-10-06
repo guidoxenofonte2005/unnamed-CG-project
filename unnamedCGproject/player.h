@@ -7,6 +7,8 @@
 #include "collision.h"
 #include "object.h"
 
+extern bool gameCompleted;
+
 typedef enum {
     IDLE,
     MOVING,
@@ -18,19 +20,14 @@ typedef struct {
     float y;
     float z;
     bool isOnGround;
-    bool canJump;
-    bool isRespawning;
-    bool isJumping;
     PlayerState state;
     CollisionBox collision;
-    cgltf_data* modelData; // Adiciona o ponteiro para os dados do modelo 3D.
-    CollisionBox initialCollision;
-    int groundObjectIndex; // guarda o �ndice do objeto que o player t� em cima
+    cgltf_data* modelData; // ponteiro para os dados do modelo 3D.
+    int groundObjectIndex; // guarda o indice do objeto que o player ta em cima
 } Player;
 
 void movePlayer(float *speed, Player *playerObject);
 
-// Declara��es das fun��es de importa��o e desenho
 void loadPlayerModel(Player* playerObj, const char* filename);
 void drawPlayerModel(Player* playerObj, float thetaAngle);
 void cleanupPlayerModel(Player* playerObj);
@@ -41,9 +38,7 @@ void updatePlayerCollisionBox(Player* player);
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime);
 
-extern int qtdTextures;
 extern float checkpointX, checkpointY, checkpointZ;
 extern SceneObject sceneObjects[];
-extern int objectCount;
 
 #endif // PLAYER_H_INCLUDED

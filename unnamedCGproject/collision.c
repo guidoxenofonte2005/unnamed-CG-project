@@ -25,6 +25,7 @@ CollisionSide getCollidingObjectSide(CollisionBox referenceObj, CollisionBox col
     return NONE;
 }
 
+// usado pra debug de colisÃ£o
 void drawCollisionBoxWireframe(CollisionBox box) {
     glPushMatrix();
         float centerX = (box.minX + box.maxX) / 2.0f;
@@ -32,7 +33,7 @@ void drawCollisionBoxWireframe(CollisionBox box) {
         float centerZ = (box.minZ + box.maxZ) / 2.0f;
         glTranslatef(centerX, centerY, centerZ);
 
-        // Calcula as dimensões da caixa
+        // Calcula as dimensï¿½es da caixa
         float sizeX = box.maxX - box.minX;
         float sizeY = box.maxY - box.minY;
         float sizeZ = box.maxZ - box.minZ;

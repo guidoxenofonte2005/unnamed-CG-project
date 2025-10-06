@@ -50,6 +50,21 @@ void drawObject(SceneObject* object) {
     if (!object->data) {
         return;
     }
+    // Salva o estado atual da textura
+    bool wasTextureEnabled = glIsEnabled(GL_TEXTURE_2D);
+
+    // Verifica se é o troféu (WIN)
+    bool isTrophy = (object->type == WIN);
+
+    // Se for o troféu, desabilita textura e define cor
+    if (isTrophy) {
+        glColor3f(1.0f, 0.8f, 0.0f); // Dourado
+    } else {
+        // Para outros objetos, habilita textura e vincula
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, object->textureID);
+    }
+    
     glBindTexture(GL_TEXTURE_2D, object->textureID);
     glPushMatrix();
         glTranslatef(object->x, object->y, object->z);

@@ -7,6 +7,6 @@
 void makeShadowMatrix(GLfloat plane[4], GLfloat lightPos[4], GLfloat shadowMat[16]);
 
 // Aplica a sombra sobre um objeto desenhado
-void drawShadow(GLfloat plane[4], GLfloat lightPos[4], void (*drawFunc)(void));
+void drawShadow(Player *player, SceneObject *objectsInCollisionRange, float playerRotation);
 
 #endif

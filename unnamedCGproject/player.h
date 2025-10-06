@@ -41,6 +41,4 @@ void updatePlayerCollisionBox(Player* player);
 
 void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, int qtdObjInRange, float deltaTime);
 
-extern int qtdTextures;
-
 #endif // PLAYER_H_INCLUDED

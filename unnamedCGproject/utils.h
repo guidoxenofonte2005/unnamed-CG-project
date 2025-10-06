@@ -15,7 +15,7 @@
 #define MIN_SCREEN_HEIGHT 750
 #define MAX_SCREEN_HEIGHT 1080
 
-#define PHYSICS_STEP (1.0f / 75.0f) // EXTREMAMENTE IMPORTANTE PRA FÍSICA DO JOGO, NÃO TIRA POR NADA NO MUNDO
+#define PHYSICS_STEP (1.0f / 75.0f) // EXTREMAMENTE IMPORTANTE PRA Fï¿½SICA DO JOGO, Nï¿½O TIRA POR NADA NO MUNDO
 
 #include "object.h"
 #include "player.h"
@@ -45,10 +45,8 @@ void getPlayerMovingAngle(float *playerVelocity, float *playerRotation);
 void updateFOV(float newFOV, float windowWidth, float windowHeight);
 void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QTD_SCENEOBJECTS, SceneObject *sceneObjectsInRange, int *objCount);
 
-// Anima um objeto com base nos seus dados de animação
+// Anima um objeto com base nos seus dados de animaï¿½ï¿½o
 void animateObject(SceneObject* object, float deltaTime);
 void respawnPlayer();
 
 float getShadowPlatformHeight(SceneObject *sceneObjects, int objectCount, float objX, float objY, float objZ);
-
-extern ObjectCollisionOffset playerCollisionOffset;

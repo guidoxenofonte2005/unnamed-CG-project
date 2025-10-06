@@ -21,15 +21,5 @@ implementações.
     - [x] Adição de texturas nos objetos.
     - [X] Implementação da projeção da sombra dos objetos.
 ---
-### Instruções:
-##### lorem ipsum dolor sit amet
-> - lorem ipsum dolor sit amet
->   - lorem ipsum dolor sit amet
->   - lorem ipsum dolor sit amet
-##### lorem ipsum dolor sit amet
-> - lorem ipsum dolor sit amet
->   - lorem ipsum dolor sit amet
->   - lorem ipsum dolor sit amet
-
 <small>For any legal purposes, this game is **not** made with any commercial intents and its development is motivated uniquely by study/research purposes. It is not made or endorsed in any way by the original [Celeste 64](https://www.github.com/EXOK/Celeste64/) development team.
 3D models, textures and everything in this project regarding the Celeste intellectual property are owned by [Maddy Makes Games, Inc](https://www.maddymakesgames.com/) and available for usage under the Celeste64's license.</small>

@@ -207,3 +207,24 @@ void animateObject(SceneObject* object, float deltaTime) {
         object->anim.moveDirection = 1.0f;
     }
 }
+
+// pega a altura da plataforma mais perto do jogador verticalmente que esteja abaixo dele
+float getShadowPlatformHeight(SceneObject *sceneObjects, int objectCount, float objX, float objY, float objZ) {
+    float bestY = -15.0f; // limitado ao Y_DEATH_LEVEL
+    for (int i = 0; i < objectCount; i++) {
+        if (sceneObjects[i].type != PLATFORM) continue;
+        CollisionBox c = sceneObjects[i].collision;
+
+        // Verifica se o objeto está horizontalmente acima da plataforma
+        if (objX >= c.minX && objX <= c.maxX &&
+            objZ >= c.minZ && objZ <= c.maxZ) {
+
+            // Plataforma está abaixo do objeto
+            if (c.maxY <= objY && c.maxY > bestY) {
+                bestY = c.maxY;
+            }
+        }
+    }
+    return bestY; // retorna o topo da plataforma mais próxima abaixo
+
+}

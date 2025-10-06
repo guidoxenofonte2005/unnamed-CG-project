@@ -72,6 +72,7 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
             if (primitive->type == cgltf_primitive_type_triangles) {
                 cgltf_accessor* positions_accessor = primitive->attributes[0].data;
                 cgltf_accessor* normals_accessor = primitive->attributes[1].data;
+
                 // parte que pega a textura do player
                 cgltf_accessor* texture_coords_accessor = NULL;
                 for (int w = 0; w < primitive->attributes_count; w++) {

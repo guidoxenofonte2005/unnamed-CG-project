@@ -49,4 +49,6 @@ void getObjectsInCollisionRange(Player player, SceneObject *sceneObjects, int QT
 void animateObject(SceneObject* object, float deltaTime);
 void respawnPlayer();
 
+float getShadowPlatformHeight(SceneObject *sceneObjects, int objectCount, float objX, float objY, float objZ);
+
 extern ObjectCollisionOffset playerCollisionOffset;

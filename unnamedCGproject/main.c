@@ -214,6 +214,10 @@ int init() {
     return 1;
 }
 
+void drawPlayerShadowFunc(void) {
+    drawPlayerModel(&player, playerRotation);
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -240,7 +244,7 @@ void display() {
     GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
     GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
     GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
-    GLfloat lightPosition[] = {10.0f, 10.0f, 10.0f, 1.0f}; // Posi��o da luz
+    GLfloat lightPosition[] = {200.0f, 500.0f, 200.0f, 1.0f}; // Posi��o da luz
 
     // Define as propriedades do material (pode ser gen�rico para todos os objetos)
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
@@ -255,6 +259,7 @@ void display() {
 
     // chama fun��o para desenhar o modelo 3D na tela a cada frane
     drawPlayerModel(&player, playerRotation);
+
     for (int i = 0; i < objectCount; ++i) {
         if (sceneObjects[i].type == PLATFORM) {
             drawPlatform(&sceneObjects[i]);
@@ -265,6 +270,60 @@ void display() {
         //drawCollisionBoxWireframe(sceneObjects[i].collision);
     }
     //drawCollisionBoxWireframe(player.collision);
+
+    if (player.isOnGround && player.groundObjectIndex >= 0) {
+        SceneObject *groundObj = &objectsInCollisionRange[player.groundObjectIndex];
+
+        // Define o plano (y = constante da parte superior da plataforma)
+        GLfloat plane[4] = {0.0f, 1.0f, 0.0f, -(groundObj->collision.maxY + 0.1f)};
+        GLfloat shadowMat[16];
+        GLfloat lightPos[] = {200.0f, 500.0f, 200.0f, 1.0f};
+
+        // Cria a matriz de sombra (usa a função do shadow.c)
+        makeShadowMatrix(plane, lightPos, shadowMat);
+
+        // Desenha a sombra diretamente
+        glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glPushMatrix();
+            glMultMatrixf(shadowMat);
+            glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
+
+            // Desenha o modelo do player projetado
+            glTranslatef(player.x, player.y, player.z);
+            glRotatef(playerRotation, 0.0f, 1.0f, 0.0f);
+            glScalef(1.0f, 1.0f, 1.0f);
+
+            // Usa o mesmo desenho do modelo do player
+            if (player.modelData) {
+                for (int i = 0; i < player.modelData->meshes_count; ++i) {
+                    cgltf_mesh* mesh = &player.modelData->meshes[i];
+                    for (int j = 0; j < mesh->primitives_count; ++j) {
+                        cgltf_primitive* primitive = &mesh->primitives[j];
+                        if (primitive->type == cgltf_primitive_type_triangles) {
+                            cgltf_accessor* positions_accessor = primitive->attributes[0].data;
+                            cgltf_accessor* indices_accessor = primitive->indices;
+
+                            glBegin(GL_TRIANGLES);
+                            for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
+                                cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
+                                float pos[3];
+                                cgltf_accessor_read_float(positions_accessor, index, pos, 3);
+                                glVertex3f(pos[0], pos[1], pos[2]);
+                            }
+                            glEnd();
+                        }
+                    }
+                }
+            }
+
+        glPopMatrix();
+        glPopAttrib();
+    }
 
     glutPostRedisplay();
     glutSwapBuffers();

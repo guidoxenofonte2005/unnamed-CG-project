@@ -40,17 +40,18 @@ void makeShadowMatrix(GLfloat plane[4], GLfloat lightPos[4], GLfloat shadowMat[1
 // ------------------------------------------------------------
 void drawShadow(GLfloat plane[4], GLfloat lightPos[4], void (*drawFunc)(void)) {
     GLfloat shadowMat[16];
-
     makeShadowMatrix(plane, lightPos, shadowMat);
 
-    glPushMatrix();
-    glMultMatrixf(shadowMat);
-    // Deixar a sombra preta e sem iluminação
+    glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
-    glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    drawFunc(); // chama a função que desenha o objeto
-
-    glEnable(GL_LIGHTING);
+    glPushMatrix();
+        glMultMatrixf(shadowMat);
+        glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+        drawFunc();
     glPopMatrix();
+
 }

@@ -38,6 +38,7 @@ typedef struct {
     ObjectType type;
     GLuint textureID;
     PlatformTextureTypes platformTextures;
+    bool checkpointActivated;
 } SceneObject;
 
 // Declarações das funções para manipular a cena

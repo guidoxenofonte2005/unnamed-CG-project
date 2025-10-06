@@ -160,19 +160,6 @@ void getCollisionBoxFromObject(SceneObject *object) {
             object->collision.maxY = object->y + 3.0f;
         }
 
-        // Cria uma caixa de colisão personalizada para a bandeira, ignorando a do ficheiro.
-        if (object->type == FLAG) {
-            float halfWidth = 0.2f; // Largura total de 2
-            float height = 5.0f;    // Altura total de 5
-            float halfDepth = 0.2f; // Profundidade total de 2
-
-            object->collision.minX = object->x - halfWidth;
-            object->collision.maxX = object->x + halfWidth;
-            object->collision.minY = object->y; // A base da caixa fica na posição Y da bandeira
-            object->collision.maxY = object->y + height;
-            object->collision.minZ = object->z - halfDepth;
-            object->collision.maxZ = object->z + halfDepth;
-        }
     }
 }
 

@@ -57,7 +57,7 @@ void drawPlayerModel(Player* playerObj, float thetaAngle) {
     if (!playerObj->modelData) {
         return;
     }
-    
+
     glPushMatrix(); // Salva o estado atual da matriz para evitar que o player afete a cena toda
     glTranslatef(playerObj->x, playerObj->y, playerObj->z);
     glRotatef(thetaAngle, 0.0f, 1.0f, 0.0f);
@@ -162,7 +162,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
     for (int iteration = 0; iteration < maxIterations; iteration++) {
         float oldX = player->x, oldY = player->y, oldZ = player->z;
 
-        // Tenta mover o player com o movimento restante
+        // Tenta mover
         movePlayer(move, player);
 
         bool collided = false;
@@ -217,7 +217,7 @@ void collideAndSlide(float *speed, Player *player, SceneObject *objectsInRange, 
                 player->y = oldY;
                 player->z = oldZ;
 
-                // Recalcula a collision box na posicaoo antiga
+                // Recalcula a collision box na posicao antiga
                 getPlayerCollisionBox(player);
 
                 // Calcula normal da colisao

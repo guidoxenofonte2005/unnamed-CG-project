@@ -68,7 +68,7 @@ int init() {
     glCullFace(GL_BACK);
 
     glEnable(GL_TEXTURE_2D);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);//forçar a textura a substituir a cor/material
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -199,39 +199,61 @@ void display() {
               player.x, player.y + 4, player.z,
               0.0, 1.0, 0.0);
 
+    glEnable(GL_LIGHTING); // Habilita o sistema de iluminação
+    glEnable(GL_LIGHT0); // Ativa a luz 0
 
     glPushMatrix();
-    // skybox na posição da câmera (sem se mover com o jogador)
-    glTranslatef(player.x, player.y, player.z);
-    drawSkybox(50.0f);
+        // Salva os atributos de enable e do buffer de profundidade
+        glPushAttrib(GL_ENABLE_BIT | GL_DEPTH_BUFFER_BIT);
+        glDisable(GL_LIGHTING); // Skybox não precisa de luz
+        glDisable(GL_CULL_FACE); // Garante que o interior da caixa seja desenhado
+        glDepthMask(GL_FALSE);   // Impede que a skybox escreva no buffer de profundidade
+
+        // Translada a skybox para a posição da câmera para criar a ilusão de um fundo infinito
+        glTranslatef(camX, camY, camZ);
+        drawSkybox(500.0f);
+
+        glPopAttrib(); // Restaura os atributos (inclusive reativa o glDepthMask)
     glPopMatrix();
 
-
     // Definindo as propriedades da fonte de luz
-    GLfloat ambientLight[]  = {0.2f, 0.2f, 0.2f, 1.0f};  // Luz ambiente fraca
-    GLfloat diffuseLight[]  = {0.8f, 0.8f, 0.8f, 1.0f};  // Luz difusa branca
-    GLfloat specularLight[] = {1.0f, 1.0f, 1.0f, 1.0f};  // Brilho especular branco
-    GLfloat lightPosition[] = {200.0f, 500.0f, 200.0f, 1.0f}; // Posi��o da luz
+    GLfloat ambientLight[]  = {0.1f, 0.1f, 0.2f, 1.0f};  // ambiente azulado fraco
+    GLfloat diffuseLight[]  = {0.4f, 0.4f, 0.8f, 1.0f};  // luz difusa azul-claro
+    GLfloat specularLight[] = {0.6f, 0.6f, 1.0f, 1.0f};  // brilho frio, quase metálico
+    GLfloat lightPosition[] = {0.0f, 400.0f, 200.0f, 1.0f}; // vindo de cima, tipo lua
 
-    // Define as propriedades do material (pode ser gen�rico para todos os objetos)
+    // Define as propriedades do material
     GLfloat ambientMaterial[]  = {0.5f, 0.5f, 0.5f, 1.0f};
     GLfloat diffuseMaterial[]  = {0.8f, 0.8f, 0.8f, 1.0f};
     GLfloat specularMaterial[] = {0.2f, 0.2f, 0.2f, 1.0f};
     GLfloat shininess = 20;
 
     // chama a funcao para aplicar iluminacao
-    setupLighting(ambientLight, diffuseLight, specularLight, lightPosition, ambientMaterial, diffuseMaterial, specularMaterial, shininess);
+    setupLighting(ambientLight, diffuseLight, specularLight, lightPosition);
 
     glBindTexture(GL_TEXTURE_2D, 0); // desliga a textura atual
 
-    // chama fun��o para desenhar o modelo 3D na tela a cada frane
+    // chama função para desenhar o modelo 3D na tela a cada frame
+    setMaterial(ambientMaterial, diffuseMaterial, specularMaterial, shininess);
     drawPlayerModel(&player, playerRotation);
 
     for (int i = 0; i < objectCount; ++i) {
         if (sceneObjects[i].type == PLATFORM) {
+            GLfloat ambPlatformMaterial[] = {0.3f, 0.3f, 0.3f, 1.0f};
+            GLfloat diffPlatformMaterial[] = {0.6f, 0.6f, 0.6f, 1.0f};
+            GLfloat specPlatformMaterial[] = {0.1f, 0.1f, 0.1f, 1.0f};
+            shininess = 10;
+
+            setMaterial(ambPlatformMaterial, diffPlatformMaterial, specPlatformMaterial, shininess);
             drawPlatform(&sceneObjects[i]);
         }
         else {
+            GLfloat ambObjectMaterial[] = {0.2f, 0.2f, 0.25f, 1.0f};
+            GLfloat diffObjectMaterial[] = {0.5f, 0.5f, 0.65f, 1.0f};
+            GLfloat specObjectMaterial[] = {0.4f, 0.4f, 0.4f, 1.0f};
+            shininess = 30.0f;
+
+            setMaterial(ambObjectMaterial, diffObjectMaterial, specObjectMaterial, shininess);
             drawObject(&sceneObjects[i]);
         }
         //drawCollisionBoxWireframe(sceneObjects[i].collision);
@@ -241,69 +263,69 @@ void display() {
     drawShadow(&player, objectsInCollisionRange, playerRotation);
 
     if (gameCompleted) {
-    // Salva o estado atual das matrizes
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
+        // Salva o estado atual das matrizes
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
 
-    // Configura projeção ortográfica 2D
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0, winWidth, 0, winHeight);
+        // Configura projeção ortográfica 2D
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluOrtho2D(0, winWidth, 0, winHeight);
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-    // Desativa recursos que interferem no texto 2D
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_TEXTURE_2D);
+        // Desativa recursos que interferem no texto 2D
+        glDisable(GL_LIGHTING);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_TEXTURE_2D);
 
-    // Cor dourada
-    glColor3f(1.0f, 0.8f, 0.0f);
+        // Cor dourada
+        glColor3f(1.0f, 0.8f, 0.0f);
 
-    // Mensagem principal - fonte ainda maior
-    const char* message1 = "GG! Voce passou em CG!";
-    float textWidth1 = 0;
-    for (int i = 0; message1[i] != '\0'; i++) {
-        textWidth1 += glutBitmapWidth(GLUT_BITMAP_9_BY_15, message1[i]);
+        // Mensagem principal - fonte ainda maior
+        const char* message1 = "GG! Voce passou em CG!";
+        float textWidth1 = 0;
+        for (int i = 0; message1[i] != '\0'; i++) {
+            textWidth1 += glutBitmapWidth(GLUT_BITMAP_9_BY_15, message1[i]);
+        }
+        float x1 = (winWidth - textWidth1) / 2;
+        float y1 = winHeight * 0.8f; // 60% da altura da tela (mais para cima)
+
+        glRasterPos2f(x1, y1);
+        for (int i = 0; message1[i] != '\0'; i++) {
+            glutBitmapCharacter(GLUT_BITMAP_9_BY_15, message1[i]);
+        }
+
+        // Mensagem secundária - fonte maior também
+        const char* message2 = "Pressione ESC para sair";
+        float textWidth2 = 0;
+        for (int i = 0; message2[i] != '\0'; i++) {
+            textWidth2 += glutBitmapWidth(GLUT_BITMAP_8_BY_13, message2[i]);
+        }
+        float x2 = (winWidth - textWidth2) / 2;
+        float y2 = winHeight * 0.75f; // 40% da altura da tela
+
+        glRasterPos2f(x2, y2);
+        for (int i = 0; message2[i] != '\0'; i++) {
+            glutBitmapCharacter(GLUT_BITMAP_8_BY_13, message2[i]);
+        }
+
+        // Restaura estado original
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_TEXTURE_2D);
+
+        // Restaura as matrizes
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
     }
-    float x1 = (winWidth - textWidth1) / 2;
-    float y1 = winHeight * 0.8f; // 60% da altura da tela (mais para cima)
-
-    glRasterPos2f(x1, y1);
-    for (int i = 0; message1[i] != '\0'; i++) {
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, message1[i]);
-    }
-
-    // Mensagem secundária - fonte maior também
-    const char* message2 = "Pressione ESC para sair";
-    float textWidth2 = 0;
-    for (int i = 0; message2[i] != '\0'; i++) {
-        textWidth2 += glutBitmapWidth(GLUT_BITMAP_8_BY_13, message2[i]);
-    }
-    float x2 = (winWidth - textWidth2) / 2;
-    float y2 = winHeight * 0.75f; // 40% da altura da tela
-
-    glRasterPos2f(x2, y2);
-    for (int i = 0; message2[i] != '\0'; i++) {
-        glutBitmapCharacter(GLUT_BITMAP_8_BY_13, message2[i]);
-    }
-
-    // Restaura estado original
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_TEXTURE_2D);
-
-    // Restaura as matrizes
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-}
     glutSwapBuffers();
 }
 

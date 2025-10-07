@@ -13,5 +13,6 @@
 // shininess        -> Concentração do brilho especular (float)
 //                     Valores baixos -> brilho espalhado (fosco)
 //                     Valores altos  -> brilho concentrado (polido)
-void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specularLight, GLfloat *lightPosition,
-                   GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess);
+void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specularLight, GLfloat *lightPosition);
+
+void setMaterial(GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess);

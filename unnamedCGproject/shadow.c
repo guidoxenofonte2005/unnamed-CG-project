@@ -61,38 +61,38 @@ void drawShadow(Player *player, SceneObject *objectsInCollisionRange, float play
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glPushMatrix();
-            glMultMatrixf(shadowMat);
-            glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
+        glMultMatrixf(shadowMat);
+        glColor4f(0.0f, 0.0f, 0.0f, 0.6f);
 
-            // Desenha o modelo do player projetado
-            glTranslatef(player->x, player->y, player->z);
-            glRotatef(playerRotation, 0.0f, 1.0f, 0.0f);
-            glScalef(1.0f, 1.0f, 1.0f);
+        // Desenha o modelo do player projetado
+        glTranslatef(player->x, player->y, player->z);
+        glRotatef(playerRotation, 0.0f, 1.0f, 0.0f);
+        glScalef(1.0f, 1.0f, 1.0f);
 
-            // Usa o mesmo desenho do modelo do player
-            if (player->modelData) {
-                for (size_t i = 0; i < player->modelData->meshes_count; ++i) {
-                    cgltf_mesh* mesh = &player->modelData->meshes[i];
-                    for (size_t j = 0; j < mesh->primitives_count; ++j) {
-                        cgltf_primitive* primitive = &mesh->primitives[j];
-                        if (primitive->type == cgltf_primitive_type_triangles) {
-                            cgltf_accessor* positions_accessor = primitive->attributes[0].data;
-                            cgltf_accessor* indices_accessor = primitive->indices;
+        // Usa o mesmo desenho do modelo do player
+        if (player->modelData) {
+            for (size_t i = 0; i < player->modelData->meshes_count; ++i) {
+                cgltf_mesh* mesh = &player->modelData->meshes[i];
+                for (size_t j = 0; j < mesh->primitives_count; ++j) {
+                    cgltf_primitive* primitive = &mesh->primitives[j];
+                    if (primitive->type == cgltf_primitive_type_triangles) {
+                        cgltf_accessor* positions_accessor = primitive->attributes[0].data;
+                        cgltf_accessor* indices_accessor = primitive->indices;
 
-                            glBegin(GL_TRIANGLES);
-                            for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
-                                cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
-                                float pos[3];
-                                cgltf_accessor_read_float(positions_accessor, index, pos, 3);
-                                glVertex3f(pos[0], pos[1], pos[2]);
-                            }
-                            glEnd();
+                        glBegin(GL_TRIANGLES);
+                        for (cgltf_size k = 0; k < indices_accessor->count; ++k) {
+                            cgltf_size index = cgltf_accessor_read_index(indices_accessor, k);
+                            float pos[3];
+                            cgltf_accessor_read_float(positions_accessor, index, pos, 3);
+                            glVertex3f(pos[0], pos[1], pos[2]);
                         }
+                        glEnd();
                     }
                 }
             }
+        }
 
-        glPopMatrix();
         glPopAttrib();
+        glPopMatrix();
     }
 }

@@ -16,6 +16,7 @@ void loadSkybox() {
 
 void drawSkybox(float size){
     glPushMatrix();
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);//forçar a textura a substituir a cor/material
     glDisable(GL_LIGHTING); // Desativa a iluminação para o skybox
     glDisable(GL_DEPTH_TEST); // Desativa o teste de profundidade para o skybox
     glDisable(GL_CULL_FACE); // garante que as faces internas apareçam
@@ -78,5 +79,6 @@ void drawSkybox(float size){
     glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
-
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);//forçar a textura a substituir a cor/material
+    glPopMatrix();
 }

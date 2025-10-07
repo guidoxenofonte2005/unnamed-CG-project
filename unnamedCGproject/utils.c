@@ -182,7 +182,7 @@ void animateObject(SceneObject* object, float deltaTime) {
         }
     }
 
-    // 4. Verifica os limites e inverte a direção (VERSÃO CORRIGIDA)
+    // 4. Verifica os limites e inverte a direção 
     float currentPos;
     if (object->anim.animationAxis == 0) {
         currentPos = object->x;
@@ -196,14 +196,14 @@ void animateObject(SceneObject* object, float deltaTime) {
         // Trava a posição no limite para evitar que ultrapasse
         if (object->anim.animationAxis == 0) object->x = object->anim.maxLimit;
         else if (object->anim.animationAxis == 1) object->z = object->anim.maxLimit;
-        else if (object->anim.animationAxis == 2) object->y = object->anim.maxLimit; // <<< CORREÇÃO AQUI
+        else if (object->anim.animationAxis == 2) object->y = object->anim.maxLimit; 
         // Inverte a direção
         object->anim.moveDirection = -1.0f;
     } else if (currentPos < object->anim.minLimit) {
         // Trava a posição no limite
         if (object->anim.animationAxis == 0) object->x = object->anim.minLimit;
         else if (object->anim.animationAxis == 1) object->z = object->anim.minLimit;
-        else if (object->anim.animationAxis == 2) object->y = object->anim.minLimit; // <<< CORREÇÃO AQUI
+        else if (object->anim.animationAxis == 2) object->y = object->anim.minLimit;
         // Inverte a direção
         object->anim.moveDirection = 1.0f;
     }

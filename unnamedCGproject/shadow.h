@@ -4,9 +4,10 @@
 #include <GL/freeglut.h>
 
 // Calcula a matriz de sombra a partir de uma luz e um plano
-void makeShadowMatrix(GLfloat plane[4], GLfloat lightPos[4], GLfloat shadowMat[16]);
+// void makeShadowMatrix(GLfloat plane[4], GLfloat lightPos[4], GLfloat shadowMat[16]);
+// não precisa estar no .h já que nada acessa ela de fora
 
 // Aplica a sombra sobre um objeto desenhado
-void drawShadow(Player *player, SceneObject *objectsInCollisionRange, float playerRotation);
+void drawShadow(Player *player, SceneObject *objectsInCollisionRange, float *playerRotation);
 
 #endif

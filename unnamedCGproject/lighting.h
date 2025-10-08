@@ -15,4 +15,6 @@
 //                     Valores altos  -> brilho concentrado (polido)
 void setupLighting(GLfloat *ambientLight, GLfloat *diffuseLight, GLfloat *specularLight, GLfloat *lightPosition);
 
-void setMaterial(GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess);
+/*void setMaterial(GLfloat *ambientMaterial, GLfloat *diffuseMaterial, GLfloat *specularMaterial, GLfloat shininess);
+*/
+void setMaterial(float *ambientDiffuse, float *specular, float shininess);
